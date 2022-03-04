@@ -84,17 +84,19 @@ lint/outputs/
 lint/tmp/
 # lint/reports/
 
-#PAS PROPRE MAIS CA MARCHE
+
+
+
 .idea
-./idea/*
-build
-app/build.gradle
-app/proguard-rules.pro
-app/src/androidTest/*
-gradlew.bat
-gradlew
-settings.gradle
-build.gradle
-gradle.properties
-gradle/*
-app/src/test/*
+#./idea/*
+#build
+#app/build.gradle
+#app/proguard-rules.pro
+#app/src/androidTest/*
+#gradlew.bat
+#gradlew
+#settings.gradle
+#build.gradle
+#gradle.properties
+#gradle/*
+#app/src/test/*
