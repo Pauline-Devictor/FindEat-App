@@ -5,12 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+public class Account extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_account);
         (findViewById(R.id.navAccount)).setOnClickListener(click -> {
             Intent intentSend = new Intent(getApplicationContext(),MainActivity.class);
             startActivity(intentSend);

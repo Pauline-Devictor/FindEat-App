@@ -7,12 +7,64 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:text="Page d'accueil"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/navHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="4dp"
+        android:text="Accueil"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/navMap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Carte"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="109dp"
+        tools:layout_editor_absoluteY="679dp" />
+
+    <Button
+        android:id="@+id/navFav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Favoris"
+        tools:layout_editor_absoluteX="207dp"
+        tools:layout_editor_absoluteY="679dp"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/navAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Compte"
+        tools:layout_editor_absoluteX="310dp"
+        tools:layout_editor_absoluteY="679dp"
+        tools:ignore="MissingConstraints" />
+
+    <!--
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schema.android.com/apk/res/res-auto"
+        android:id="@+id/navigation"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="#FA6E42" />
+     -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

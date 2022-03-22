@@ -10,6 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyActivity">
         <activity
+            android:name=".Account"
+            android:exported="false" />
+        <activity
+            android:name=".Favorites"
+            android:exported="false" />
+        <activity
+            android:name=".Map"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
