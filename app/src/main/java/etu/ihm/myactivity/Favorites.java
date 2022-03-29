@@ -1,31 +1,49 @@
 package etu.ihm.myactivity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import edu.polytech.ihm_1.Map.MapActivity;
 
 public class Favorites extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favorites);
-        (findViewById(R.id.navAccount)).setOnClickListener(click -> {
-            Intent intentSend = new Intent(getApplicationContext(),MainActivity.class);
-            startActivity(intentSend);
-        });
-        (findViewById(R.id.navMap)).setOnClickListener(click -> {
-            Intent intentSend = new Intent(getApplicationContext(),Map.class);
-            startActivity(intentSend);
-        });
-        (findViewById(R.id.navFav)).setOnClickListener(click -> {
-            Intent intentSend = new Intent(getApplicationContext(),Favorites.class);
-            startActivity(intentSend);
-        });
-        (findViewById(R.id.navAccount)).setOnClickListener(click -> {
-            Intent intentSend = new Intent(getApplicationContext(),Account.class);
-            startActivity(intentSend);
+        setContentView(R.layout.activity_favoris);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        bottomNavigationView.setSelectedItemId(R.id.favoris);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch(menuItem.getItemId()){
+                    case R.id.decouvrir:
+                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.carte:
+                        startActivity(new Intent(getApplicationContext(), Map.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.favoris:
+                        return true;
+                    case R.id.compte:
+                        startActivity(new Intent(getApplicationContext(),Account.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                }
+                return false;
+            }
         });
     }
 }
+
+
