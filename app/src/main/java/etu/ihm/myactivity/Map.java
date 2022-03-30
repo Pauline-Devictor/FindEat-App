@@ -74,7 +74,7 @@ public class Map extends AppCompatActivity{
 
         map = findViewById(R.id.map);          //On cherche la map via son ID
         map.setTileSource(TileSourceFactory.MAPNIK);//render de la map
-        //map.setBuiltInZoomControls(true);           //rendre la map zoomable
+        map.setBuiltInZoomControls(false);           //rendre la map zoomable
         map.setMultiTouchControls(true); //zoom avec les doigts
         GeoPoint startPoint = new GeoPoint(43.65020,7.00517); //TODO Changer pour les coos actuelles de l'user
         mapController = map.getController();
@@ -90,7 +90,7 @@ public class Map extends AppCompatActivity{
         OverlayItem ralloOffice = new OverlayItem("Rallo's Office","His office",new GeoPoint(43.65020,7.00517));//Titre, Sous-titre, Position géographique
         Drawable m = ralloOffice.getMarker(0); //TODO sert à changer la forme du marqueur
         items.add(ralloOffice);
-        items.add(new OverlayItem("Resto","ches babar",new GeoPoint(43.64950,7.00517)));
+        items.add(new OverlayItem("Resto","chez babar",new GeoPoint(43.64950,7.00517)));
 
         //Objet contenant la liste des elements ainsi que les actions auxquels ils reagissent -> ici TapUp() et LongPress()
         ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(getApplicationContext(),items,new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>(){
