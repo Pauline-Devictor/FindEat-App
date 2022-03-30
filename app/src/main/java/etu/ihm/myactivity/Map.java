@@ -1,7 +1,9 @@
 package etu.ihm.myactivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
@@ -28,8 +30,10 @@ import etu.ihm.myactivity.Favorites;
 import etu.ihm.myactivity.MainActivity;
 
 public class Map extends AppCompatActivity{
+    private final String TAG = "fe " + getClass().getSimpleName();
     private MapView map;
     private IMapController mapController; //gere les options de la map == zoom et centre au lancement
+    private LocationManager locationManager; //position de l'utilisateur
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,9 @@ public class Map extends AppCompatActivity{
         mapController = map.getController();
         mapController.setZoom(18.0);//nb float compris entre 0 et 25
         mapController.setCenter(startPoint); //Centrer la map au lancement
+
+        //Emplacement de l'utilisateur
+
 
 
         ArrayList<OverlayItem> items = new ArrayList<>(); //Liste d'element qu'on pourra afficher sur la carte
