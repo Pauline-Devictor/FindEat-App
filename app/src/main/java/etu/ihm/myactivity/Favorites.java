@@ -9,14 +9,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import edu.polytech.ihm_1.Map.MapActivity;
+import etu.ihm.myactivity.Map;
 
 public class Favorites extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favoris);
+        setContentView(R.layout.activity_favorites);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         bottomNavigationView.setSelectedItemId(R.id.favoris);

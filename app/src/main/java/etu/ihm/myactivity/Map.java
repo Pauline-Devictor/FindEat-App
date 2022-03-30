@@ -23,10 +23,9 @@ import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
 
-import edu.polytech.ihm_1.CompteActivity;
-import edu.polytech.ihm_1.FavorisActivity;
-import edu.polytech.ihm_1.HomeActivity;
-import edu.polytech.ihm_1.R;
+import etu.ihm.myactivity.Account;
+import etu.ihm.myactivity.Favorites;
+import etu.ihm.myactivity.MainActivity;
 
 public class Map extends AppCompatActivity{
     private MapView map;
@@ -71,11 +70,13 @@ public class Map extends AppCompatActivity{
 
         map = findViewById(R.id.map);          //On cherche la map via son ID
         map.setTileSource(TileSourceFactory.MAPNIK);//render de la map
-        map.setBuiltInZoomControls(true);           //rendre la map zoomable
+        //map.setBuiltInZoomControls(true);           //rendre la map zoomable
+        map.setMultiTouchControls(true); //zoom avec les doigts
         GeoPoint startPoint = new GeoPoint(43.65020,7.00517); //TODO Changer pour les coos actuelles de l'user
         mapController = map.getController();
         mapController.setZoom(18.0);//nb float compris entre 0 et 25
         mapController.setCenter(startPoint); //Centrer la map au lancement
+
 
         ArrayList<OverlayItem> items = new ArrayList<>(); //Liste d'element qu'on pourra afficher sur la carte
         //creation d'un element

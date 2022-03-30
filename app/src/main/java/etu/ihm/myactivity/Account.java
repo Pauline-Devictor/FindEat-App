@@ -9,14 +9,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import edu.polytech.ihm_1.Map.MapActivity;
+import etu.ihm.myactivity.Map;
 
 public class Account extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_compte);
+        setContentView(R.layout.activity_account);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         bottomNavigationView.setSelectedItemId(R.id.compte);

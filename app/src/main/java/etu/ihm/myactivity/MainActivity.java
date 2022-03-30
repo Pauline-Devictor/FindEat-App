@@ -13,14 +13,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import org.jetbrains.annotations.NotNull;
 import org.osmdroid.config.Configuration;
 
-import edu.polytech.ihm_1.Map.MapActivity;
+import etu.ihm.myactivity.Map;
 
 public class MainActivity extends AppCompatActivity {
     //Découvrir == Home
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_main);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         bottomNavigationView.setSelectedItemId(R.id.decouvrir);
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.decouvrir:
                         return true;
                     case R.id.carte:
-                        startActivity(new Intent(getApplicationContext(), MapActivity.class));
+                        startActivity(new Intent(getApplicationContext(), Map.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.favoris:
