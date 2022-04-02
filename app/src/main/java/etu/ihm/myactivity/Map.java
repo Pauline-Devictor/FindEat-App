@@ -1,17 +1,25 @@
 package etu.ihm.myactivity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.osmdroid.api.IMapController;
@@ -24,16 +32,20 @@ import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import etu.ihm.myactivity.Account;
 import etu.ihm.myactivity.Favorites;
 import etu.ihm.myactivity.MainActivity;
 
-public class Map extends AppCompatActivity{
-    private final String TAG = "fe " + getClass().getSimpleName();
+public class Map extends AppCompatActivity {
+    private final String TAG = "polytech-" + getClass().getSimpleName();
     private MapView map;
     private IMapController mapController; //gere les options de la map == zoom et centre au lancement
-    private LocationManager locationManager; //position de l'utilisateur
+    private double userlatitude=0;
+    private double userlongitude=0;
+    private FusedLocationProviderClient fusedLocationClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,45 +57,61 @@ public class Map extends AppCompatActivity{
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.carte);
 
-
-
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch(menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.decouvrir:
-                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                        overridePendingTransition(0,0);
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.carte:
                         return true;
                     case R.id.favoris:
-                        startActivity(new Intent(getApplicationContext(),Favorites.class));
-                        overridePendingTransition(0,0);
+                        startActivity(new Intent(getApplicationContext(), Favorites.class));
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.compte:
-                        startActivity(new Intent(getApplicationContext(),Account.class));
-                        overridePendingTransition(0,0);
+                        startActivity(new Intent(getApplicationContext(), Account.class));
+                        overridePendingTransition(0, 0);
                         return true;
                 }
                 return false;
             }
         });
 
-
-
         map = findViewById(R.id.map);          //On cherche la map via son ID
         map.setTileSource(TileSourceFactory.MAPNIK);//render de la map
         map.setBuiltInZoomControls(false);           //rendre la map zoomable
         map.setMultiTouchControls(true); //zoom avec les doigts
-        GeoPoint startPoint = new GeoPoint(43.65020,7.00517); //TODO Changer pour les coos actuelles de l'user
+        Log.d(TAG,"point de départ configuré");
         mapController = map.getController();
         mapController.setZoom(18.0);//nb float compris entre 0 et 25
-        mapController.setCenter(startPoint); //Centrer la map au lancement
 
-        //Emplacement de l'utilisateur
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-
+        /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }*/
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    userlatitude=location.getLatitude();
+                    userlongitude=location.getLongitude();
+                    Log.d(TAG,"latitude "+userlatitude);
+                    GeoPoint startPoint = new GeoPoint(userlatitude,userlongitude);
+                    mapController.setCenter(startPoint);
+                }
+            }
+        });
 
         ArrayList<OverlayItem> items = new ArrayList<>(); //Liste d'element qu'on pourra afficher sur la carte
         //creation d'un element
@@ -108,6 +136,7 @@ public class Map extends AppCompatActivity{
         mOverlay.setFocusItemsOnTap(true); //voir la description des elements en appuyant dessus
         map.getOverlays().add(mOverlay); // relier les items à la map
     }
+
 
     @Override
     public void onPause(){ //Pour pouvoir mettre aussi la map en pause car elle demande bcp de ressources

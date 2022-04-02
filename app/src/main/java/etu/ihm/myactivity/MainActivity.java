@@ -16,7 +16,7 @@ import org.osmdroid.config.Configuration;
 import etu.ihm.myactivity.Map;
 
 public class MainActivity extends AppCompatActivity {
-    private final String TAG = "fe " + getClass().getSimpleName();
+    private final String TAG = "polytech-" + getClass().getSimpleName();
     //Découvrir == Home
     @Override
     protected void onCreate(Bundle savedInstanceState) {
