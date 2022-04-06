@@ -3,6 +3,7 @@ package etu.ihm.myactivity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
+import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,8 +18,8 @@ public class Notifications extends AppCompatActivity {
     public static NotificationManager notificationManager;
 
     @Override
-    public void onCreate(){
-        super.onCreate();
+    public void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
         createNotificationChannels();
     }
 
