@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -17,6 +18,7 @@ import etu.ihm.myactivity.Map;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = "polytech-" + getClass().getSimpleName();
+    private int nofiticationID=0;
     //Découvrir == Home
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,5 +50,14 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    private void sendNotificationOnChannel(String CHANNEL_ID,int priority){
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_logoapp2)
+                .setContentTitle("Nom du resto")
+                .setContentText("Venez faire un tour " + "vous attend")
+                .setPriority(priority);
+        Notifications.notificationManager.notify(++nofiticationID, notification.build());
     }
 }
