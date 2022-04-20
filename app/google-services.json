@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1092815896737",
+    "firebase_url": "https://findeat-5db68-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "findeat-5db68",
+    "storage_bucket": "findeat-5db68.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092815896737:android:6a0627a4166d43d18c30e0",
+        "android_client_info": {
+          "package_name": "etu.ihm.myactivity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1092815896737-bilj0g9v00lf0d7ehc029rmv8kfo37dk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2S7TNtTMZa7fW8Z5HXJ74TsixQyEMSkM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1092815896737-bilj0g9v00lf0d7ehc029rmv8kfo37dk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.favoris:
-                        startActivity(new Intent(getApplicationContext(),Favorites.class));
+                        startActivity(new Intent(getApplicationContext(),DataBase.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.compte:
