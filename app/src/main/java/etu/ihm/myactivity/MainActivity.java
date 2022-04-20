@@ -57,7 +57,9 @@ public class MainActivity extends AppCompatActivity {
                 .setSmallIcon(R.drawable.ic_logoapp2)
                 .setContentTitle("Nom du resto")
                 .setContentText("Venez faire un tour " + "vous attend")
-                .setPriority(priority);
+                .setPriority(priority)
+                .setTimeoutAfter(5000)
+                .setAutoCancel(true); // Enlève la notification après avoir cliqué dessus
         Notifications.notificationManager.notify(++nofiticationID, notification.build());
     }
 }
