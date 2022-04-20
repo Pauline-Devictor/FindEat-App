@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyActivity">
         <activity
+            android:name=".DataBase"
+            android:exported="false" />
+        <activity
             android:name=".Account"
             android:exported="false" />
         <activity
