@@ -12,6 +12,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import etu.ihm.myactivity.Map;
 
 public class Account extends AppCompatActivity {
+    private final String TAG = "polytech-" + getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
