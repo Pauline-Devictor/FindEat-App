@@ -3,6 +3,8 @@ package etu.ihm.myactivity.home;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +18,7 @@ import etu.ihm.myactivity.Notifications;
 import etu.ihm.myactivity.R;
 import etu.ihm.myactivity.account.Account;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IListner{
     private final String TAG = "polytech-" + getClass().getSimpleName();
     private int nofiticationID=0;
     //Découvrir == Home
@@ -50,6 +52,22 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        RestaurantsAdapter restaurantsAdapter = new RestaurantsAdapter(getApplicationContext());
+
+        ListView list = findViewById(R.id.restoList);
+
+        list.setAdapter(restaurantsAdapter);
+
+        restaurantsAdapter.addListener(this);
+
+    }
+
+    @Override
+    public void onClickRestaurant(int position) {
+        //TODO: start fragment
+        Toast toast = Toast.makeText(getApplicationContext(),"restaurant "+position,Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     private void sendNotificationOnChannel(String CHANNEL_ID,int priority){

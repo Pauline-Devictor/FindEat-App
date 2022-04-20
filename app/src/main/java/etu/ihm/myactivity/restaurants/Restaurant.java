@@ -10,4 +10,30 @@ public class Restaurant {
     private String description;
     private float grade;
     private ArrayList<Commentaire> comments;
+
+
+    public Restaurant(Bitmap picture, String name, String description, float grade, ArrayList<Commentaire> comments) {
+        this.picture = picture;
+        this.name = name;
+        this.description = description;
+        this.grade = grade;
+        this.comments = comments;
+    }
+
+    public Bitmap getPicture() {
+        return picture;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public float getGrade() {
+        return grade;
+    }
+
 }
