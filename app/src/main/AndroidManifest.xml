@@ -23,21 +23,21 @@
             </intent-filter>
         </receiver>
         <activity
-            android:name=".DataBase"
+            android:name=".restaurants.DataBase"
             android:exported="false" />
         <activity
-            android:name=".Account"
+            android:name=".account.Account"
             android:exported="false" />
         <activity
-            android:name=".Favorites"
+            android:name=".favorites.Favorites"
             android:exported="false" />
         <activity
-            android:name=".Map"
+            android:name=".map.Map"
             android:exported="false" />
         <activity android:name=".Notifications"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".home.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

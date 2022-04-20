@@ -1,4 +1,4 @@
-package etu.ihm.myactivity;
+package etu.ihm.myactivity.favorites;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import etu.ihm.myactivity.Map;
+import etu.ihm.myactivity.R;
+import etu.ihm.myactivity.account.Account;
+import etu.ihm.myactivity.home.MainActivity;
+import etu.ihm.myactivity.map.Map;
 
 public class Favorites extends AppCompatActivity {
     private final String TAG = "polytech-" + getClass().getSimpleName();
@@ -27,7 +30,7 @@ public class Favorites extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch(menuItem.getItemId()){
                     case R.id.decouvrir:
-                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.carte:
@@ -37,7 +40,7 @@ public class Favorites extends AppCompatActivity {
                     case R.id.favoris:
                         return true;
                     case R.id.compte:
-                        startActivity(new Intent(getApplicationContext(),Account.class));
+                        startActivity(new Intent(getApplicationContext(), Account.class));
                         overridePendingTransition(0,0);
                         return true;
                 }

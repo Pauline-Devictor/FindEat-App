@@ -1,13 +1,10 @@
-package etu.ihm.myactivity;
+package etu.ihm.myactivity.map;
 
 import android.Manifest;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.preference.PreferenceManager;
@@ -18,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -40,11 +36,11 @@ import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
-import etu.ihm.myactivity.Account;
-import etu.ihm.myactivity.Favorites;
-import etu.ihm.myactivity.MainActivity;
+import etu.ihm.myactivity.favorites.Favorites;
+import etu.ihm.myactivity.R;
+import etu.ihm.myactivity.account.Account;
+import etu.ihm.myactivity.home.MainActivity;
 
 public class Map extends AppCompatActivity {
     private final String TAG = "polytech-" + getClass().getSimpleName();

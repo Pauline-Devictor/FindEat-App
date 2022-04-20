@@ -1,8 +1,7 @@
-package etu.ihm.myactivity;
+package etu.ihm.myactivity.home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -11,10 +10,11 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.jetbrains.annotations.NotNull;
-import org.osmdroid.config.Configuration;
-
-import etu.ihm.myactivity.Map;
+import etu.ihm.myactivity.restaurants.DataBase;
+import etu.ihm.myactivity.map.Map;
+import etu.ihm.myactivity.Notifications;
+import etu.ihm.myactivity.R;
+import etu.ihm.myactivity.account.Account;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = "polytech-" + getClass().getSimpleName();
@@ -39,11 +39,11 @@ public class MainActivity extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.favoris:
-                        startActivity(new Intent(getApplicationContext(),DataBase.class));
+                        startActivity(new Intent(getApplicationContext(), DataBase.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.compte:
-                        startActivity(new Intent(getApplicationContext(),Account.class));
+                        startActivity(new Intent(getApplicationContext(), Account.class));
                         overridePendingTransition(0,0);
                         return true;
                 }

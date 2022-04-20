@@ -1,4 +1,4 @@
-package etu.ihm.myactivity;
+package etu.ihm.myactivity.restaurants;
 
 import android.graphics.Bitmap;
 
