@@ -1,9 +1,12 @@
 package etu.ihm.myactivity;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuItem;
+import
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +27,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        double latitude = 43.6221174;
+        double longitude = 7.0391009;
+        int radius = 1000; //1km
+
+        LocationGPS location = new LocationGPS(latitude,longitude);
+
+        new GoogleAPI(radius,location).start();
+        Log.d("a","passe ici");
+
+
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         bottomNavigationView.setSelectedItemId(R.id.decouvrir);
