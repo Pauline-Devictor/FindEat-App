@@ -27,9 +27,9 @@ public class Notifications extends AppCompatActivity {
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
             NotificationChannel low_channel = new NotificationChannel(CHANNEL1_ID,"channel 1",NotificationManager.IMPORTANCE_LOW);
             low_channel.setDescription("Ce channel permet l'affichage de notifications dans la barre d'état");
-            NotificationChannel default_channel = new NotificationChannel(CHANNEL2_ID,"channel 1",NotificationManager.IMPORTANCE_LOW);
+            NotificationChannel default_channel = new NotificationChannel(CHANNEL2_ID,"channel 2",NotificationManager.IMPORTANCE_DEFAULT);
             default_channel.setDescription("Ce channel permet l'affichage de notifications dasn la barre des sons accompagné d'un son");
-            NotificationChannel high_channel = new NotificationChannel(CHANNEL3_ID,"channel 1",NotificationManager.IMPORTANCE_LOW);
+            NotificationChannel high_channel = new NotificationChannel(CHANNEL3_ID,"channel 3",NotificationManager.IMPORTANCE_HIGH);
             high_channel.setDescription("Ce channel permet l'affichage de notifications dans la barre d'état ainsi que sur l'écran");
             notificationManager = getSystemService(NotificationManager.class);
             Objects.requireNonNull(notificationManager).createNotificationChannel(low_channel);

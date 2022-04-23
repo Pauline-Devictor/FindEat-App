@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.Toast;
 import
 
 import androidx.annotation.NonNull;
@@ -14,12 +16,13 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.jetbrains.annotations.NotNull;
-import org.osmdroid.config.Configuration;
+import etu.ihm.myactivity.restaurants.DataBase;
+import etu.ihm.myactivity.map.Map;
+import etu.ihm.myactivity.Notifications;
+import etu.ihm.myactivity.R;
+import etu.ihm.myactivity.account.Account;
 
-import etu.ihm.myactivity.Map;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IListner{
     private final String TAG = "polytech-" + getClass().getSimpleName();
     private int nofiticationID=0;
     //Découvrir == Home
@@ -65,6 +68,22 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        RestaurantsAdapter restaurantsAdapter = new RestaurantsAdapter(getApplicationContext());
+
+        ListView list = findViewById(R.id.restoList);
+
+        list.setAdapter(restaurantsAdapter);
+
+        restaurantsAdapter.addListener(this);
+
+    }
+
+    @Override
+    public void onClickRestaurant(int position) {
+        //TODO: start fragment
+        Toast toast = Toast.makeText(getApplicationContext(),"restaurant "+position,Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     private void sendNotificationOnChannel(String CHANNEL_ID,int priority){
@@ -72,7 +91,9 @@ public class MainActivity extends AppCompatActivity {
                 .setSmallIcon(R.drawable.ic_logoapp2)
                 .setContentTitle("Nom du resto")
                 .setContentText("Venez faire un tour " + "vous attend")
-                .setPriority(priority);
+                .setPriority(priority)
+                .setTimeoutAfter(5000)
+                .setAutoCancel(true); // Enlève la notification après avoir cliqué dessus
         Notifications.notificationManager.notify(++nofiticationID, notification.build());
     }
 }

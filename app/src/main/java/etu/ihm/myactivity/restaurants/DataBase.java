@@ -1,4 +1,4 @@
-package etu.ihm.myactivity;
+package etu.ihm.myactivity.restaurants;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,10 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import etu.ihm.myactivity.DAOECommentaire;
+import etu.ihm.myactivity.R;
+import etu.ihm.myactivity.restaurants.Commentaire;
 
 public class DataBase extends AppCompatActivity {
 

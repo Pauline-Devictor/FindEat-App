@@ -4,6 +4,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import etu.ihm.myactivity.restaurants.Commentaire;
+
 public class DAOECommentaire {
 
     private DatabaseReference databaseReference;

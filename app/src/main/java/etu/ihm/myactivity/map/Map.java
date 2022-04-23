@@ -1,13 +1,10 @@
-package etu.ihm.myactivity;
+package etu.ihm.myactivity.map;
 
 import android.Manifest;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.preference.PreferenceManager;
@@ -18,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -37,14 +33,15 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
+import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
-import etu.ihm.myactivity.Account;
-import etu.ihm.myactivity.Favorites;
-import etu.ihm.myactivity.MainActivity;
+import etu.ihm.myactivity.favorites.Favorites;
+import etu.ihm.myactivity.R;
+import etu.ihm.myactivity.account.Account;
+import etu.ihm.myactivity.home.MainActivity;
 
 public class Map extends AppCompatActivity {
     private final String TAG = "polytech-" + getClass().getSimpleName();
@@ -102,28 +99,9 @@ public class Map extends AppCompatActivity {
         mapController.setZoom(18.0);//nb float compris entre 0 et 25
 
 
-        //creation d'un element
-        OverlayItem ralloOffice = new OverlayItem("Rallo's Office", "His office", new GeoPoint(43.65020, 7.00517));//Titre, Sous-titre, Position géographique
-        Drawable m = ralloOffice.getMarker(0); //TODO sert à changer la forme du marqueur
-        ArrayList<OverlayItem> items = new ArrayList<>(); //Liste d'element qu'on pourra afficher sur la carte
-        items.add(ralloOffice);
-        items.add(new OverlayItem("Resto", "chez babar", new GeoPoint(43.64950, 7.00517)));
-
-        //Objet contenant la liste des elements ainsi que les actions auxquels ils reagissent -> ici TapUp() et LongPress()
-        ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(getApplicationContext(), items, new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
-            @Override
-            public boolean onItemSingleTapUp(int index, OverlayItem item) {
-                return true;
-            }
-
-            @Override
-            public boolean onItemLongPress(int index, OverlayItem item) {
-                return false;
-            }
-        });
-
-        mOverlay.setFocusItemsOnTap(true); //voir la description des elements en appuyant dessus
-        map.getOverlays().add(mOverlay); // relier les items à la map
+        //Pour ajouter un point avec un ping particulier :
+        map.getOverlays().add(addMarker(R.drawable.restaurant_position,new GeoPoint(43.65020, 7.00517),"Rallo's office","Rallo Home",R.drawable.ic_home ));
+       // map.getOverlays().add(addMarker(R.drawable.restaurant_position,new GeoPoint(43.64950, 7.00517),"Chez Babar","De bons petits plats",R.drawable.ic_home));
     }
 
     @Override
@@ -167,10 +145,12 @@ public class Map extends AppCompatActivity {
                     Log.d(TAG,"latitude "+location.getLatitude()+" longitude "+location.getLongitude());
                     userlatitude=location.getLatitude();
                     userlongitude=location.getLongitude();
+
                     GeoPoint userPing = new GeoPoint(userlatitude,userlongitude);
                     mapController.setCenter(userPing);
                     OverlayItem overlayPing = new OverlayItem("me","ping",userPing);
                     overlayPing.setMarker(getApplicationContext().getResources().getDrawable(R.drawable.ic_userping));
+
                     ArrayList<OverlayItem> items = new ArrayList<>();
                     items.add(overlayPing);
                     ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(getApplicationContext(),items,new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>(){
@@ -187,7 +167,7 @@ public class Map extends AppCompatActivity {
 
                     mOverlay.setFocusItemsOnTap(true);
 
-                    map.getOverlays().add(mOverlay);
+                    map.getOverlays().add(addMarker(R.drawable.ic_userping,new GeoPoint(userlatitude,userlongitude),"Votre position","", R.drawable.person));
                 }
                 else {
                     Log.d(TAG,"failure");
@@ -238,6 +218,17 @@ public class Map extends AppCompatActivity {
         super.onResume();
         map.onResume();
     }
-
+    private Marker addMarker(int icon, GeoPoint location, String title, String description, int imageResource){
+        Marker marker = new Marker(map);
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        marker.setIcon(getDrawable(icon));
+        marker.setPosition(location);
+        marker.setTitle(title);
+        marker.setSubDescription(description);
+        marker.setImage(getDrawable(imageResource));
+        marker.setPanToView(true);  //the map will be centered on the marker position.
+        marker.setDraggable(true);
+        return marker;
+    }
 
 }
