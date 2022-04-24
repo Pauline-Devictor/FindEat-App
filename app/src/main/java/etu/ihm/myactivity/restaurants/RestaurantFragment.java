@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import etu.ihm.myactivity.R;
 
-//import androidx.fragment.app.Fragment;
-import android.app.Fragment;
+import androidx.fragment.app.Fragment;
+//import android.app.Fragment;
 
 public class RestaurantFragment extends Fragment {
 

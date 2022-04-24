@@ -10,19 +10,22 @@ import android.view.ViewGroup;
 import etu.ihm.myactivity.R;
 import etu.ihm.myactivity.restaurants.RestaurantFragment;
 
-//import androidx.fragment.app.Fragment;
-import android.app.Fragment;
+import androidx.fragment.app.Fragment;
+//import android.app.Fragment;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 public class RestaurantListFragment extends Fragment /*implements IListner, View.OnClickListener*/ {
-/*
+
+    private Button button;
+
     private OnButtonClickedListener mCallback;
 
     public interface OnButtonClickedListener {
-        void onButtonClicked(View view);
+        void onButtonClicked();
     }
- */
+
 
     public RestaurantListFragment() {}
 
@@ -31,7 +34,7 @@ public class RestaurantListFragment extends Fragment /*implements IListner, View
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        //rootView.findViewById(R.id.restoList).setOnClickListener(this);
+        button = rootView.findViewById(R.id.buttonresto);
 
         RestaurantsAdapter restaurantsAdapter = new RestaurantsAdapter(getActivity());
 
@@ -41,29 +44,32 @@ public class RestaurantListFragment extends Fragment /*implements IListner, View
 
         //restaurantsAdapter.addListener(this);
 
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCallback.onButtonClicked();
+            }
+        });
+
         return rootView;
-    }
-/*
-    @Override
-    public void onClick(View v) {
-        mCallback.onButtonClicked(v);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.createCallbackToParentActivity();
-    }
-
-    private void createCallbackToParentActivity() {
-        try {
-            mCallback = (OnButtonClickedListener) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(e.toString()
-                    + " must implement OnButtonClickedListener");
+        if (context instanceof OnButtonClickedListener){
+            mCallback = (OnButtonClickedListener) context;
+        } else {
+            throw new RuntimeException(context.toString() + "must implement OnButtonClickedListener");
         }
     }
 
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        mCallback=null;
+    }
+/*
     @Override
     public void onClickRestaurant(int position) {
         Toast toast = Toast.makeText(getActivity(), "restaurant " + position, Toast.LENGTH_SHORT);
@@ -74,5 +80,6 @@ public class RestaurantListFragment extends Fragment /*implements IListner, View
         transaction.commit();
     }
  */
+
 
 }
