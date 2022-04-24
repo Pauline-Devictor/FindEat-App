@@ -1,6 +1,8 @@
 package etu.ihm.myactivity.map;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -10,8 +12,10 @@ import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -56,7 +60,6 @@ public class Map extends AppCompatActivity {
     private LocationCallback locationCallback;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "starting map activity");
@@ -91,6 +94,13 @@ public class Map extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.focusButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mapController.setCenter(new GeoPoint(userlatitude, userlongitude));
+            }
+        });
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         getLocation();
 
@@ -103,88 +113,96 @@ public class Map extends AppCompatActivity {
 
 
         //Pour ajouter un point avec un ping particulier :
-        map.getOverlays().add(addMarker(R.drawable.restaurant_position,new GeoPoint(43.65020, 7.00517),"Rallo's office","Rallo Home",R.drawable.ic_home ));
-       // map.getOverlays().add(addMarker(R.drawable.restaurant_position,new GeoPoint(43.64950, 7.00517),"Chez Babar","De bons petits plats",R.drawable.ic_home));
+        map.getOverlays().add(addMarker(R.drawable.restaurant_position, new GeoPoint(43.65020, 7.00517), "Rallo's office", "Rallo Home", R.drawable.ic_home));
+        // map.getOverlays().add(addMarker(R.drawable.restaurant_position,new GeoPoint(43.64950, 7.00517),"Chez Babar","De bons petits plats",R.drawable.ic_home));
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        /*
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             getLocation();
         } else {
             askLastLocationPermission();
         }
+         */
     }
 
     public void getLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.d(TAG,"requesting permission");
+            Log.d(TAG, "requesting permission");
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_CODE);
             return;
         }
-        Log.d(TAG,"authorized to ask location");
+        Log.d(TAG, "authorized to ask location");
+
+        //check if gps is enable
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Log.d(TAG,"gps is not enable");
+            buildAlertMessageNoGps();
+        }
 
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 if (locationResult == null) {
-                    Log.d(TAG,"locationresult null");
+                    Log.d(TAG, "locationresult null");
                     return;
                 }
-                Log.d(TAG,"locationresult not null");
-                for (Location location : locationResult.getLocations()) {
+                Log.d(TAG, "locationresult not null");
+                /*for (Location location : locationResult.getLocations()) {
                     Log.d(TAG,"lat "+location.getLatitude()+" long "+location.getLongitude());
-                }
+                }*/
 
                 Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
                 locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
-                        if(location!=null){
-                            Log.d(TAG,"latitude "+location.getLatitude()+" longitude "+location.getLongitude());
-                            userlatitude=location.getLatitude();
-                            userlongitude=location.getLongitude();
+                        if (location != null) {
+                            Log.d(TAG, "latitude " + location.getLatitude() + " longitude " + location.getLongitude());
+                            userlatitude = location.getLatitude();
+                            userlongitude = location.getLongitude();
 
-                            GeoPoint userPing = new GeoPoint(userlatitude,userlongitude);
+                            GeoPoint userPing = new GeoPoint(userlatitude, userlongitude);
                             mapController.setCenter(userPing);
-                            OverlayItem overlayPing = new OverlayItem("me","ping",userPing);
+                            OverlayItem overlayPing = new OverlayItem("me", "ping", userPing);
                             overlayPing.setMarker(getApplicationContext().getResources().getDrawable(R.drawable.ic_userping));
 
                             ArrayList<OverlayItem> items = new ArrayList<>();
                             items.add(overlayPing);
-                            ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(getApplicationContext(),items,new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>(){
+                            ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(getApplicationContext(), items, new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
                                 @Override
-                                public boolean onItemSingleTapUp(int index, OverlayItem item){
+                                public boolean onItemSingleTapUp(int index, OverlayItem item) {
                                     return true;
                                 }
 
                                 @Override
-                                public boolean onItemLongPress(int index, OverlayItem item){
+                                public boolean onItemLongPress(int index, OverlayItem item) {
                                     return false;
                                 }
                             });
 
                             mOverlay.setFocusItemsOnTap(true);
 
-                            map.getOverlays().add(addMarker(R.drawable.ic_userping,new GeoPoint(userlatitude,userlongitude),"Votre position","", R.drawable.person));
-                        }
-                        else {
-                            Log.d(TAG,"failure");
+                            map.getOverlays().add(addMarker(R.drawable.ic_userping, new GeoPoint(userlatitude, userlongitude), "Votre position", "", R.drawable.person));
+                        } else {
+                            Log.d(TAG, "failure");
                         }
                     }
                 });
                 locationTask.addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG,"on faillure "+e.getLocalizedMessage());
+                        Log.d(TAG, "on faillure " + e.getLocalizedMessage());
                     }
                 });
 
             }
         };
 
-        Log.d(TAG,"asking location");
+        Log.d(TAG, "asking location");
         LocationRequest locationRequest = LocationRequest.create();
         //locationRequest.setInterval(100000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -192,6 +210,7 @@ public class Map extends AppCompatActivity {
 
     }
 
+    /*
     public void askLastLocationPermission(){
         if (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
             if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
@@ -203,6 +222,7 @@ public class Map extends AppCompatActivity {
             }
         }
     }
+     */
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -210,26 +230,43 @@ public class Map extends AppCompatActivity {
         if (requestCode == REQUEST_LOCATION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getLocation();
-            }
-            else{
-                Log.d(TAG,"permission not granted");
+            } else {
+                Log.d(TAG, "permission not granted");
             }
         }
     }
 
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     @Override
-    public void onPause(){ //Pour pouvoir mettre aussi la map en pause car elle demande bcp de ressources
+    public void onPause() { //Pour pouvoir mettre aussi la map en pause car elle demande bcp de ressources
         super.onPause();
         map.onPause();
     }
 
     @Override
-    public void onResume(){ //Reprendre la map et la page
+    public void onResume() { //Reprendre la map et la page
         super.onResume();
         map.onResume();
     }
 
-    private Marker addMarker(int icon, GeoPoint location, String title, String description, int imageResource){
+    private Marker addMarker(int icon, GeoPoint location, String title, String description, int imageResource) {
         Marker marker = new Marker(map);
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         marker.setIcon(getDrawable(icon));
