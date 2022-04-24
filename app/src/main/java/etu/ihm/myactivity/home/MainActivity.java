@@ -1,5 +1,6 @@
 package etu.ihm.myactivity.home;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import android.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -17,8 +19,9 @@ import etu.ihm.myactivity.map.Map;
 import etu.ihm.myactivity.Notifications;
 import etu.ihm.myactivity.R;
 import etu.ihm.myactivity.account.Account;
+import etu.ihm.myactivity.restaurants.RestaurantFragment;
 
-public class MainActivity extends AppCompatActivity implements IListner{
+public class MainActivity extends AppCompatActivity /*implements IListner*/{
     private final String TAG = "polytech-" + getClass().getSimpleName();
     private int nofiticationID=0;
     //Découvrir == Home
@@ -52,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements IListner{
                 return false;
             }
         });
-
+/*
         RestaurantsAdapter restaurantsAdapter = new RestaurantsAdapter(getApplicationContext());
 
         ListView list = findViewById(R.id.restoList);
@@ -60,15 +63,20 @@ public class MainActivity extends AppCompatActivity implements IListner{
         list.setAdapter(restaurantsAdapter);
 
         restaurantsAdapter.addListener(this);
+ */
 
     }
-
+/*
     @Override
     public void onClickRestaurant(int position) {
-        //TODO: start fragment
         Toast toast = Toast.makeText(getApplicationContext(),"restaurant "+position,Toast.LENGTH_SHORT);
         toast.show();
+        Fragment restaurantFragment= new RestaurantFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_restaurant, restaurantFragment);
+        transaction.commit();
     }
+ */
 
     private void sendNotificationOnChannel(String CHANNEL_ID,int priority){
         NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ID)
