@@ -3,8 +3,8 @@ package etu.ihm.myactivity.map;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.preference.PreferenceManager;
@@ -45,6 +45,9 @@ import etu.ihm.myactivity.home.MainActivity;
 
 public class Map extends AppCompatActivity {
     private final String TAG = "polytech-" + getClass().getSimpleName();
+
+    public static int REQUEST_LOCATION_CODE = 1001;
+
     private MapView map;
     private IMapController mapController; //gere les options de la map == zoom et centre au lancement
     private double userlatitude = 0;
@@ -89,7 +92,7 @@ public class Map extends AppCompatActivity {
         });
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        getLastLocation();
+        getLocation();
 
         map = findViewById(R.id.map);          //On cherche la map via son ID
         map.setTileSource(TileSourceFactory.MAPNIK);//render de la map
@@ -108,19 +111,20 @@ public class Map extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            getLastLocation();
+            getLocation();
         } else {
             askLastLocationPermission();
         }
     }
 
-    public void getLastLocation() {
+    public void getLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 10001);
+            Log.d(TAG,"requesting permission");
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_CODE);
             return;
         }
+        Log.d(TAG,"authorized to ask location");
 
-        Log.d(TAG,"locationcallback");
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -128,59 +132,63 @@ public class Map extends AppCompatActivity {
                     Log.d(TAG,"locationresult null");
                     return;
                 }
+                Log.d(TAG,"locationresult not null");
                 for (Location location : locationResult.getLocations()) {
                     Log.d(TAG,"lat "+location.getLatitude()+" long "+location.getLongitude());
                 }
+
+                Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
+                locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if(location!=null){
+                            Log.d(TAG,"latitude "+location.getLatitude()+" longitude "+location.getLongitude());
+                            userlatitude=location.getLatitude();
+                            userlongitude=location.getLongitude();
+
+                            GeoPoint userPing = new GeoPoint(userlatitude,userlongitude);
+                            mapController.setCenter(userPing);
+                            OverlayItem overlayPing = new OverlayItem("me","ping",userPing);
+                            overlayPing.setMarker(getApplicationContext().getResources().getDrawable(R.drawable.ic_userping));
+
+                            ArrayList<OverlayItem> items = new ArrayList<>();
+                            items.add(overlayPing);
+                            ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(getApplicationContext(),items,new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>(){
+                                @Override
+                                public boolean onItemSingleTapUp(int index, OverlayItem item){
+                                    return true;
+                                }
+
+                                @Override
+                                public boolean onItemLongPress(int index, OverlayItem item){
+                                    return false;
+                                }
+                            });
+
+                            mOverlay.setFocusItemsOnTap(true);
+
+                            map.getOverlays().add(addMarker(R.drawable.ic_userping,new GeoPoint(userlatitude,userlongitude),"Votre position","", R.drawable.person));
+                        }
+                        else {
+                            Log.d(TAG,"failure");
+                        }
+                    }
+                });
+                locationTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG,"on faillure "+e.getLocalizedMessage());
+                    }
+                });
+
             }
         };
 
-        fusedLocationProviderClient.requestLocationUpdates(new LocationRequest(), locationCallback, Looper.getMainLooper());
-
-
-        Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
-        locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if(location!=null){
-                    Log.d(TAG,"latitude "+location.getLatitude()+" longitude "+location.getLongitude());
-                    userlatitude=location.getLatitude();
-                    userlongitude=location.getLongitude();
-
-                    GeoPoint userPing = new GeoPoint(userlatitude,userlongitude);
-                    mapController.setCenter(userPing);
-                    OverlayItem overlayPing = new OverlayItem("me","ping",userPing);
-                    overlayPing.setMarker(getApplicationContext().getResources().getDrawable(R.drawable.ic_userping));
-
-                    ArrayList<OverlayItem> items = new ArrayList<>();
-                    items.add(overlayPing);
-                    ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(getApplicationContext(),items,new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>(){
-                        @Override
-                        public boolean onItemSingleTapUp(int index, OverlayItem item){
-                            return true;
-                        }
-
-                        @Override
-                        public boolean onItemLongPress(int index, OverlayItem item){
-                            return false;
-                        }
-                    });
-
-                    mOverlay.setFocusItemsOnTap(true);
-
-                    map.getOverlays().add(addMarker(R.drawable.ic_userping,new GeoPoint(userlatitude,userlongitude),"Votre position","", R.drawable.person));
-                }
-                else {
-                    Log.d(TAG,"failure");
-                }
-            }
-        });
-        locationTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG,"on faillure "+e.getLocalizedMessage());
-            }
-        });
-
+        Log.d(TAG,"asking location");
+        LocationRequest locationRequest = LocationRequest.create();
+        //locationRequest.setInterval(100000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
 
     }
 
@@ -188,24 +196,26 @@ public class Map extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
             if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
                 Log.d(TAG,"asklocationpermission");
-                ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION},10001);
+                ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_CODE);
             }
             else{
-                ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION},10001);
+                ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_CODE);
             }
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,@NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 10001) {
+        if (requestCode == REQUEST_LOCATION_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getLastLocation();
+                getLocation();
+            }
+            else{
+                Log.d(TAG,"permission not granted");
             }
         }
     }
-
 
     @Override
     public void onPause(){ //Pour pouvoir mettre aussi la map en pause car elle demande bcp de ressources
@@ -218,6 +228,7 @@ public class Map extends AppCompatActivity {
         super.onResume();
         map.onResume();
     }
+
     private Marker addMarker(int icon, GeoPoint location, String title, String description, int imageResource){
         Marker marker = new Marker(map);
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
