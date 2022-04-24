@@ -49,17 +49,13 @@ public class RestaurantsAdapter extends BaseAdapter {
 
         //(2) : Récupération des TextView de notre layout
         TextView tvName = layoutItem.findViewById(R.id.restaurantName);
-        TextView tvDescription = layoutItem.findViewById(R.id.restaurantDescription);
         TextView tvGrade = layoutItem.findViewById(R.id.restaurantGrade);
-        ImageView restaurantPicture = layoutItem.findViewById(R.id.restaurantPicture);
+        //ImageView restaurantPicture = layoutItem.findViewById(R.id.restaurantPicture);
 
         //(3) : Renseignement des valeurs
         tvName.setText(RestaurantsList.get(position).getName());
-        tvGrade.setText("Note: "+ RestaurantsList.get(position).getGrade());
-        restaurantPicture.setImageBitmap(RestaurantsList.get(position).getPicture());
-
-        //(4) Changement de la couleur du fond de notre item
-        tvGrade.setTextColor( RestaurantsList.get(position).getGrade() >= 3 ? Color.GREEN : Color.RED);
+        tvGrade.setText(""+ RestaurantsList.get(position).getGrade()+"/5");
+        //restaurantPicture.setImageBitmap(RestaurantsList.get(position).getPicture());
 
         layoutItem.setOnClickListener( click -> {
             listener.onClickRestaurant(position);
