@@ -22,7 +22,7 @@ import etu.ihm.myactivity.R;
 import etu.ihm.myactivity.account.Account;
 import etu.ihm.myactivity.restaurants.RestaurantFragment;
 
-public class MainActivity extends AppCompatActivity implements /*IListner*/ RestaurantListFragment.OnButtonClickedListener {
+public class MainActivity extends AppCompatActivity implements IListner, RestaurantListFragment.OnRestaurantClickedListener {
     private final String TAG = "polytech-" + getClass().getSimpleName();
 
     private RestaurantFragment restaurantFragment;
@@ -67,22 +67,19 @@ public class MainActivity extends AppCompatActivity implements /*IListner*/ Rest
 
         //getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantListFragment).commit();
     }
-/*
-    @Override
-    public void onClickRestaurant(int position) {
-        Toast toast = Toast.makeText(getApplicationContext(),"restaurant "+position,Toast.LENGTH_SHORT);
-        toast.show();
-        Fragment restaurantFragment= new RestaurantFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_restaurant, restaurantFragment);
-        transaction.commit();
-    }
- */
 
     @Override
-    public void onButtonClicked(){
+    public void onClickRestaurant(int position) {
         Bundle args = new Bundle();
-        args.putInt("position",1);
+        args.putInt("position",position);
+        restaurantFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();
+    }
+
+    @Override
+    public void onRestaurantClicked(int position){
+        Bundle args = new Bundle();
+        args.putInt("position",position);
         restaurantFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();
     }

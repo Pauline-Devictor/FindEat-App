@@ -21,10 +21,10 @@ public class RestaurantListFragment extends Fragment implements IListner {
 
     private Button button;
 
-    private OnButtonClickedListener mCallback;
+    private OnRestaurantClickedListener mCallback;
 
-    public interface OnButtonClickedListener {
-        void onButtonClicked();
+    public interface OnRestaurantClickedListener {
+        void onRestaurantClicked(int position);
     }
 
 
@@ -35,7 +35,6 @@ public class RestaurantListFragment extends Fragment implements IListner {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        button = rootView.findViewById(R.id.buttonresto);
 
         RestaurantsAdapter restaurantsAdapter = new RestaurantsAdapter(getActivity());
 
@@ -45,21 +44,14 @@ public class RestaurantListFragment extends Fragment implements IListner {
 
         restaurantsAdapter.addListener(this);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mCallback.onButtonClicked();
-            }
-        });
-
         return rootView;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnButtonClickedListener){
-            mCallback = (OnButtonClickedListener) context;
+        if (context instanceof OnRestaurantClickedListener){
+            mCallback = (OnRestaurantClickedListener) context;
         } else {
             throw new RuntimeException(context.toString() + "must implement OnButtonClickedListener");
         }
@@ -75,6 +67,7 @@ public class RestaurantListFragment extends Fragment implements IListner {
     public void onClickRestaurant(int position) {
         Toast toast = Toast.makeText(getActivity(), "restaurant " + position, Toast.LENGTH_SHORT);
         toast.show();
+        mCallback.onRestaurantClicked(position);
     }
 
 

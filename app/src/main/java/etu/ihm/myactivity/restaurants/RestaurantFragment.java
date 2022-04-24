@@ -79,7 +79,7 @@ public class RestaurantFragment extends Fragment {
         distance.setText("xkm");
 
         TextView description = rootView.findViewById(R.id.restaurantDescription);
-        description.setText(restaurant.getDescription());
+        //description.setText(restaurant.getDescription());
 
 
         return rootView;
