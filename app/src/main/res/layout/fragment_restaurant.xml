@@ -10,7 +10,7 @@
     tools:context=".restaurants.RestaurantFragment">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/backButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -56,7 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="260dp"
-        android:text="TextView"
+        android:text="Grade"
         android:textColor="#C57777"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,7 +70,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="260dp"
-        android:text="TextView"
+        android:text="Distance"
         android:textColor="#C57777"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -117,7 +117,7 @@
         tools:layout_editor_absoluteY="415dp" />
 
     <Button
-        android:id="@+id/restaurantMenu"
+        android:id="@+id/showOnMapButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

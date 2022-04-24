@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements /*IListner*/ Rest
         restaurantFragment = new RestaurantFragment();
         restaurantListFragment = new RestaurantListFragment();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantListFragment).commit();
+        //getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantListFragment).commit();
     }
 /*
     @Override
@@ -81,6 +81,9 @@ public class MainActivity extends AppCompatActivity implements /*IListner*/ Rest
 
     @Override
     public void onButtonClicked(){
+        Bundle args = new Bundle();
+        args.putInt("position",1);
+        restaurantFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();
     }
 

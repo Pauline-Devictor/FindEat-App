@@ -16,7 +16,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class RestaurantListFragment extends Fragment /*implements IListner, View.OnClickListener*/ {
+public class RestaurantListFragment extends Fragment implements IListner {
+    private final String TAG = "polytech-" + getClass().getSimpleName();
 
     private Button button;
 
@@ -42,7 +43,7 @@ public class RestaurantListFragment extends Fragment /*implements IListner, View
 
         list.setAdapter(restaurantsAdapter);
 
-        //restaurantsAdapter.addListener(this);
+        restaurantsAdapter.addListener(this);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,17 +70,13 @@ public class RestaurantListFragment extends Fragment /*implements IListner, View
         super.onDetach();
         mCallback=null;
     }
-/*
+
     @Override
     public void onClickRestaurant(int position) {
         Toast toast = Toast.makeText(getActivity(), "restaurant " + position, Toast.LENGTH_SHORT);
         toast.show();
-        Fragment restaurantFragment = new RestaurantFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_fragment, restaurantFragment);
-        transaction.commit();
     }
- */
+
 
 
 }
