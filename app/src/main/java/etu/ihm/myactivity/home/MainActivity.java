@@ -30,14 +30,26 @@ import etu.ihm.myactivity.restaurants.RestaurantFragment;
 public class MainActivity extends AppCompatActivity implements IListner, RestaurantListFragment.OnRestaurantClickedListener {
     private final String TAG = "polytech-" + getClass().getSimpleName();
 
+
+    private static MainActivity instance;
+
     private RestaurantFragment restaurantFragment;
     private RestaurantListFragment restaurantListFragment;
+
+    public RestaurantsList restaurantsList;
 
     private int nofiticationID = 0;
 
     //Découvrir == Home
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        instance = this;
+
+        Log.d(TAG,"creation of MainActivity");
+
+        restaurantsList = new RestaurantsList();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -56,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
         //GoogleAPI googleAPI = new GoogleAPI("Valbonne");
         //googleAPI.runDebut();
 
-        new GoogleAPI("Valbonne").start();
+        new GoogleAPI("Valbonne",restaurantsList).start();
 
         //new GoogleAPI(radius,location,filtres,maxPrice);
         Log.d("a","passe ici");
@@ -93,23 +105,39 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
         restaurantFragment = new RestaurantFragment();
         restaurantListFragment = new RestaurantListFragment();
 
-        //getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantListFragment).commit();
+
+        Bundle args = new Bundle();
+        args.putSerializable("restoList",restaurantsList);
+        restaurantListFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantListFragment).commit();
     }
 
     @Override
     public void onClickRestaurant(int position) {
-        Bundle args = new Bundle();
+        /*Bundle args = new Bundle();
         args.putInt("position",position);
+        restaurantFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();*/
 
-
+        Bundle args = new Bundle();
+        args.putSerializable("resto",restaurantsList.get(position));
         restaurantFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();
     }
 
+    public static MainActivity getInstance(){
+        return instance;
+    }
+
     @Override
     public void onRestaurantClicked(int position){
-        Bundle args = new Bundle();
+        /*Bundle args = new Bundle();
         args.putInt("position",position);
+        restaurantFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();*/
+
+        Bundle args = new Bundle();
+        args.putSerializable("resto",restaurantsList.get(position));
         restaurantFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();
     }

@@ -30,6 +30,7 @@ public class  GoogleAPI extends Thread {
     private ArrayList<FiltreEnum> filters;
     private int maxPrice;
     private String ville;
+    private RestaurantsList restaurantsList;
     private int numConstru=0; //Savoir si on passe Location ou nom ville
 
 
@@ -62,17 +63,18 @@ public class  GoogleAPI extends Thread {
 
 
     //2eme constructeur si cherche avec text places
-    public GoogleAPI(int radius, LocationGPS location, ArrayList<FiltreEnum> filters, int maxPrice) {
+    public GoogleAPI(RestaurantsList restaurantsList, int radius, LocationGPS location, ArrayList<FiltreEnum> filters, int maxPrice) {
         this.radius = radius;
         this.location = location;
         this.filters = filters;
         this.maxPrice = maxPrice;
+        this.restaurantsList = restaurantsList;
         this.numConstru=1;
-
     }
 
-    public GoogleAPI(String ville) {
+    public GoogleAPI(String ville, RestaurantsList restaurantsList) {
         this.ville = ville;
+        this.restaurantsList = restaurantsList;
         this.numConstru = 2;
 
     }
@@ -168,6 +170,7 @@ public class  GoogleAPI extends Thread {
             results = resultsDTOList.get(1);
             Log.d("deux ",results.getName());
 
+            restaurantsList.empty();
             for(int i=0;i<resultsDTOList.size();i++){
                 PlacesApiParser.ResultsDTO tmp = resultsDTOList.get(i);
                 Lieux resto;

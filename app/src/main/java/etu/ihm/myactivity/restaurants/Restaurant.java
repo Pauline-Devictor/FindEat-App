@@ -2,9 +2,10 @@ package etu.ihm.myactivity.restaurants;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Restaurant {
+public class Restaurant implements Serializable {
     private Bitmap picture;
     private String name;
     private String description;

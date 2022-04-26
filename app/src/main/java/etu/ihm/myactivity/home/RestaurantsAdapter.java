@@ -1,7 +1,9 @@
 package etu.ihm.myactivity.home;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,33 +16,45 @@ import etu.ihm.myactivity.R;
 import etu.ihm.myactivity.restaurants.Restaurant;
 
 /**
- * Modify by Fred on 15/03/2022.
+ * This is the view adapter of the view from the MVC
  */
-
 public class RestaurantsAdapter extends BaseAdapter {
+    private final String TAG = "polytech-" + getClass().getSimpleName();
+
     private IListner listener;
 
     private Context context;
+    private Activity activity = MainActivity.getInstance();
 
     private LayoutInflater inflater;
 
-    public RestaurantsAdapter(Context context) {
+    private RestaurantsList model;
+
+    private RestaurantListFragment viewFragment;
+
+    public RestaurantsAdapter(Context context, RestaurantsList restaurantsList, RestaurantListFragment restaurantListFragment) {
         this.context = context;
+        this.model=restaurantsList;
+        this.viewFragment=restaurantListFragment;
+        this.activity = activity;
         inflater = LayoutInflater.from(this.context);
     }
 
     public int getCount() {
-        return RestaurantsList.size();
+        return model.size();
     }
+
     public Object getItem(int position) {
-        return RestaurantsList.get(position);
+        return model.get(position);
     }
+
     public long getItemId(int position) {
         return position;
     }
 
 
     public View getView(int position, View convertView, ViewGroup parent) {
+        Log.d(TAG,"getView position "+position+" pour une taille de "+model.size()+" et une taille fournie de "+getCount());
         LinearLayout layoutItem;
 
         //(1) : Réutilisation des layouts
@@ -53,21 +67,45 @@ public class RestaurantsAdapter extends BaseAdapter {
         //ImageView restaurantPicture = layoutItem.findViewById(R.id.restaurantPicture);
 
         //(3) : Renseignement des valeurs
-        tvName.setText(RestaurantsList.get(position).getName());
-        tvGrade.setText(""+ RestaurantsList.get(position).getGrade()+"/5");
+        tvName.setText(model.get(position).getName());
+        tvGrade.setText("" + model.get(position).getGrade() + "/5");
         //restaurantPicture.setImageBitmap(RestaurantsList.get(position).getPicture());
 
-        layoutItem.setOnClickListener( click -> {
+        layoutItem.setOnClickListener(click -> {
             listener.onClickRestaurant(position);
         });
         //On retourne l'item créé.
         return layoutItem;
     }
 
+    public void refresh(RestaurantsList model){
+        Log.d(TAG,"refreshing");
+        this.model=model;
+
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                notifyDataSetChanged();
+            }
+        });
+
+
+
+
+
+    }
+
+
+
+
+
+
+
     //abonnement pour click sur le nom...
     public void addListener(IListner listener) {
         this.listener = listener;
     }
+
 
 }
 
