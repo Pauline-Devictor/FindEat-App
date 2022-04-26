@@ -23,7 +23,7 @@ public class DataBase extends AppCompatActivity {
         DAOECommentaire dao =  new DAOECommentaire();
         btn.setOnClickListener(v->{
 
-            Commentaire com = new Commentaire(edit_data.getText().toString());
+            Commentaire com = new Commentaire("Moi",edit_data.getText().toString(),"IdResto");
             dao.add(com).addOnSuccessListener(suc->
             {
                 Log.d("OK","bon");

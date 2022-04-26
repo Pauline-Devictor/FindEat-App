@@ -31,6 +31,7 @@ public class  GoogleAPI extends Thread {
     private ArrayList<FiltreEnum> filters;
     private int maxPrice;
     private String ville;
+    private int numConstru=0; //Savoir si on passe Location ou nom ville
 
 
     //filtres alimtentaire dans jquery maxprice
@@ -67,23 +68,36 @@ public class  GoogleAPI extends Thread {
         this.location = location;
         this.filters = filters;
         this.maxPrice = maxPrice;
+        this.numConstru=1;
+
     }
 
     public GoogleAPI(String ville) {
         this.ville = ville;
+        this.numConstru = 2;
 
     }
 
     //if this ville bla bla else recherche avec location
 
     @Override
-    public void run(){ //rundebut
+    public void run(){
+        if(this.numConstru==2){ //On est au debut
+            runDebut();
+        }
+        else if(this.numConstru==1){ //Run avec location, filtres ...
+            runTest();
+        }
 
+
+    }
+
+    public void runDebut(){
         //https://maps.googleapis.com/maps/api/place/textsearch/json?query=cafes+in+nice&key=AIzaSyAaSrozKCZYHXJD4F5zynJxebwsvf5nA9I
-
         this.URL = BASE_URL + TEXT_SEARCH +"restaurant+"+this.ville+"+"+"restaurant"+ "&key=" + API_KEY;
         Log.d("a", "URL vaut de BASE vaut " + URL);
         fetchData();
+
     }
 
     public void runTest() {
@@ -158,7 +172,6 @@ public class  GoogleAPI extends Thread {
             for(int i=0;i<resultsDTOList.size();i++){
                 PlacesApiParser.ResultsDTO tmp = resultsDTOList.get(i);
                 Lieux resto;
-                tmp.
                 if (tmp.getName().contains("Bar")){
                     resto = LieuxFactory.build(tmp.getName(),2,null,null,tmp.getRating(),null);
                     Log.d("bar",tmp.getName()+ " baaaaaaaaaaaaaar");
