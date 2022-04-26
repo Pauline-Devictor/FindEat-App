@@ -15,13 +15,14 @@ import etu.ihm.myactivity.restaurants.Restaurant;
 public class RestaurantsList extends Observable implements Serializable {
     private static String TAG = "polytech-RestaurantsList";
 
-    private static ArrayList<Restaurant> restaurantsArrayList = new ArrayList<>();
+    private static ArrayList<Restaurant> restaurantsArrayList;
 
     public RestaurantsList(){
-
+        restaurantsArrayList = new ArrayList<>();
+/*
         restaurantsArrayList.add(new Restaurant(null, "Le Madison", "description", 3.5f, null));
         restaurantsArrayList.add(new Restaurant(null, "Le Lys d'Or", "description", 3f, null));
-        /**
+
          restaurantsArrayList.add(new Restaurant(null,"Le Flambadou","description",4f,null));
          restaurantsArrayList.add(new Restaurant(null,"La Source","description",2.5f,null));
          restaurantsArrayList.add(new Restaurant(null,"L'École Buissonière","description",3.5f,null));
