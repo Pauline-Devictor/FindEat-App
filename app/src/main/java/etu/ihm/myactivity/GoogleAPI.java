@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import etu.ihm.myactivity.home.RestaurantsList;
 import etu.ihm.myactivity.restaurants.FiltreEnum;
+import etu.ihm.myactivity.restaurants.Restaurant;
 
 public class  GoogleAPI extends Thread {
 
@@ -69,7 +71,8 @@ public class  GoogleAPI extends Thread {
 
     }
 
-    public void runDebut(){
+    @Override
+    public void run(){ //rundebut
 
         //https://maps.googleapis.com/maps/api/place/textsearch/json?query=cafes+in+nice&key=AIzaSyAaSrozKCZYHXJD4F5zynJxebwsvf5nA9I
 
@@ -80,7 +83,8 @@ public class  GoogleAPI extends Thread {
 
     }
 
-    public void run() {
+
+    public void runTest() {
         String URLlocation = "location=" + location.getLatitude() + "%2C" + location.getLongitude() + "&radius=" + radius;
         String filter = "";
         for (FiltreEnum f : filters) {
@@ -133,6 +137,8 @@ public class  GoogleAPI extends Thread {
     private void decodage(String s){
         Log.d("a","passe Decodage");
 
+        //CLEAR
+
         Gson gson = new Gson();
         PlacesApiParser response =
                 gson.fromJson(data, PlacesApiParser.class);
@@ -144,6 +150,17 @@ public class  GoogleAPI extends Thread {
             Log.d("premier ",results.getName());
             results = resultsDTOList.get(1);
             Log.d("deux ",results.getName());
+
+            for(int i=0;i<resultsDTOList.size();i++){
+                PlacesApiParser.ResultsDTO tmp = resultsDTOList.get(i);
+                Restaurant resto = new Restaurant(null,tmp.getName(),null,tmp.getRating(),null);
+                RestaurantsList.add(resto);
+                Log.d("a","on a add un resto" + resto.getName());
+            }
+
+
+
+
 
         }
         else{

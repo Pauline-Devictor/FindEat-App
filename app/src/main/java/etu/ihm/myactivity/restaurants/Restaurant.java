@@ -8,11 +8,11 @@ public class Restaurant {
     private Bitmap picture;
     private String name;
     private String description;
-    private float grade;
+    private double grade;
     private ArrayList<Commentaire> comments;
 
 
-    public Restaurant(Bitmap picture, String name, String description, float grade, ArrayList<Commentaire> comments) {
+    public Restaurant(Bitmap picture, String name, String description, double grade, ArrayList<Commentaire> comments) {
         this.picture = picture;
         this.name = name;
         this.description = description;
@@ -32,7 +32,7 @@ public class Restaurant {
         return description;
     }
 
-    public float getGrade() {
+    public double getGrade() {
         return grade;
     }
 

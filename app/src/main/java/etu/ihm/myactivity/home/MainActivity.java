@@ -1,6 +1,5 @@
 package etu.ihm.myactivity.home;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -13,9 +12,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Fragment;
 
+import com.google.android.gms.common.GooglePlayServicesManifestException;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -57,8 +58,10 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
         filtres.add(FiltreEnum.VEGAN);
         int maxPrice =4; //valeur par defaut pour tout avoir
 
-        GoogleAPI googleAPI = new GoogleAPI("Valbonne");
-        googleAPI.runDebut();
+        //GoogleAPI googleAPI = new GoogleAPI("Valbonne");
+        //googleAPI.runDebut();
+
+        new GoogleAPI("Valbonne").start();
 
         //new GoogleAPI(radius,location,filtres,maxPrice);
         Log.d("a","passe ici");
@@ -102,6 +105,8 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
     public void onClickRestaurant(int position) {
         Bundle args = new Bundle();
         args.putInt("position",position);
+
+
         restaurantFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();
     }
