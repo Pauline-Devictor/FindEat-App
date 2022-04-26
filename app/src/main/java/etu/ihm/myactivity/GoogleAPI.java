@@ -71,18 +71,17 @@ public class  GoogleAPI extends Thread {
 
     }
 
+    //if this ville bla bla else recherche avec location
+
     @Override
     public void run(){ //rundebut
 
         //https://maps.googleapis.com/maps/api/place/textsearch/json?query=cafes+in+nice&key=AIzaSyAaSrozKCZYHXJD4F5zynJxebwsvf5nA9I
 
         this.URL = BASE_URL + TEXT_SEARCH +"restaurant+"+this.ville+"+"+"restaurant"+ "&key=" + API_KEY;
-
         Log.d("a", "URL vaut de BASE vaut " + URL);
         fetchData();
-
     }
-
 
     public void runTest() {
         String URLlocation = "location=" + location.getLatitude() + "%2C" + location.getLongitude() + "&radius=" + radius;
