@@ -17,11 +17,6 @@ public class FilterController {
         Log.d(TAG,"controller created");
     }
 
-    public void filterOver3(){
-        Log.d(TAG,"filter over 3");
-        model.filterOver3();
-    }
-
     public void filterOver4(){
         Log.d(TAG,"filter over 4");
         model.filterOver4();

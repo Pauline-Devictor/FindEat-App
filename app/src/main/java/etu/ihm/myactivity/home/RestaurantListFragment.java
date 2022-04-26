@@ -66,14 +66,6 @@ public class RestaurantListFragment extends Fragment implements IListner, Observ
 
         restaurantsAdapter.addListener(this);
 
-        rootView.findViewById(R.id.over3).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //clicked on filter over 3
-                filterController.filterOver3();
-            }
-        });
-
         rootView.findViewById(R.id.over4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
