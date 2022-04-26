@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="345dp"
+        android:layout_height="70dp"
+        android:text="Ceci est un commentaire"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="31dp"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/deletebutton"
+        android:layout_width="44dp"
+        android:layout_height="39dp"
+        android:background="#AFA5A5"
+        android:text="Button"
+        app:icon="@android:drawable/ic_delete"
+        tools:layout_editor_absoluteX="361dp"
+        tools:layout_editor_absoluteY="47dp"
+        tools:ignore="MissingConstraints"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

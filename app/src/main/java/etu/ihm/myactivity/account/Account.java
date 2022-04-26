@@ -1,14 +1,19 @@
 package etu.ihm.myactivity.account;
 
+import static etu.ihm.myactivity.Notifications.CHANNEL3_ID;
+
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import etu.ihm.myactivity.Notifications;
 import etu.ihm.myactivity.favorites.Favorites;
 import etu.ihm.myactivity.home.MainActivity;
 import etu.ihm.myactivity.map.Map;
@@ -16,6 +21,9 @@ import etu.ihm.myactivity.R;
 
 public class Account extends AppCompatActivity {
     private final String TAG = "polytech-" + getClass().getSimpleName();
+
+    private int nofiticationID = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

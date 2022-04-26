@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="etu.ihm.myactivity">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -19,12 +20,6 @@
         android:roundIcon="@drawable/ic_logoapp2"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyActivity">
-        <receiver android:name=".BootReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
-            </intent-filter>
-        </receiver>
         <activity
             android:name=".restaurants.DataBase"
             android:exported="false" />
@@ -38,15 +33,19 @@
             android:name=".map.Map"
             android:exported="false" />
         <activity android:name=".Notifications"
-            android:exported="false" />
+            android:exported="false"
+             />
         <activity
             android:name=".home.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".NotificationSender"
+            android:exported="false"/>
     </application>
 
     <meta-data

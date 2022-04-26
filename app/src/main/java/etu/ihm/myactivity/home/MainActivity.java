@@ -1,5 +1,8 @@
 package etu.ihm.myactivity.home;
 
+import static etu.ihm.myactivity.Notifications.CHANNEL3_ID;
+
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +25,7 @@ import etu.ihm.myactivity.R;
 import etu.ihm.myactivity.account.Account;
 import etu.ihm.myactivity.restaurants.FiltreEnum;
 import etu.ihm.myactivity.restaurants.RestaurantFragment;
+
 
 public class MainActivity extends AppCompatActivity implements IListner, RestaurantListFragment.OnRestaurantClickedListener {
     private final String TAG = "polytech-" + getClass().getSimpleName();
@@ -108,17 +112,6 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
         args.putInt("position",position);
         restaurantFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();
-    }
-
-    private void sendNotificationOnChannel(String CHANNEL_ID, int priority) {
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_logoapp2)
-                .setContentTitle("Nom du resto")
-                .setContentText("Venez faire un tour " + "vous attend")
-                .setPriority(priority)
-                .setTimeoutAfter(5000)
-                .setAutoCancel(true); // Enlève la notification après avoir cliqué dessus
-        Notifications.notificationManager.notify(++nofiticationID, notification.build());
     }
 
   /*  public static void main(String[] args) throws Throwable {
