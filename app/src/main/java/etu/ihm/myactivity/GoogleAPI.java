@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import etu.ihm.myactivity.factoryTests.Lieux;
+import etu.ihm.myactivity.factoryTests.LieuxFactory;
+import etu.ihm.myactivity.factoryTests.Restaurants;
 import etu.ihm.myactivity.home.RestaurantsList;
 import etu.ihm.myactivity.restaurants.FiltreEnum;
 import etu.ihm.myactivity.restaurants.Restaurant;
@@ -127,13 +130,15 @@ public class  GoogleAPI extends Thread {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
         }
 
 
     }
 
 
-    private void decodage(String s){
+    private void decodage(String s) throws Throwable {
         Log.d("a","passe Decodage");
 
         //CLEAR
@@ -152,9 +157,20 @@ public class  GoogleAPI extends Thread {
 
             for(int i=0;i<resultsDTOList.size();i++){
                 PlacesApiParser.ResultsDTO tmp = resultsDTOList.get(i);
-                Restaurant resto = new Restaurant(null,tmp.getName(),null,tmp.getRating(),null);
+                Lieux resto;
+                tmp.
+                if (tmp.getName().contains("Bar")){
+                    resto = LieuxFactory.build(tmp.getName(),2,null,null,tmp.getRating(),null);
+                    Log.d("bar",tmp.getName()+ " baaaaaaaaaaaaaar");
+                }
+                else {
+                    resto = LieuxFactory.build(tmp.getName(),1,null,null,tmp.getRating(),null);
+                    Log.d("resto",tmp.getName()+ " reeeeeeestoooo");
+                }
                 RestaurantsList.add(resto);
-                Log.d("a","on a add un resto" + resto.getName());
+                /*Restaurant resto = new Restaurant(null,tmp.getName(),null,tmp.getRating(),null);
+                RestaurantsList.add(resto);
+                Log.d("a","on a add un resto" + resto.getName());*/
             }
 
 

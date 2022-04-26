@@ -23,6 +23,8 @@ import java.util.ArrayList;
 
 import etu.ihm.myactivity.GoogleAPI;
 import etu.ihm.myactivity.LocationGPS;
+import etu.ihm.myactivity.factoryTests.Lieux;
+import etu.ihm.myactivity.factoryTests.LieuxFactory;
 import etu.ihm.myactivity.home.IListner;
 import etu.ihm.myactivity.restaurants.DataBase;
 import etu.ihm.myactivity.map.Map;
@@ -129,4 +131,10 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
                 .setAutoCancel(true); // Enlève la notification après avoir cliqué dessus
         Notifications.notificationManager.notify(++nofiticationID, notification.build());
     }
+
+  /*  public static void main(String[] args) throws Throwable {
+        Lieux lieux1 = LieuxFactory.build("a",1,null,"description",2,null);
+        Lieux lieux2 = LieuxFactory.build("b",2,null,"description",2,null);
+
+    }*/
 }
