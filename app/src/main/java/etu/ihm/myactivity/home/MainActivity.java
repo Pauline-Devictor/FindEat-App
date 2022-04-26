@@ -1,5 +1,6 @@
 package etu.ihm.myactivity.home;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+
+import android.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -26,10 +29,16 @@ import etu.ihm.myactivity.Notifications;
 import etu.ihm.myactivity.R;
 import etu.ihm.myactivity.account.Account;
 import etu.ihm.myactivity.restaurants.FiltreEnum;
+import etu.ihm.myactivity.restaurants.RestaurantFragment;
 
-public class MainActivity extends AppCompatActivity implements IListner {
+public class MainActivity extends AppCompatActivity implements IListner, RestaurantListFragment.OnRestaurantClickedListener {
     private final String TAG = "polytech-" + getClass().getSimpleName();
-    private int nofiticationID=0;
+
+    private RestaurantFragment restaurantFragment;
+    private RestaurantListFragment restaurantListFragment;
+
+    private int nofiticationID = 0;
+
     //Découvrir == Home
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,45 +72,50 @@ public class MainActivity extends AppCompatActivity implements IListner {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch(menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.decouvrir:
                         return true;
                     case R.id.carte:
                         startActivity(new Intent(getApplicationContext(), Map.class));
-                        overridePendingTransition(0,0);
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.favoris:
-                        startActivity(new Intent(getApplicationContext(),DataBase.class));
-                        overridePendingTransition(0,0);
+                        startActivity(new Intent(getApplicationContext(), DataBase.class));
+                        overridePendingTransition(0, 0);
                         return true;
                     case R.id.compte:
-                        startActivity(new Intent(getApplicationContext(),Account.class));
-                        overridePendingTransition(0,0);
+                        startActivity(new Intent(getApplicationContext(), Account.class));
+                        overridePendingTransition(0, 0);
                         return true;
                 }
                 return false;
             }
         });
 
-        RestaurantsAdapter restaurantsAdapter = new RestaurantsAdapter(getApplicationContext());
+        restaurantFragment = new RestaurantFragment();
+        restaurantListFragment = new RestaurantListFragment();
 
-        ListView list = findViewById(R.id.restoList);
-
-        list.setAdapter(restaurantsAdapter);
-
-        restaurantsAdapter.addListener(this);
-
+        //getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantListFragment).commit();
     }
 
     @Override
     public void onClickRestaurant(int position) {
-        //TODO: start fragment
-        Toast toast = Toast.makeText(getApplicationContext(),"restaurant "+position,Toast.LENGTH_SHORT);
-        toast.show();
+        Bundle args = new Bundle();
+        args.putInt("position",position);
+        restaurantFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();
     }
 
-    private void sendNotificationOnChannel(String CHANNEL_ID,int priority){
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ID)
+    @Override
+    public void onRestaurantClicked(int position){
+        Bundle args = new Bundle();
+        args.putInt("position",position);
+        restaurantFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();
+    }
+
+    private void sendNotificationOnChannel(String CHANNEL_ID, int priority) {
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_logoapp2)
                 .setContentTitle("Nom du resto")
                 .setContentText("Venez faire un tour " + "vous attend")
