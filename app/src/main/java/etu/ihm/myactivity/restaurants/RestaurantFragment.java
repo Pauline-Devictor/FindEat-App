@@ -33,13 +33,9 @@ public class RestaurantFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_restaurant, container, false);
 
-        int position = getArguments().getInt("position");
-        restaurant = RestaurantsList.get(position);
-        if (restaurant == null) {
-            Log.d(TAG, "cannot retrieve restaurant");
-        } else {
-            Log.d(TAG, "restaurant retrieved");
-        }
+
+        //int position = getArguments().getInt("position");
+        restaurant = (Restaurant) getArguments().getSerializable("resto");
 
         rootView.findViewById(R.id.backButton).setOnClickListener(new View.OnClickListener() {
             @Override

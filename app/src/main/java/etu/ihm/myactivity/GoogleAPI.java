@@ -28,6 +28,7 @@ public class  GoogleAPI extends Thread {
     private ArrayList<FiltreEnum> filters;
     private int maxPrice;
     private String ville;
+    private RestaurantsList restaurantsList;
 
 
     //filtres alimtentaire dans jquery maxprice
@@ -59,11 +60,12 @@ public class  GoogleAPI extends Thread {
 
 
     //2eme constructeur si cherche avec text places
-    public GoogleAPI(int radius, LocationGPS location, ArrayList<FiltreEnum> filters, int maxPrice) {
+    public GoogleAPI(RestaurantsList restaurantsList, int radius, LocationGPS location, ArrayList<FiltreEnum> filters, int maxPrice) {
         this.radius = radius;
         this.location = location;
         this.filters = filters;
         this.maxPrice = maxPrice;
+        this.restaurantsList = restaurantsList;
     }
 
     public GoogleAPI(String ville) {
@@ -150,10 +152,11 @@ public class  GoogleAPI extends Thread {
             results = resultsDTOList.get(1);
             Log.d("deux ",results.getName());
 
+            restaurantsList.empty();
             for(int i=0;i<resultsDTOList.size();i++){
                 PlacesApiParser.ResultsDTO tmp = resultsDTOList.get(i);
                 Restaurant resto = new Restaurant(null,tmp.getName(),null,tmp.getRating(),null);
-                RestaurantsList.add(resto);
+                restaurantsList.add(resto);
                 Log.d("a","on a add un resto" + resto.getName());
             }
 

@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
     private RestaurantFragment restaurantFragment;
     private RestaurantListFragment restaurantListFragment;
 
+    public RestaurantsList restaurantsList;
+
     private int nofiticationID = 0;
 
     //Découvrir == Home
@@ -45,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        restaurantsList = new RestaurantsList();
 
         double latitude = 43.6221174;
         double longitude = 7.0391009;
@@ -98,23 +102,35 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
         restaurantFragment = new RestaurantFragment();
         restaurantListFragment = new RestaurantListFragment();
 
-        //getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantListFragment).commit();
+
+        Bundle args = new Bundle();
+        args.putSerializable("restoList",restaurantsList);
+        restaurantListFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantListFragment).commit();
     }
 
     @Override
     public void onClickRestaurant(int position) {
-        Bundle args = new Bundle();
+        /*Bundle args = new Bundle();
         args.putInt("position",position);
+        restaurantFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();*/
 
-
+        Bundle args = new Bundle();
+        args.putSerializable("resto",restaurantsList.get(position));
         restaurantFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();
     }
 
     @Override
     public void onRestaurantClicked(int position){
-        Bundle args = new Bundle();
+        /*Bundle args = new Bundle();
         args.putInt("position",position);
+        restaurantFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();*/
+
+        Bundle args = new Bundle();
+        args.putSerializable("resto",restaurantsList.get(position));
         restaurantFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();
     }
