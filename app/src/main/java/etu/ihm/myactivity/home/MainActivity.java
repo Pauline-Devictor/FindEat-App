@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import etu.ihm.myactivity.GoogleAPI;
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
 
 
         Bundle args = new Bundle();
-        args.putSerializable("restoList",restaurantsList);
+        args.putSerializable("restoList", (Serializable) restaurantsList);
         restaurantListFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantListFragment).commit();
     }
@@ -120,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();*/
 
         Bundle args = new Bundle();
-        args.putSerializable("resto",restaurantsList.get(position));
+        args.putSerializable("resto", (Serializable) restaurantsList.get(position));
         restaurantFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();
     }
@@ -137,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();*/
 
         Bundle args = new Bundle();
-        args.putSerializable("resto",restaurantsList.get(position));
+        args.putSerializable("resto", (Serializable) restaurantsList.get(position));
         restaurantFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();
     }

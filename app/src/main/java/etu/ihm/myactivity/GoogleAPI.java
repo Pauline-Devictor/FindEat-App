@@ -182,7 +182,7 @@ public class  GoogleAPI extends Thread {
                     resto = ((RestaurationFactory) restaurationFactory).build(tmp.getName(),1,null,null,tmp.getRating(),null);
                     Log.d("resto",tmp.getName()+ " reeeeeeestoooo");
                 }
-                RestaurantsList.add(resto);
+                restaurantsList.add(resto);
                 /*Restaurant resto = new Restaurant(null,tmp.getName(),null,tmp.getRating(),null);
                 RestaurantsList.add(resto);
                 Log.d("a","on a add un resto" + resto.getName());*/

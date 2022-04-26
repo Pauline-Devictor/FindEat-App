@@ -36,7 +36,7 @@ public class RestaurantFragment extends Fragment {
 
 
         //int position = getArguments().getInt("position");
-        restaurant = (Restaurant) getArguments().getSerializable("resto");
+        restaurant = (Lieux) getArguments().getSerializable("resto");
 
         rootView.findViewById(R.id.backButton).setOnClickListener(new View.OnClickListener() {
             @Override
