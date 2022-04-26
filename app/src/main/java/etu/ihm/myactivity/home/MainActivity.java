@@ -1,4 +1,4 @@
-package etu.ihm.myactivity;
+package etu.ihm.myactivity.home;
 
 import android.content.Intent;
 import android.location.Location;
@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
-import
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,13 +15,19 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+
+import etu.ihm.myactivity.GoogleAPI;
+import etu.ihm.myactivity.LocationGPS;
+import etu.ihm.myactivity.home.IListner;
 import etu.ihm.myactivity.restaurants.DataBase;
 import etu.ihm.myactivity.map.Map;
 import etu.ihm.myactivity.Notifications;
 import etu.ihm.myactivity.R;
 import etu.ihm.myactivity.account.Account;
+import etu.ihm.myactivity.restaurants.FiltreEnum;
 
-public class MainActivity extends AppCompatActivity implements IListner{
+public class MainActivity extends AppCompatActivity implements IListner {
     private final String TAG = "polytech-" + getClass().getSimpleName();
     private int nofiticationID=0;
     //Découvrir == Home
@@ -33,11 +38,20 @@ public class MainActivity extends AppCompatActivity implements IListner{
 
         double latitude = 43.6221174;
         double longitude = 7.0391009;
-        int radius = 1000; //1km
+        int radius = 3000; //3km
+
+        //////https://www.youtube.com/watch?v=6wkTrbZqgqc //// PARSE JSON
+
 
         LocationGPS location = new LocationGPS(latitude,longitude);
+        ArrayList<FiltreEnum> filtres = new ArrayList<>();
+        filtres.add(FiltreEnum.VEGAN);
+        int maxPrice =4; //valeur par defaut pour tout avoir
 
-        new GoogleAPI(radius,location).start();
+        GoogleAPI googleAPI = new GoogleAPI("Valbonne");
+        googleAPI.runDebut();
+
+        //new GoogleAPI(radius,location,filtres,maxPrice);
         Log.d("a","passe ici");
 
 
