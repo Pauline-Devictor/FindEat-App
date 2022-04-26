@@ -5,15 +5,14 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import etu.ihm.myactivity.factoryTests.Lieux;
-import etu.ihm.myactivity.factoryTests.LieuxFactory;
 import etu.ihm.myactivity.factoryTests.RestaurationFactory;
-import etu.ihm.myactivity.restaurants.Restaurant;
+import etu.ihm.myactivity.factoryTests.LieuxFactory;
 
 public class RestaurantsList {
 
 
     private static ArrayList<Lieux> restaurantsArrayList = new ArrayList<>();
-    static RestaurationFactory restaurationFactory = new LieuxFactory();
+    static LieuxFactory restaurationFactory = new RestaurationFactory();
     static {
 
         try {
