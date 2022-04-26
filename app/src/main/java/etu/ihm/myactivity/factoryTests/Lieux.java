@@ -2,11 +2,12 @@ package etu.ihm.myactivity.factoryTests;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import etu.ihm.myactivity.restaurants.Commentaire;
 
-public abstract class Lieux {
+public abstract class Lieux implements Serializable {
     protected String name;
     protected Bitmap picture;
     protected String description;
