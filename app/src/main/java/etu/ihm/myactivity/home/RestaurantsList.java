@@ -47,7 +47,7 @@ public class RestaurantsList extends Observable implements Serializable {
     public void add(Restaurant restaurant) {
         restaurantsArrayList.add(restaurant);
         Log.d("a", "passe ADd");
-
+        notifyObservers(this);
     }
 
     public void filterOver3(){
@@ -73,7 +73,8 @@ public class RestaurantsList extends Observable implements Serializable {
         notifyObservers(this);
     }
 
-    public static void empty(){
+    public void empty(){
         restaurantsArrayList = new ArrayList<>();
+        notifyObservers(this);
     }
 }

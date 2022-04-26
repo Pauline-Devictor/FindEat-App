@@ -47,7 +47,9 @@ public class RestaurantListFragment extends Fragment implements IListner, Observ
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(TAG,"cration of RestaurantListFragment");
         RestaurantsList restaurantsList = (RestaurantsList) getArguments().getSerializable("restoList");
+        Log.d(TAG,"récupération de restoList "+restaurantsList.get(0));
 
         filterController = new FilterController(this, restaurantsList);
 

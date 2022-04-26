@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
     //Découvrir == Home
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG,"creation of MainActivity");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
