@@ -47,10 +47,10 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG,"creation of MainActivity");
 
+        restaurantsList = new RestaurantsList();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        restaurantsList = new RestaurantsList();
 
         double latitude = 43.6221174;
         double longitude = 7.0391009;

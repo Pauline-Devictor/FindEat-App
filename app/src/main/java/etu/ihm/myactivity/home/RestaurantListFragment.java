@@ -51,7 +51,6 @@ public class RestaurantListFragment extends Fragment implements IListner, Observ
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG,"cration of RestaurantListFragment");
         model = (RestaurantsList) getArguments().getSerializable("restoList");
-        Log.d(TAG,"récupération de restoList "+model.get(0).getName());
 
         model.addObserver(this);
 
