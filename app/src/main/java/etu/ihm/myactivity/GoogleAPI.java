@@ -68,8 +68,9 @@ public class  GoogleAPI extends Thread {
         this.restaurantsList = restaurantsList;
     }
 
-    public GoogleAPI(String ville) {
+    public GoogleAPI(String ville, RestaurantsList restaurantsList) {
         this.ville = ville;
+        this.restaurantsList = restaurantsList;
 
     }
 

@@ -49,7 +49,7 @@ public class RestaurantListFragment extends Fragment implements IListner, Observ
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG,"cration of RestaurantListFragment");
         RestaurantsList restaurantsList = (RestaurantsList) getArguments().getSerializable("restoList");
-        Log.d(TAG,"récupération de restoList "+restaurantsList.get(0));
+        Log.d(TAG,"récupération de restoList "+restaurantsList.get(0).getName());
 
         filterController = new FilterController(this, restaurantsList);
 

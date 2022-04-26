@@ -5,6 +5,7 @@ import android.util.Log;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.stream.Collectors;
 
 import etu.ihm.myactivity.restaurants.Restaurant;
 
@@ -51,25 +52,17 @@ public class RestaurantsList extends Observable implements Serializable {
     }
 
     public void filterOver3(){
-        Log.d(TAG,"filter over 3 method");
-        for(int i = 0; i<restaurantsArrayList.size(); i++){
-            if (restaurantsArrayList.get(i).getGrade()<=3){
-                Log.d(TAG,"removing "+restaurantsArrayList.get(i).getName());
-                restaurantsArrayList.remove(i);
-            }
-        }
+        Log.d(TAG,"filter over 3 method, former size = "+size());
+        restaurantsArrayList.removeIf(restaurant -> restaurant.getGrade()<3);
+        Log.d(TAG,"new size = "+size());
         notifyObservers(this);
     }
 
 
     public void filterOver4(){
-        Log.d(TAG,"filter over 4 method");
-        for(int i = 0; i<restaurantsArrayList.size(); i++){
-            if (restaurantsArrayList.get(i).getGrade()<=4){
-                Log.d(TAG,"removing "+restaurantsArrayList.get(i).getName());
-                restaurantsArrayList.remove(i);
-            }
-        }
+        Log.d(TAG,"filter over 4 method, former size = "+size());
+        restaurantsArrayList.removeIf(restaurant -> restaurant.getGrade()<4);
+        Log.d(TAG,"new size = "+size());
         notifyObservers(this);
     }
 

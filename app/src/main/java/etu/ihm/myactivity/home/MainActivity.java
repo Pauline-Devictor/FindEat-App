@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
         //GoogleAPI googleAPI = new GoogleAPI("Valbonne");
         //googleAPI.runDebut();
 
-        new GoogleAPI("Valbonne").start();
+        new GoogleAPI("Valbonne",restaurantsList).start();
 
         //new GoogleAPI(radius,location,filtres,maxPrice);
         Log.d("a","passe ici");
