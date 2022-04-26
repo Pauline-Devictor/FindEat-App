@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import etu.ihm.myactivity.GoogleAPI;
 import etu.ihm.myactivity.LocationGPS;
+import etu.ihm.myactivity.favorites.Favorites;
 import etu.ihm.myactivity.restaurants.DataBase;
 import etu.ihm.myactivity.map.Map;
 import etu.ihm.myactivity.Notifications;
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.favoris:
-                        startActivity(new Intent(getApplicationContext(), DataBase.class));
+                        startActivity(new Intent(getApplicationContext(), Favorites.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.compte:
