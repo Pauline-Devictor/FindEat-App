@@ -47,14 +47,17 @@ public class RestaurantsList extends Observable implements Serializable {
 
     public void add(Restaurant restaurant) {
         restaurantsArrayList.add(restaurant);
+        Log.d(TAG,"resto "+restaurant.getName()+" ajouté");
         Log.d("a", "passe ADd");
-        notifyObservers(this);
+        setChanged();
+        notifyObservers();
     }
 
     public void filterOver3(){
         Log.d(TAG,"filter over 3 method, former size = "+size());
         restaurantsArrayList.removeIf(restaurant -> restaurant.getGrade()<3);
         Log.d(TAG,"new size = "+size());
+        setChanged();
         notifyObservers(this);
     }
 
@@ -63,6 +66,7 @@ public class RestaurantsList extends Observable implements Serializable {
         Log.d(TAG,"filter over 4 method, former size = "+size());
         restaurantsArrayList.removeIf(restaurant -> restaurant.getGrade()<4);
         Log.d(TAG,"new size = "+size());
+        setChanged();
         notifyObservers(this);
     }
 

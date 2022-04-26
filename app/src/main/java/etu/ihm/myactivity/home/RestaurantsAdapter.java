@@ -26,20 +26,23 @@ public class RestaurantsAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
 
-    private RestaurantsList restaurantsList;
+    private RestaurantsList model;
 
-    public RestaurantsAdapter(Context context, RestaurantsList restaurantsList) {
+    private RestaurantListFragment viewFragment;
+
+    public RestaurantsAdapter(Context context, RestaurantsList restaurantsList, RestaurantListFragment restaurantListFragment) {
         this.context = context;
-        this.restaurantsList=restaurantsList;
+        this.model=restaurantsList;
+        this.viewFragment=restaurantListFragment;
         inflater = LayoutInflater.from(this.context);
     }
 
     public int getCount() {
-        return restaurantsList.size();
+        return model.size();
     }
 
     public Object getItem(int position) {
-        return restaurantsList.get(position);
+        return model.get(position);
     }
 
     public long getItemId(int position) {
@@ -48,7 +51,7 @@ public class RestaurantsAdapter extends BaseAdapter {
 
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d(TAG,"getView position "+position+" pour une taille de "+restaurantsList.size());
+        Log.d(TAG,"getView position "+position+" pour une taille de "+model.size());
         LinearLayout layoutItem;
 
         //(1) : Réutilisation des layouts
@@ -61,8 +64,8 @@ public class RestaurantsAdapter extends BaseAdapter {
         //ImageView restaurantPicture = layoutItem.findViewById(R.id.restaurantPicture);
 
         //(3) : Renseignement des valeurs
-        tvName.setText(restaurantsList.get(position).getName());
-        tvGrade.setText("" + restaurantsList.get(position).getGrade() + "/5");
+        tvName.setText(model.get(position).getName());
+        tvGrade.setText("" + model.get(position).getGrade() + "/5");
         //restaurantPicture.setImageBitmap(RestaurantsList.get(position).getPicture());
 
         layoutItem.setOnClickListener(click -> {
@@ -70,6 +73,11 @@ public class RestaurantsAdapter extends BaseAdapter {
         });
         //On retourne l'item créé.
         return layoutItem;
+    }
+
+    public void refresh(RestaurantsList model){
+        this.model=model;
+        notifyDataSetChanged();
     }
 
     //abonnement pour click sur le nom...

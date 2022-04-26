@@ -35,6 +35,8 @@ public class RestaurantListFragment extends Fragment implements IListner, Observ
 
     private FilterController filterController; //the controller
 
+    private RestaurantsList model;
+
     public interface OnRestaurantClickedListener {
         void onRestaurantClicked(int position);
     }
@@ -48,14 +50,16 @@ public class RestaurantListFragment extends Fragment implements IListner, Observ
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG,"cration of RestaurantListFragment");
-        RestaurantsList restaurantsList = (RestaurantsList) getArguments().getSerializable("restoList");
-        Log.d(TAG,"récupération de restoList "+restaurantsList.get(0).getName());
+        model = (RestaurantsList) getArguments().getSerializable("restoList");
+        Log.d(TAG,"récupération de restoList "+model.get(0).getName());
 
-        filterController = new FilterController(this, restaurantsList);
+        model.addObserver(this);
+
+        filterController = new FilterController(this, model);
 
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        restaurantsAdapter = new RestaurantsAdapter(getActivity(), restaurantsList);
+        restaurantsAdapter = new RestaurantsAdapter(getActivity(), model, this);
 
         ListView list = rootView.findViewById(R.id.restoList);
 
@@ -86,7 +90,9 @@ public class RestaurantListFragment extends Fragment implements IListner, Observ
     @Override
     public void update(Observable observable, Object object) {
         Log.d(TAG,"updating observer");
-        restaurantsAdapter.notifyDataSetChanged();
+        RestaurantsList restaurantsList = (RestaurantsList) observable;
+        //restaurantsAdapter.notifyDataSetChanged();
+        restaurantsAdapter.refresh(model);
     }
 
     @Override
