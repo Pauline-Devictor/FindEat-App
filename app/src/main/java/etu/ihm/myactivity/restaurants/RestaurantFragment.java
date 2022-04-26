@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import etu.ihm.myactivity.R;
+import etu.ihm.myactivity.factoryTests.Lieux;
 import etu.ihm.myactivity.home.RestaurantsList;
 
 import androidx.fragment.app.Fragment;
@@ -22,7 +23,7 @@ public class RestaurantFragment extends Fragment {
     private Button seeComments;
     private Button showOnMap;
 
-    private Restaurant restaurant;
+    private Lieux restaurant;
 
     public RestaurantFragment() {
     }

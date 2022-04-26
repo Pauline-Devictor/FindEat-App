@@ -15,9 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import etu.ihm.myactivity.factoryTests.Lieux;
+import etu.ihm.myactivity.factoryTests.RestaurationFactory;
+import etu.ihm.myactivity.factoryTests.LieuxFactory;
 import etu.ihm.myactivity.home.RestaurantsList;
 import etu.ihm.myactivity.restaurants.FiltreEnum;
-import etu.ihm.myactivity.restaurants.Restaurant;
 
 public class  GoogleAPI extends Thread {
 
@@ -29,6 +31,7 @@ public class  GoogleAPI extends Thread {
     private int maxPrice;
     private String ville;
     private RestaurantsList restaurantsList;
+    private int numConstru=0; //Savoir si on passe Location ou nom ville
 
 
     //filtres alimtentaire dans jquery maxprice
@@ -66,24 +69,36 @@ public class  GoogleAPI extends Thread {
         this.filters = filters;
         this.maxPrice = maxPrice;
         this.restaurantsList = restaurantsList;
+        this.numConstru=1;
     }
 
     public GoogleAPI(String ville, RestaurantsList restaurantsList) {
         this.ville = ville;
         this.restaurantsList = restaurantsList;
+        this.numConstru = 2;
 
     }
 
     //if this ville bla bla else recherche avec location
 
     @Override
-    public void run(){ //rundebut
+    public void run(){
+        if(this.numConstru==2){ //On est au debut
+            runDebut();
+        }
+        else if(this.numConstru==1){ //Run avec location, filtres ...
+            runTest();
+        }
 
+
+    }
+
+    public void runDebut(){
         //https://maps.googleapis.com/maps/api/place/textsearch/json?query=cafes+in+nice&key=AIzaSyAaSrozKCZYHXJD4F5zynJxebwsvf5nA9I
-
         this.URL = BASE_URL + TEXT_SEARCH +"restaurant+"+this.ville+"+"+"restaurant"+ "&key=" + API_KEY;
         Log.d("a", "URL vaut de BASE vaut " + URL);
         fetchData();
+
     }
 
     public void runTest() {
@@ -130,17 +145,19 @@ public class  GoogleAPI extends Thread {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
         }
 
 
     }
 
 
-    private void decodage(String s){
+    private void decodage(String s) throws Throwable {
         Log.d("a","passe Decodage");
 
         //CLEAR
-
+        LieuxFactory restaurationFactory = new RestaurationFactory();
         Gson gson = new Gson();
         PlacesApiParser response =
                 gson.fromJson(data, PlacesApiParser.class);
@@ -156,9 +173,19 @@ public class  GoogleAPI extends Thread {
             restaurantsList.empty();
             for(int i=0;i<resultsDTOList.size();i++){
                 PlacesApiParser.ResultsDTO tmp = resultsDTOList.get(i);
-                Restaurant resto = new Restaurant(null,tmp.getName(),null,tmp.getRating(),null);
-                restaurantsList.add(resto);
-                Log.d("a","on a add un resto" + resto.getName());
+                Lieux resto;
+                if (tmp.getName().contains("Bar")){
+                    resto = restaurationFactory.build(tmp.getName(),2,null,null,tmp.getRating(),null);
+                    Log.d("bar",tmp.getName()+ " baaaaaaaaaaaaaar");
+                }
+                else {
+                    resto = ((RestaurationFactory) restaurationFactory).build(tmp.getName(),1,null,null,tmp.getRating(),null);
+                    Log.d("resto",tmp.getName()+ " reeeeeeestoooo");
+                }
+                RestaurantsList.add(resto);
+                /*Restaurant resto = new Restaurant(null,tmp.getName(),null,tmp.getRating(),null);
+                RestaurantsList.add(resto);
+                Log.d("a","on a add un resto" + resto.getName());*/
             }
 
 

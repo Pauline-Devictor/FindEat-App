@@ -1,29 +1,20 @@
 package etu.ihm.myactivity.home;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Fragment;
-
-import com.google.android.gms.common.GooglePlayServicesManifestException;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
 import etu.ihm.myactivity.GoogleAPI;
 import etu.ihm.myactivity.LocationGPS;
-import etu.ihm.myactivity.home.IListner;
 import etu.ihm.myactivity.restaurants.DataBase;
 import etu.ihm.myactivity.map.Map;
 import etu.ihm.myactivity.Notifications;
@@ -157,4 +148,10 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
                 .setAutoCancel(true); // Enlève la notification après avoir cliqué dessus
         Notifications.notificationManager.notify(++nofiticationID, notification.build());
     }
+
+  /*  public static void main(String[] args) throws Throwable {
+        Lieux lieux1 = LieuxFactory.build("a",1,null,"description",2,null);
+        Lieux lieux2 = LieuxFactory.build("b",2,null,"description",2,null);
+
+    }*/
 }
