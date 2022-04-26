@@ -6,21 +6,23 @@ import java.util.ArrayList;
 
 import etu.ihm.myactivity.factoryTests.Lieux;
 import etu.ihm.myactivity.factoryTests.LieuxFactory;
+import etu.ihm.myactivity.factoryTests.RestaurationFactory;
 import etu.ihm.myactivity.restaurants.Restaurant;
 
 public class RestaurantsList {
 
-    private static ArrayList<Lieux> restaurantsArrayList = new ArrayList<>();
 
+    private static ArrayList<Lieux> restaurantsArrayList = new ArrayList<>();
+    static RestaurationFactory restaurationFactory = new LieuxFactory();
     static {
 
         try {
-            restaurantsArrayList.add(LieuxFactory.build("Le Madison",1,null,"description",3.5f,null));
+            restaurantsArrayList.add(restaurationFactory.build("Le Madison",1,null,"description",3.5f,null));
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
         try {
-            restaurantsArrayList.add(LieuxFactory.build("Le Lys d'Or",1,null,"description",3.5f,null));
+            restaurantsArrayList.add(restaurationFactory.build("Le Lys d'Or",1,null,"description",3.5f,null));
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }

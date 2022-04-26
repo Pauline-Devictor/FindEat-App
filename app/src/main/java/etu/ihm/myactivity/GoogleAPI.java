@@ -18,6 +18,7 @@ import java.util.Locale;
 import etu.ihm.myactivity.factoryTests.Lieux;
 import etu.ihm.myactivity.factoryTests.LieuxFactory;
 import etu.ihm.myactivity.factoryTests.Restaurants;
+import etu.ihm.myactivity.factoryTests.RestaurationFactory;
 import etu.ihm.myactivity.home.RestaurantsList;
 import etu.ihm.myactivity.restaurants.FiltreEnum;
 import etu.ihm.myactivity.restaurants.Restaurant;
@@ -156,7 +157,7 @@ public class  GoogleAPI extends Thread {
         Log.d("a","passe Decodage");
 
         //CLEAR
-
+        RestaurationFactory restaurationFactory = new LieuxFactory();
         Gson gson = new Gson();
         PlacesApiParser response =
                 gson.fromJson(data, PlacesApiParser.class);
@@ -173,11 +174,11 @@ public class  GoogleAPI extends Thread {
                 PlacesApiParser.ResultsDTO tmp = resultsDTOList.get(i);
                 Lieux resto;
                 if (tmp.getName().contains("Bar")){
-                    resto = LieuxFactory.build(tmp.getName(),2,null,null,tmp.getRating(),null);
+                    resto = restaurationFactory.build(tmp.getName(),2,null,null,tmp.getRating(),null);
                     Log.d("bar",tmp.getName()+ " baaaaaaaaaaaaaar");
                 }
                 else {
-                    resto = LieuxFactory.build(tmp.getName(),1,null,null,tmp.getRating(),null);
+                    resto = ((LieuxFactory) restaurationFactory).build(tmp.getName(),1,null,null,tmp.getRating(),null);
                     Log.d("resto",tmp.getName()+ " reeeeeeestoooo");
                 }
                 RestaurantsList.add(resto);
