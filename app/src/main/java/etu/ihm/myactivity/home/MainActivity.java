@@ -35,6 +35,9 @@ import etu.ihm.myactivity.restaurants.RestaurantFragment;
 public class MainActivity extends AppCompatActivity implements IListner, RestaurantListFragment.OnRestaurantClickedListener {
     private final String TAG = "polytech-" + getClass().getSimpleName();
 
+
+    private static MainActivity instance;
+
     private RestaurantFragment restaurantFragment;
     private RestaurantListFragment restaurantListFragment;
 
@@ -45,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
     //Découvrir == Home
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        instance = this;
+
         Log.d(TAG,"creation of MainActivity");
 
         restaurantsList = new RestaurantsList();
@@ -122,6 +128,10 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
         args.putSerializable("resto",restaurantsList.get(position));
         restaurantFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();
+    }
+
+    public static MainActivity getInstance(){
+        return instance;
     }
 
     @Override

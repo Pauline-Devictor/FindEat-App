@@ -1,5 +1,6 @@
 package etu.ihm.myactivity.home;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
@@ -23,6 +24,7 @@ public class RestaurantsAdapter extends BaseAdapter {
     private IListner listener;
 
     private Context context;
+    private Activity activity = MainActivity.getInstance();
 
     private LayoutInflater inflater;
 
@@ -34,6 +36,7 @@ public class RestaurantsAdapter extends BaseAdapter {
         this.context = context;
         this.model=restaurantsList;
         this.viewFragment=restaurantListFragment;
+        this.activity = activity;
         inflater = LayoutInflater.from(this.context);
     }
 
@@ -78,13 +81,31 @@ public class RestaurantsAdapter extends BaseAdapter {
     public void refresh(RestaurantsList model){
         Log.d(TAG,"refreshing");
         this.model=model;
-        //notifyDataSetChanged();
+
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                notifyDataSetChanged();
+            }
+        });
+
+
+
+
+
     }
+
+
+
+
+
+
 
     //abonnement pour click sur le nom...
     public void addListener(IListner listener) {
         this.listener = listener;
     }
+
 
 }
 
