@@ -166,7 +166,7 @@ public class  GoogleAPI extends Thread {
             List<PlacesApiParser.ResultsDTO>
                     resultsDTOList = response.getResults();
             PlacesApiParser.ResultsDTO results = resultsDTOList.get(0);
-            Log.d("premier ",results.getName());
+            Log.d("premier ", String.valueOf(results.getRating()));
             results = resultsDTOList.get(1);
             Log.d("deux ",results.getName());
 

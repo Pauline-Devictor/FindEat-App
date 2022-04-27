@@ -66,6 +66,12 @@ public class Map extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "starting map activity");
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        userlatitude = intent.getLongExtra("userLatitude",0);
+        userlongitude = intent.getLongExtra("userLongitude",0);
+
+
         Configuration.getInstance().load(
                 getApplicationContext(),
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));

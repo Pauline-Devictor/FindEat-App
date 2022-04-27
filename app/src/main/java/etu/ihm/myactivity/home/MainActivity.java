@@ -98,7 +98,16 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
                     case R.id.decouvrir:
                         return true;
                     case R.id.carte:
-                        startActivity(new Intent(getApplicationContext(), Map.class));
+                        Intent intent = new Intent(getApplicationContext(), Map.class);
+                        intent.putExtra("userLatitude",userLatitude);
+                        intent.putExtra("userLongitude",userLongitude);
+                        intent.putExtra("restoList",restaurantsList);
+                        startActivity(intent);
+
+                        Bundle args = new Bundle();
+                        args.putSerializable("restoList", (Serializable) restaurantsList);
+                        restaurantListFragment.setArguments(args);
+
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.favoris:
