@@ -86,10 +86,6 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
 
         restaurantsList = new RestaurantsList();
 
-        ArrayList<FiltreEnum> filtres = new ArrayList<>();
-        filtres.add(FiltreEnum.VEGAN);
-
-
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         bottomNavigationView.setSelectedItemId(R.id.decouvrir);
@@ -182,7 +178,10 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
                             Log.d(TAG, "latitude " + location.getLatitude() + " longitude " + location.getLongitude());
                             userLatitude = location.getLatitude();
                             userLongitude = location.getLongitude();
-                            new GoogleAPI("Valbonne", restaurantsList).start();
+                            ArrayList<FiltreEnum> filtres = new ArrayList<>();
+                            filtres.add(FiltreEnum.VEGAN);
+                            LocationGPS locationGPS = new LocationGPS(userLatitude,userLongitude);
+                            new GoogleAPI(restaurantsList,radius,locationGPS,filtres,4).start();
                         } else {
                             Log.d(TAG, "cannot retrieve location");
                             Toast.makeText(getApplicationContext(),"cannot retrieve location",Toast.LENGTH_SHORT).show();
