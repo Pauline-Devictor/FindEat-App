@@ -1,6 +1,6 @@
 package etu.ihm.myactivity.home;
 
-import static etu.ihm.myactivity.Notifications.CHANNEL3_ID;
+
 
 import android.Manifest;
 import android.app.NotificationManager;
@@ -46,7 +46,7 @@ import etu.ihm.myactivity.LocationGPS;
 import etu.ihm.myactivity.favorites.Favorites;
 import etu.ihm.myactivity.restaurants.DataBase;
 import etu.ihm.myactivity.map.Map;
-import etu.ihm.myactivity.Notifications;
+
 import etu.ihm.myactivity.R;
 import etu.ihm.myactivity.account.Account;
 import etu.ihm.myactivity.restaurants.FiltreEnum;
