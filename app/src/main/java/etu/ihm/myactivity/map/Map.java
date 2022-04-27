@@ -42,10 +42,12 @@ import org.osmdroid.views.overlay.OverlayItem;
 
 import java.util.ArrayList;
 
+import etu.ihm.myactivity.factoryTests.Lieux;
 import etu.ihm.myactivity.favorites.Favorites;
 import etu.ihm.myactivity.R;
 import etu.ihm.myactivity.account.Account;
 import etu.ihm.myactivity.home.MainActivity;
+import etu.ihm.myactivity.home.RestaurantsList;
 
 public class Map extends AppCompatActivity {
     private final String TAG = "polytech-" + getClass().getSimpleName();
@@ -58,7 +60,7 @@ public class Map extends AppCompatActivity {
     private double userlongitude = 0;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
-
+    private ArrayList<Lieux> restaurantsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,7 @@ public class Map extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.carte);
 
+        restaurantsList = RestaurantsList.getRestaurantsArrayList();
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -112,10 +115,16 @@ public class Map extends AppCompatActivity {
         mapController = map.getController();
         mapController.setZoom(18.0);//nb float compris entre 0 et 25
 
-
         //Pour ajouter un point avec un ping particulier :
-        map.getOverlays().add(addMarker(R.drawable.restaurant_position, new GeoPoint(43.65020, 7.00517), "Rallo's office", "Rallo Home", R.drawable.ic_home));
-        // map.getOverlays().add(addMarker(R.drawable.restaurant_position,new GeoPoint(43.64950, 7.00517),"Chez Babar","De bons petits plats",R.drawable.ic_home));
+        Log.d("MAP", "User : " + userlatitude + " et " + userlongitude);
+        for (int i =0;i<restaurantsList.size();i++){//TODO recuperer liste des restos quand on créé l'activité
+            map.getOverlays().add(addMarker(R.drawable.restaurant_position, new GeoPoint(restaurantsList.get(i).getLatitude(), restaurantsList.get(i).getLongitude()), restaurantsList.get(i).getName(), restaurantsList.get(i).getDescription(), R.drawable.ic_home));
+            Log.d("MAP","Element à afficher" + restaurantsList.get(i).getLatitude() + " et  " + restaurantsList.get(i).getLongitude());
+        }
+
+        map.getOverlays().add(addMarker(R.drawable.restaurant_position,new GeoPoint(43.64950, 7.00517),"Chez Babar","De bons petits plats",R.drawable.ic_home));
+
+   // map.getOverlays().add(addMarker(R.drawable.ic_userping, new GeoPoint(userlatitude, userlongitude), "Votre position", "", R.drawable.person));
     }
 
     @Override
@@ -169,10 +178,12 @@ public class Map extends AppCompatActivity {
                             GeoPoint userPing = new GeoPoint(userlatitude, userlongitude);
                             mapController.setCenter(userPing);
                             OverlayItem overlayPing = new OverlayItem("me", "ping", userPing);
-                            overlayPing.setMarker(getApplicationContext().getResources().getDrawable(R.drawable.ic_userping));
+
+                            OverlayItem overlayItem2 = new OverlayItem("Ralloo","test",new GeoPoint(46.65020, 7.00517));
 
                             ArrayList<OverlayItem> items = new ArrayList<>();
                             items.add(overlayPing);
+
                             ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(getApplicationContext(), items, new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
                                 @Override
                                 public boolean onItemSingleTapUp(int index, OverlayItem item) {
@@ -188,6 +199,7 @@ public class Map extends AppCompatActivity {
                             mOverlay.setFocusItemsOnTap(true);
 
                             map.getOverlays().add(addMarker(R.drawable.ic_userping, new GeoPoint(userlatitude, userlongitude), "Votre position", "", R.drawable.person));
+
                         } else {
                             Log.d(TAG, "failure");
                         }

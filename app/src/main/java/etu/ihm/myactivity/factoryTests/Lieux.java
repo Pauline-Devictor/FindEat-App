@@ -13,13 +13,17 @@ public abstract class Lieux implements Serializable {
     protected String description;
     protected double grade;
     protected ArrayList<Commentaire> comments;
+    protected double longitude;
+    protected double latitude;
 
-    public Lieux(String name,Bitmap picture,String description,double grade,ArrayList<Commentaire> comments){
+    public Lieux(String name,Bitmap picture,String description,double grade,ArrayList<Commentaire> comments,double longitude,double latitude){
         this.name = name;
         this.picture =picture;
         this.description = description;
         this.grade = grade;
         this.comments = comments;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public String getName() {
@@ -40,5 +44,13 @@ public abstract class Lieux implements Serializable {
 
     public ArrayList<Commentaire> getComments() {
         return comments;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 }

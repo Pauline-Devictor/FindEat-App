@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -134,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
     @Override
     public void onClickRestaurant(int position) {
         Bundle args = new Bundle();
-        args.putSerializable("resto", (Serializable) restaurantsList.get(position));
+        args.putSerializable("resto", (Serializable) restaurantsList.getRestaurant(position));
         restaurantFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();
     }
@@ -142,9 +143,12 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
     @Override
     public void onRestaurantClicked(int position) {
         Bundle args = new Bundle();
-        args.putSerializable("resto", (Serializable) restaurantsList.get(position));
+        args.putSerializable("resto", (Serializable) restaurantsList.getRestaurant(position));
         restaurantFragment.setArguments(args);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment, restaurantFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     private void retrieveLocation() {

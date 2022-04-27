@@ -25,7 +25,7 @@ public class RestaurantsList extends Observable implements Serializable {
          restaurantsArrayList.add(new Restaurant(null,"Rouvelong","description",4.5f,null));
          **/
     }
-    public Lieux get(int index) {
+    public Lieux getRestaurant(int index) {
         return restaurantsArrayList.get(index);
     }
     public void remove(int index) {
@@ -51,5 +51,9 @@ public class RestaurantsList extends Observable implements Serializable {
     public void empty(){
         restaurantsArrayList = new ArrayList<>();
         notifyObservers(this);
+    }
+
+    public static ArrayList<Lieux> getRestaurantsArrayList() {
+        return restaurantsArrayList;
     }
 }
