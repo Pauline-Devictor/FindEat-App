@@ -12,6 +12,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -99,15 +100,11 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
                         return true;
                     case R.id.carte:
                         Intent intent = new Intent(getApplicationContext(), Map.class);
-                        intent.putExtra("userLatitude",userLatitude);
+                        Log.d(TAG,"putting "+userLatitude+" and "+userLongitude+" in map");
+                        intent.putExtra("userLatitude", userLatitude);
                         intent.putExtra("userLongitude",userLongitude);
-                        intent.putExtra("restoList",restaurantsList);
+                        intent.putExtra("restoList", restaurantsList);
                         startActivity(intent);
-
-                        Bundle args = new Bundle();
-                        args.putSerializable("restoList", (Serializable) restaurantsList);
-                        restaurantListFragment.setArguments(args);
-
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.favoris:

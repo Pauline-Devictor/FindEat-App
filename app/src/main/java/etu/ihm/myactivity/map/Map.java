@@ -48,29 +48,30 @@ import etu.ihm.myactivity.R;
 import etu.ihm.myactivity.account.Account;
 import etu.ihm.myactivity.home.MainActivity;
 import etu.ihm.myactivity.home.RestaurantsList;
+import etu.ihm.myactivity.restaurants.Restaurant;
 
 public class Map extends AppCompatActivity {
     private final String TAG = "polytech-" + getClass().getSimpleName();
 
     public static int REQUEST_LOCATION_CODE = 1001;
+    public static float DEFAULT_ZOOM = 6f; //entre 0 et 25
 
     private MapView map;
     private IMapController mapController; //gere les options de la map == zoom et centre au lancement
-    private double userlatitude = 0;
-    private double userlongitude = 0;
-    private FusedLocationProviderClient fusedLocationProviderClient;
-    private LocationCallback locationCallback;
-    private ArrayList<Lieux> restaurantsList;
+    private double userLatitude = 0;
+    private double userLongitude = 0;
+    private RestaurantsList restaurantsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "starting map activity");
+        Log.i(TAG, "starting map activity");
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        userlatitude = intent.getLongExtra("userLatitude",0);
-        userlongitude = intent.getLongExtra("userLongitude",0);
-
+        userLatitude = intent.getDoubleExtra("userLatitude",0);
+        userLongitude = intent.getDoubleExtra("userLongitude",0);
+        Log.d(TAG,"lat et long récupérés depuis Map : " + userLatitude + " " + userLongitude);
+        restaurantsList = (RestaurantsList)intent.getExtras().get("restoList");
 
         Configuration.getInstance().load(
                 getApplicationContext(),
@@ -79,7 +80,6 @@ public class Map extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.carte);
 
-        restaurantsList = RestaurantsList.getRestaurantsArrayList();
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -106,171 +106,37 @@ public class Map extends AppCompatActivity {
         findViewById(R.id.focusButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mapController.setCenter(new GeoPoint(userlatitude, userlongitude));
-                mapController.setZoom(18.0);
+                mapController.setCenter(new GeoPoint(userLatitude, userLongitude));
+                mapController.setZoom(DEFAULT_ZOOM);
             }
         });
-
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        getLocation();
 
         map = findViewById(R.id.map);          //On cherche la map via son ID
         map.setTileSource(TileSourceFactory.MAPNIK);//render de la map
         map.setBuiltInZoomControls(false);           //rendre la map zoomable
         map.setMultiTouchControls(true); //zoom avec les doigts
         mapController = map.getController();
-        mapController.setZoom(18.0);//nb float compris entre 0 et 25
+        mapController.setZoom(DEFAULT_ZOOM);//nb float compris entre 0 et 25
+        mapController.setCenter(new GeoPoint(userLatitude, userLongitude));
 
         //Pour ajouter un point avec un ping particulier :
-        Log.d("MAP", "User : " + userlatitude + " et " + userlongitude);
+        Log.d("MAP", "User : " + userLatitude + " et " + userLongitude);
         for (int i =0;i<restaurantsList.size();i++){//TODO recuperer liste des restos quand on créé l'activité
-            map.getOverlays().add(addMarker(R.drawable.restaurant_position, new GeoPoint(restaurantsList.get(i).getLatitude(), restaurantsList.get(i).getLongitude()), restaurantsList.get(i).getName(), restaurantsList.get(i).getDescription(), R.drawable.ic_home));
-            Log.d("MAP","Element à afficher" + restaurantsList.get(i).getLatitude() + " et  " + restaurantsList.get(i).getLongitude());
+            Lieux resto = restaurantsList.getRestaurant(i);
+            map.getOverlays().add(addMarker(R.drawable.restaurant_position, new GeoPoint(resto.getLatitude(), resto.getLongitude()), resto.getName(), R.drawable.ic_home));
+            Log.d("MAP","Element à afficher lat " + resto.getLatitude() + " long " + resto.getLongitude()+" nom "+resto.getName());
         }
+        map.getOverlays().add(addMarker(R.drawable.restaurant_position, new GeoPoint(37.8, -119.5), "uwu", R.drawable.ic_home));
 
-        map.getOverlays().add(addMarker(R.drawable.restaurant_position,new GeoPoint(43.64950, 7.00517),"Chez Babar","De bons petits plats",R.drawable.ic_home));
+        map.getOverlays().add(addMarker(R.drawable.restaurant_position, new GeoPoint(43.6, 7.0),"Chez Babar",R.drawable.ic_home));
 
-   // map.getOverlays().add(addMarker(R.drawable.ic_userping, new GeoPoint(userlatitude, userlongitude), "Votre position", "", R.drawable.person));
+        map.getOverlays().add(addMarker(R.drawable.ic_userping, new GeoPoint(userLatitude, userLongitude), "Votre position", R.drawable.person));
+        Log.i(TAG,"setting user ping at "+userLatitude+" "+userLongitude);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        /*
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            getLocation();
-        } else {
-            askLastLocationPermission();
-        }
-         */
-    }
-
-    public void getLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.d(TAG, "requesting permission");
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_CODE);
-            return;
-        }
-        Log.d(TAG, "authorized to ask location");
-
-        //check if gps is enable
-        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            Log.d(TAG,"gps is not enable");
-            buildAlertMessageNoGps();
-        }
-
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    Log.d(TAG, "locationresult null");
-                    return;
-                }
-                Log.d(TAG, "locationresult not null");
-                /*for (Location location : locationResult.getLocations()) {
-                    Log.d(TAG,"lat "+location.getLatitude()+" long "+location.getLongitude());
-                }*/
-
-                Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
-                locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            Log.d(TAG, "latitude " + location.getLatitude() + " longitude " + location.getLongitude());
-                            userlatitude = location.getLatitude();
-                            userlongitude = location.getLongitude();
-
-                            GeoPoint userPing = new GeoPoint(userlatitude, userlongitude);
-                            mapController.setCenter(userPing);
-                            OverlayItem overlayPing = new OverlayItem("me", "ping", userPing);
-
-                            OverlayItem overlayItem2 = new OverlayItem("Ralloo","test",new GeoPoint(46.65020, 7.00517));
-
-                            ArrayList<OverlayItem> items = new ArrayList<>();
-                            items.add(overlayPing);
-
-                            ItemizedOverlayWithFocus<OverlayItem> mOverlay = new ItemizedOverlayWithFocus<OverlayItem>(getApplicationContext(), items, new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
-                                @Override
-                                public boolean onItemSingleTapUp(int index, OverlayItem item) {
-                                    return true;
-                                }
-
-                                @Override
-                                public boolean onItemLongPress(int index, OverlayItem item) {
-                                    return false;
-                                }
-                            });
-
-                            mOverlay.setFocusItemsOnTap(true);
-
-                            map.getOverlays().add(addMarker(R.drawable.ic_userping, new GeoPoint(userlatitude, userlongitude), "Votre position", "", R.drawable.person));
-
-                        } else {
-                            Log.d(TAG, "failure");
-                        }
-                    }
-                });
-                locationTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "on faillure " + e.getLocalizedMessage());
-                    }
-                });
-
-            }
-        };
-
-        Log.d(TAG, "asking location");
-        LocationRequest locationRequest = LocationRequest.create();
-        //locationRequest.setInterval(100000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
-
-    }
-
-    /*
-    public void askLastLocationPermission(){
-        if (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
-                Log.d(TAG,"asklocationpermission");
-                ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_CODE);
-            }
-            else{
-                ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_CODE);
-            }
-        }
-    }
-     */
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_LOCATION_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getLocation();
-            } else {
-                Log.d(TAG, "permission not granted");
-            }
-        }
-    }
-
-    private void buildAlertMessageNoGps() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Votre GPS est désactivé. Voulez-vous l'activer ?")
-                .setCancelable(false)
-                .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
-                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                })
-                .setNegativeButton("Non", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                        dialog.cancel();
-                    }
-                });
-        final AlertDialog alert = builder.create();
-        alert.show();
     }
 
     @Override
@@ -285,13 +151,12 @@ public class Map extends AppCompatActivity {
         map.onResume();
     }
 
-    private Marker addMarker(int icon, GeoPoint location, String title, String description, int imageResource) {
+    private Marker addMarker(int icon, GeoPoint location, String title, int imageResource) {
         Marker marker = new Marker(map);
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         marker.setIcon(getDrawable(icon));
         marker.setPosition(location);
         marker.setTitle(title);
-        marker.setSubDescription(description);
         marker.setImage(getDrawable(imageResource));
         marker.setPanToView(true);  //the map will be centered on the marker position.
         marker.setDraggable(true);
