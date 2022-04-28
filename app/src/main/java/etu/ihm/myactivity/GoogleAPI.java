@@ -157,7 +157,6 @@ public class  GoogleAPI extends Thread {
         Log.d("a","passe Decodage");
 
         //CLEAR
-        LieuxFactory restaurationFactory = new RestaurationFactory();
         Gson gson = new Gson();
         PlacesApiParser response =
                 gson.fromJson(data, PlacesApiParser.class);
@@ -171,38 +170,37 @@ public class  GoogleAPI extends Thread {
             Log.d("deux ",results.getName());
 
             restaurantsList.empty();
-            for(int i=0;i<resultsDTOList.size();i++){
-                PlacesApiParser.ResultsDTO tmp = resultsDTOList.get(i);
-                Lieux resto;
-                if (tmp.getName().contains("Bar")){
-                    resto = restaurationFactory.build(tmp.getName(),2,null,null,tmp.getRating(),null,tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat());
-                    Log.d("bar",tmp.getName()+ " baaaaaaaaaaaaaar");
-                }
-                else {
-                    resto = ((RestaurationFactory) restaurationFactory).build(tmp.getName(),1,null,null,tmp.getRating(),null,tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat());
-                    Log.d("resto",tmp.getName()+ " reeeeeeestoooo");
-                }
-                restaurantsList.add(resto);
+             createList(resultsDTOList);
                 /*Restaurant resto = new Restaurant(null,tmp.getName(),null,tmp.getRating(),null);
                 RestaurantsList.add(resto);
                 Log.d("a","on a add un resto" + resto.getName());*/
-            }
-
-
-
-
 
         }
         else{
             Log.d("a","AUCUN RESTO TROUVE");
         }
-
-
-
-
-
     }
 
+    private void createList(List<PlacesApiParser.ResultsDTO>
+                                    resultsDTOList) throws Throwable {
 
-}
+        LieuxFactory restaurationFactory = new RestaurationFactory();
+        restaurantsList.empty();
+        for(int i=0;i<resultsDTOList.size();i++){
+            PlacesApiParser.ResultsDTO tmp = resultsDTOList.get(i);
+            Lieux resto;
+            if (tmp.getName().contains("Bar")){
+                resto = restaurationFactory.build(tmp.getName(),2,null,null,tmp.getRating(),null,tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat());
+                Log.d("bar",tmp.getName()+ " baaaaaaaaaaaaaar");
+            }
+            else {
+                resto = ((RestaurationFactory) restaurationFactory).build(tmp.getName(),1,null,null,tmp.getRating(),null,tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat());
+                Log.d("resto",tmp.getName()+ " reeeeeeestoooo");
+            }
+            restaurantsList.add(resto);
+                /*Restaurant resto = new Restaurant(null,tmp.getName(),null,tmp.getRating(),null);
+                RestaurantsList.add(resto);
+                Log.d("a","on a add un resto" + resto.getName());*/
+    }
+}}
 

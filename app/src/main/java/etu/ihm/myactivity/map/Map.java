@@ -43,6 +43,7 @@ import org.osmdroid.views.overlay.OverlayItem;
 import java.util.ArrayList;
 
 import etu.ihm.myactivity.factoryTests.Lieux;
+import etu.ihm.myactivity.factoryTests.Restaurants;
 import etu.ihm.myactivity.favorites.Favorites;
 import etu.ihm.myactivity.R;
 import etu.ihm.myactivity.account.Account;
@@ -121,11 +122,7 @@ public class Map extends AppCompatActivity {
 
         //Pour ajouter un point avec un ping particulier :
         Log.d("MAP", "User : " + userLatitude + " et " + userLongitude);
-        for (int i =0;i<restaurantsList.size();i++){//TODO recuperer liste des restos quand on créé l'activité
-            Lieux resto = restaurantsList.getRestaurant(i);
-            map.getOverlays().add(addMarker(R.drawable.restaurant_position, new GeoPoint(resto.getLatitude(), resto.getLongitude()), resto.getName(), R.drawable.ic_home));
-            Log.d("MAP","Element à afficher lat " + resto.getLatitude() + " long " + resto.getLongitude()+" nom "+resto.getName());
-        }
+       addElement();
 
         map.getOverlays().add(addMarker(R.drawable.ic_userping2, new GeoPoint(userLatitude, userLongitude), "Votre position", R.drawable.person));
         Log.i(TAG,"setting user ping at "+userLatitude+" "+userLongitude);
@@ -160,4 +157,19 @@ public class Map extends AppCompatActivity {
         return marker;
     }
 
+    private void addElement(){
+        for (int i =0;i<restaurantsList.size();i++){//TODO recuperer liste des restos quand on créé l'activité
+            Lieux resto = restaurantsList.getRestaurant(i);
+            if (resto instanceof Restaurants ){
+            map.getOverlays().add(addMarker(R.drawable.restaurant_position, new GeoPoint(resto.getLatitude(), resto.getLongitude()), resto.getName(), R.drawable.ic_home));
+            Log.d("MAP","Element à afficher lat " + resto.getLatitude() + " long " + resto.getLongitude()+" nom "+resto.getName());
+        }
+            else {
+                map.getOverlays().add(addMarker(R.drawable.bar_position, new GeoPoint(resto.getLatitude(), resto.getLongitude()), resto.getName(), R.drawable.ic_home));
+                Log.d("MAP","Element à afficher lat " + resto.getLatitude() + " long " + resto.getLongitude()+" nom "+resto.getName());
+            }
+            map.getOverlays().add(addMarker(R.drawable.bar_position, new GeoPoint(), resto.getName(), R.drawable.ic_home));
+
+        }
+    }
 }
