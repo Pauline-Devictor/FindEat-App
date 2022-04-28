@@ -54,7 +54,7 @@ public class Map extends AppCompatActivity {
     private final String TAG = "polytech-" + getClass().getSimpleName();
 
     public static int REQUEST_LOCATION_CODE = 1001;
-    public static float DEFAULT_ZOOM = 6f; //entre 0 et 25
+    public static float DEFAULT_ZOOM = 14f; //entre 0 et 25
 
     private MapView map;
     private IMapController mapController; //gere les options de la map == zoom et centre au lancement
@@ -126,11 +126,8 @@ public class Map extends AppCompatActivity {
             map.getOverlays().add(addMarker(R.drawable.restaurant_position, new GeoPoint(resto.getLatitude(), resto.getLongitude()), resto.getName(), R.drawable.ic_home));
             Log.d("MAP","Element à afficher lat " + resto.getLatitude() + " long " + resto.getLongitude()+" nom "+resto.getName());
         }
-        map.getOverlays().add(addMarker(R.drawable.restaurant_position, new GeoPoint(37.8, -119.5), "uwu", R.drawable.ic_home));
 
-        map.getOverlays().add(addMarker(R.drawable.restaurant_position, new GeoPoint(43.6, 7.0),"Chez Babar",R.drawable.ic_home));
-
-        map.getOverlays().add(addMarker(R.drawable.ic_userping, new GeoPoint(userLatitude, userLongitude), "Votre position", R.drawable.person));
+        map.getOverlays().add(addMarker(R.drawable.ic_userping2, new GeoPoint(userLatitude, userLongitude), "Votre position", R.drawable.person));
         Log.i(TAG,"setting user ping at "+userLatitude+" "+userLongitude);
     }
 

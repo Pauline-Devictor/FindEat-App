@@ -175,11 +175,11 @@ public class  GoogleAPI extends Thread {
                 PlacesApiParser.ResultsDTO tmp = resultsDTOList.get(i);
                 Lieux resto;
                 if (tmp.getName().contains("Bar")){
-                    resto = restaurationFactory.build(tmp.getName(),2,null,null,tmp.getRating(),null,44.7000, 7.00517);
+                    resto = restaurationFactory.build(tmp.getName(),2,null,null,tmp.getRating(),null,tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat());
                     Log.d("bar",tmp.getName()+ " baaaaaaaaaaaaaar");
                 }
                 else {
-                    resto = ((RestaurationFactory) restaurationFactory).build(tmp.getName(),1,null,null,tmp.getRating(),null,43.65020, 8.20517);
+                    resto = ((RestaurationFactory) restaurationFactory).build(tmp.getName(),1,null,null,tmp.getRating(),null,tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat());
                     Log.d("resto",tmp.getName()+ " reeeeeeestoooo");
                 }
                 restaurantsList.add(resto);
