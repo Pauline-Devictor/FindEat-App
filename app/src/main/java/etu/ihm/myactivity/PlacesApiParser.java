@@ -1,14 +1,14 @@
 package etu.ihm.myactivity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public class PlacesApiParser {
 
-
-
-    @com.fasterxml.jackson.annotation.JsonProperty("results")
+    @JsonProperty("results")
     private List<ResultsDTO> results;
-    @com.fasterxml.jackson.annotation.JsonProperty("status")
+    @JsonProperty("status")
     private String status;
 
     public List<ResultsDTO> getResults() {
@@ -27,40 +27,53 @@ public class PlacesApiParser {
         this.status = status;
     }
 
+    //Mettre meme nom de variable que dans json pour bon parsage
     public static class ResultsDTO {
-        @com.fasterxml.jackson.annotation.JsonProperty("business_status")
-        private String businessStatus;
-        @com.fasterxml.jackson.annotation.JsonProperty("geometry")
-        private ResultsDTO.GeometryDTO geometry;
-        @com.fasterxml.jackson.annotation.JsonProperty("icon")
+        @JsonProperty("business_status")
+        private String business_status;
+        @JsonProperty("formatted_address")
+        private String formatted_address;
+        @JsonProperty("geometry")
+        private GeometryDTO geometry;
+        @JsonProperty("icon")
         private String icon;
-        @com.fasterxml.jackson.annotation.JsonProperty("icon_background_color")
-        private String iconBackgroundColor;
-        @com.fasterxml.jackson.annotation.JsonProperty("icon_mask_base_uri")
-        private String iconMaskBaseUri;
-        @com.fasterxml.jackson.annotation.JsonProperty("name")
+        @JsonProperty("icon_background_color")
+        private String icon_background_color;
+        @JsonProperty("icon_mask_base_uri")
+        private String icon_mask_base_uri;
+        @JsonProperty("name")
         private String name;
-        @com.fasterxml.jackson.annotation.JsonProperty("opening_hours")
-        private ResultsDTO.OpeningHoursDTO openingHours;
-        @com.fasterxml.jackson.annotation.JsonProperty("photos")
+        @JsonProperty("opening_hours")
+        private OpeningHoursDTO opening_hours;
+        @JsonProperty("photos")
         private List<PhotosDTO> photos;
-        @com.fasterxml.jackson.annotation.JsonProperty("place_id")
-        private String placeId;
-        @com.fasterxml.jackson.annotation.JsonProperty("price_level")
-        private Integer priceLevel;
-        @com.fasterxml.jackson.annotation.JsonProperty("rating")
+        @JsonProperty("place_id")
+        private String place_id;
+        @JsonProperty("price_level")
+        private Integer price_level;
+        @JsonProperty("rating")
         private Double rating;
-        @com.fasterxml.jackson.annotation.JsonProperty("user_ratings_total")
-        private Integer userRatingsTotal;
-        @com.fasterxml.jackson.annotation.JsonProperty("vicinity")
+        @JsonProperty("types")
+        private List<String> types;
+        @JsonProperty("user_ratings_total")
+        private Integer user_ratings_total;
+        @JsonProperty("vicinity")
         private String vicinity;
 
-        public String getBusinessStatus() {
-            return businessStatus;
+        public String getBusiness_status() {
+            return business_status;
         }
 
-        public void setBusinessStatus(String businessStatus) {
-            this.businessStatus = businessStatus;
+        public void setBusiness_status(String business_status) {
+            this.business_status = business_status;
+        }
+
+        public String getFormatted_address() {
+            return formatted_address;
+        }
+
+        public void setFormatted_address(String formatted_address) {
+            this.formatted_address = formatted_address;
         }
 
         public GeometryDTO getGeometry() {
@@ -79,20 +92,20 @@ public class PlacesApiParser {
             this.icon = icon;
         }
 
-        public String getIconBackgroundColor() {
-            return iconBackgroundColor;
+        public String getIcon_background_color() {
+            return icon_background_color;
         }
 
-        public void setIconBackgroundColor(String iconBackgroundColor) {
-            this.iconBackgroundColor = iconBackgroundColor;
+        public void setIcon_background_color(String icon_background_color) {
+            this.icon_background_color = icon_background_color;
         }
 
-        public String getIconMaskBaseUri() {
-            return iconMaskBaseUri;
+        public String getIcon_mask_base_uri() {
+            return icon_mask_base_uri;
         }
 
-        public void setIconMaskBaseUri(String iconMaskBaseUri) {
-            this.iconMaskBaseUri = iconMaskBaseUri;
+        public void setIcon_mask_base_uri(String icon_mask_base_uri) {
+            this.icon_mask_base_uri = icon_mask_base_uri;
         }
 
         public String getName() {
@@ -103,12 +116,12 @@ public class PlacesApiParser {
             this.name = name;
         }
 
-        public OpeningHoursDTO getOpeningHours() {
-            return openingHours;
+        public OpeningHoursDTO getOpening_hours() {
+            return opening_hours;
         }
 
-        public void setOpeningHours(OpeningHoursDTO openingHours) {
-            this.openingHours = openingHours;
+        public void setOpening_hours(OpeningHoursDTO opening_hours) {
+            this.opening_hours = opening_hours;
         }
 
         public List<PhotosDTO> getPhotos() {
@@ -119,20 +132,20 @@ public class PlacesApiParser {
             this.photos = photos;
         }
 
-        public String getPlaceId() {
-            return placeId;
+        public String getPlace_id() {
+            return place_id;
         }
 
-        public void setPlaceId(String placeId) {
-            this.placeId = placeId;
+        public void setPlace_id(String place_id) {
+            this.place_id = place_id;
         }
 
-        public Integer getPriceLevel() {
-            return priceLevel;
+        public Integer getPrice_level() {
+            return price_level;
         }
 
-        public void setPriceLevel(Integer priceLevel) {
-            this.priceLevel = priceLevel;
+        public void setPrice_level(Integer price_level) {
+            this.price_level = price_level;
         }
 
         public Double getRating() {
@@ -143,12 +156,20 @@ public class PlacesApiParser {
             this.rating = rating;
         }
 
-        public Integer getUserRatingsTotal() {
-            return userRatingsTotal;
+        public List<String> getTypes() {
+            return types;
         }
 
-        public void setUserRatingsTotal(Integer userRatingsTotal) {
-            this.userRatingsTotal = userRatingsTotal;
+        public void setTypes(List<String> types) {
+            this.types = types;
+        }
+
+        public Integer getUser_ratings_total() {
+            return user_ratings_total;
+        }
+
+        public void setUser_ratings_total(Integer user_ratings_total) {
+            this.user_ratings_total = user_ratings_total;
         }
 
         public String getVicinity() {
@@ -160,8 +181,8 @@ public class PlacesApiParser {
         }
 
         public static class GeometryDTO {
-            @com.fasterxml.jackson.annotation.JsonProperty("location")
-            private ResultsDTO.GeometryDTO.LocationDTO location;
+            @JsonProperty("location")
+            private LocationDTO location;
 
             public LocationDTO getLocation() {
                 return location;
@@ -172,9 +193,9 @@ public class PlacesApiParser {
             }
 
             public static class LocationDTO {
-                @com.fasterxml.jackson.annotation.JsonProperty("lat")
+                @JsonProperty("lat")
                 private Double lat;
-                @com.fasterxml.jackson.annotation.JsonProperty("lng")
+                @JsonProperty("lng")
                 private Double lng;
 
                 public Double getLat() {
@@ -196,26 +217,26 @@ public class PlacesApiParser {
         }
 
         public static class OpeningHoursDTO {
-            @com.fasterxml.jackson.annotation.JsonProperty("open_now")
-            private Boolean openNow;
+            @JsonProperty("open_now")
+            private Boolean open_now;
 
-            public Boolean getOpenNow() {
-                return openNow;
+            public Boolean getOpen_now() {
+                return open_now;
             }
 
-            public void setOpenNow(Boolean openNow) {
-                this.openNow = openNow;
+            public void setOpen_now(Boolean open_now) {
+                this.open_now = open_now;
             }
         }
 
         public static class PhotosDTO {
-            @com.fasterxml.jackson.annotation.JsonProperty("height")
+            @JsonProperty("height")
             private Integer height;
-            @com.fasterxml.jackson.annotation.JsonProperty("html_attributions")
+            @JsonProperty("html_attributions")
             private List<String> htmlAttributions;
-            @com.fasterxml.jackson.annotation.JsonProperty("photo_reference")
-            private String photoReference;
-            @com.fasterxml.jackson.annotation.JsonProperty("width")
+            @JsonProperty("photo_reference")
+            private String photo_reference;
+            @JsonProperty("width")
             private Integer width;
 
             public Integer getHeight() {
@@ -234,12 +255,12 @@ public class PlacesApiParser {
                 this.htmlAttributions = htmlAttributions;
             }
 
-            public String getPhotoReference() {
-                return photoReference;
+            public String getPhoto_reference() {
+                return photo_reference;
             }
 
-            public void setPhotoReference(String photoReference) {
-                this.photoReference = photoReference;
+            public void setPhoto_reference(String photo_reference) {
+                this.photo_reference = photo_reference;
             }
 
             public Integer getWidth() {

@@ -67,7 +67,7 @@ public class RestaurantFragment extends Fragment {
         name.setText(restaurant.getName());
 
         TextView grade = rootView.findViewById(R.id.restaurantGrade);
-        grade.setText(""+restaurant.getGrade()+"/5");
+        grade.setText(""+restaurant.getRate()+"/5");
 
         TextView distance = rootView.findViewById(R.id.restaurantDistance);
         distance.setText("xkm");

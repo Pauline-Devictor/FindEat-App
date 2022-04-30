@@ -168,7 +168,8 @@ public class Map extends AppCompatActivity {
                 map.getOverlays().add(addMarker(R.drawable.bar_position, new GeoPoint(resto.getLatitude(), resto.getLongitude()), resto.getName(), R.drawable.ic_home));
                 Log.d("MAP","Element à afficher lat " + resto.getLatitude() + " long " + resto.getLongitude()+" nom "+resto.getName());
             }
-            map.getOverlays().add(addMarker(R.drawable.bar_position, new GeoPoint(), resto.getName(), R.drawable.ic_home));
+            //Le new Geo Point compile pas ici  !!!!
+            map.getOverlays().add(addMarker(R.drawable.bar_position, null, resto.getName(), R.drawable.ic_home));
 
         }
     }
