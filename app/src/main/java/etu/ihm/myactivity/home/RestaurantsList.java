@@ -43,7 +43,7 @@ public class RestaurantsList extends Observable implements Serializable {
     }
     public void filterOver4(){
         Log.d(TAG,"filter over 4 method, former size = "+size());
-        restaurantsArrayList.removeIf(restaurant -> restaurant.getGrade()<4.5);
+        restaurantsArrayList.removeIf(restaurant -> restaurant.getRate()<4.5);
         Log.d(TAG,"new size = "+size());
         setChanged();
         notifyObservers(this);

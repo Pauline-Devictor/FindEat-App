@@ -1,5 +1,6 @@
 package etu.ihm.myactivity;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -41,7 +42,13 @@ public class  GoogleAPI extends Thread {
     private static final String NEAY_BY_SEARCH = "nearbysearch/json?keyword=";
     private static final String TEXT_SEARCH = "textsearch/json?query=";
 
-    private static final String TYPE_RESTAURANT = "type=restaurant";
+
+    //ON MET TYPE RESTAURANT ET TYPE BAR MAIS A SEPRARER APRES SI BESOIN
+    private static final String TYPE_RESTAURANT = "type=restaurant&bar";
+
+
+
+
     private static final String MAX_PRICE = "maxprice=";
 
 
@@ -131,7 +138,7 @@ public class  GoogleAPI extends Thread {
 
 
             while ((line = bufferedReader.readLine()) != null) {
-                //Log.d("a","dans le while "+line);
+                Log.d("a","dans le while "+line);
                 data = data + line;
 
             }
@@ -156,53 +163,43 @@ public class  GoogleAPI extends Thread {
     private void decodage(String s) throws Throwable {
         Log.d("a","passe Decodage");
 
-        //CLEAR
         LieuxFactory restaurationFactory = new RestaurationFactory();
         Gson gson = new Gson();
-        PlacesApiParser response =
-                gson.fromJson(data, PlacesApiParser.class);
+        PlacesApiParser response = gson.fromJson(data, PlacesApiParser.class);
         String status = response. getStatus();
         if(status.matches("OK")){
-            List<PlacesApiParser.ResultsDTO>
-                    resultsDTOList = response.getResults();
+            List<PlacesApiParser.ResultsDTO> resultsDTOList = response.getResults();
             PlacesApiParser.ResultsDTO results = resultsDTOList.get(0);
-            Log.d("premier ",results.getName());
-            results = resultsDTOList.get(1);
-            Log.d("deux ",results.getName());
+            Log.d("premier",results.toString());
+
 
             restaurantsList.empty();
+            Lieux resto;
+
             for(int i=0;i<resultsDTOList.size();i++){
                 PlacesApiParser.ResultsDTO tmp = resultsDTOList.get(i);
-                Lieux resto;
-                if (tmp.getName().contains("Bar")){
-                    resto = restaurationFactory.build(tmp.getName(),2,null,null,tmp.getRating(),null);
-                    Log.d("bar",tmp.getName()+ " baaaaaaaaaaaaaar");
+                Log.d("info",tmp.toString());
+                if(tmp.getOpening_hours()==null){continue;}
+                Bitmap bitmap = null; //TRAITER POUR CHAQUE TMP la valeur de ce bitmap, stocker String reference ?
+
+                if(tmp.getTypes().contains("bar")) {
+                    resto = restaurationFactory.build(LieuxFactory.BAR, tmp.getName(), tmp.getPlace_id(), tmp.getOpening_hours().getOpen_now(), bitmap, tmp.getRating(), tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat(), tmp.getPrice_level());
+                    Log.d("a", tmp.getName() + " C'est un restoBar ");
                 }
-                else {
-                    resto = ((RestaurationFactory) restaurationFactory).build(tmp.getName(),1,null,null,tmp.getRating(),null);
-                    Log.d("resto",tmp.getName()+ " reeeeeeestoooo");
+                else{
+                    resto = restaurationFactory.build(LieuxFactory.RESTAURANT, tmp.getName(), tmp.getPlace_id(), tmp.getOpening_hours().getOpen_now(), bitmap, tmp.getRating(), tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat(), tmp.getPrice_level());
+                    Log.d("a", tmp.getName() + " C'est un vrai resto ");
+
                 }
                 restaurantsList.add(resto);
-                /*Restaurant resto = new Restaurant(null,tmp.getName(),null,tmp.getRating(),null);
-                RestaurantsList.add(resto);
-                Log.d("a","on a add un resto" + resto.getName());*/
+                Log.d("a","on a add un resto" + resto.getName());
             }
-
-
-
-
 
         }
         else{
             Log.d("a","AUCUN RESTO TROUVE");
         }
-
-
-
-
-
     }
-
 
 }
 

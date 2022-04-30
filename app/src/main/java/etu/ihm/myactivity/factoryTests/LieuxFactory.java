@@ -10,6 +10,5 @@ public abstract class LieuxFactory {
     public static final int RESTAURANT=1;
     public static final int BAR=2;
 
-    abstract public Lieux build(String name, int type, Bitmap picture, String description,
-                                   double grade, ArrayList<Commentaire> comments) throws Throwable;
+    abstract public Lieux build(int type,String name, String placeID, boolean openNow, Bitmap picture, double rate, double longitude, double latitude, Integer priceLevel) throws Throwable;
 }

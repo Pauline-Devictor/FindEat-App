@@ -68,7 +68,7 @@ public class RestaurantsAdapter extends BaseAdapter {
 
         //(3) : Renseignement des valeurs
         tvName.setText(model.get(position).getName());
-        tvGrade.setText("" + model.get(position).getGrade() + "/5");
+        tvGrade.setText("" + model.get(position).getRate() + "/5");
         //restaurantPicture.setImageBitmap(RestaurantsList.get(position).getPicture());
 
         layoutItem.setOnClickListener(click -> {
