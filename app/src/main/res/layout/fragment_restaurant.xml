@@ -9,18 +9,7 @@
     android:background="#EAE7D1"
     tools:context=".restaurants.RestaurantFragment">
 
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="600dp"
-        android:layout_weight="1"
-        android:backgroundTint="#CF1B1B"
-        android:text="Retour"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/restaurantName"

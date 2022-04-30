@@ -1,5 +1,6 @@
 package etu.ihm.myactivity.restaurants;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import etu.ihm.myactivity.R;
 import etu.ihm.myactivity.factoryTests.Lieux;
+import etu.ihm.myactivity.home.MainActivity;
 import etu.ihm.myactivity.home.RestaurantsList;
 
 import androidx.fragment.app.Fragment;
@@ -38,12 +40,7 @@ public class RestaurantFragment extends Fragment {
         //int position = getArguments().getInt("position");
         restaurant = (Lieux) getArguments().getSerializable("resto");
 
-        rootView.findViewById(R.id.backButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //go back on restaurants list
-            }
-        });
+
 
         rootView.findViewById(R.id.favoriteButton).setOnClickListener(new View.OnClickListener() {
             @Override

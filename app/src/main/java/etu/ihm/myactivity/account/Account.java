@@ -1,19 +1,20 @@
 package etu.ihm.myactivity.account;
 
-import static etu.ihm.myactivity.Notifications.CHANNEL3_ID;
-
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import etu.ihm.myactivity.Notifications;
+import java.util.Objects;
+
+import etu.ihm.myactivity.NotificationSender;
 import etu.ihm.myactivity.favorites.Favorites;
 import etu.ihm.myactivity.home.MainActivity;
 import etu.ihm.myactivity.map.Map;
@@ -24,6 +25,12 @@ public class Account extends AppCompatActivity {
 
     private int nofiticationID = 0;
 
+    public final static String CHANNEL1_ID = "low channel";
+    public final static String CHANNEL2_ID = "default channel";
+    public final static String CHANNEL3_ID = "high channel";
+    public static NotificationManager notificationManager;
+    private NotificationSender notificationSender;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +38,14 @@ public class Account extends AppCompatActivity {
         setContentView(R.layout.activity_account);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        bottomNavigationView.setSelectedItemId(R.id.compte);
+        createNotificationChannels();
+        notificationSender = new NotificationSender(getApplicationContext());
+        NotificationSender.makeNotification(notificationSender);
 
+        //Button button = findViewById(R.id.buttonNotif);
+        //button.setOnClickListener(notifListener);
+
+        bottomNavigationView.setSelectedItemId(R.id.compte);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -56,5 +69,31 @@ public class Account extends AppCompatActivity {
             }
         });
     }
+
+    /**
+    private View.OnClickListener notifListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            NotificationSender.sendNotificationOnChannel(CHANNEL3_ID, NotificationManager.IMPORTANCE_HIGH);
+            ;}
+    };
+     */
+
+    private void createNotificationChannels(){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            NotificationChannel low_channel = new NotificationChannel(CHANNEL1_ID,"channel 1",NotificationManager.IMPORTANCE_LOW);
+            low_channel.setDescription("Ce channel permet l'affichage de notifications dans la barre d'état");
+
+            NotificationChannel default_channel = new NotificationChannel(CHANNEL2_ID,"channel 2",NotificationManager.IMPORTANCE_DEFAULT);
+            default_channel.setDescription("Ce channel permet l'affichage de notifications dasn la barre des sons accompagné d'un son");
+
+            NotificationChannel high_channel = new NotificationChannel(CHANNEL3_ID,"channel 3",NotificationManager.IMPORTANCE_HIGH);
+            high_channel.setDescription("Ce channel permet l'affichage de notifications dans la barre d'état ainsi que sur l'écran");
+
+            notificationManager = getSystemService(NotificationManager.class);
+            Objects.requireNonNull(notificationManager).createNotificationChannel(low_channel);
+            Objects.requireNonNull(notificationManager).createNotificationChannel(default_channel);
+            Objects.requireNonNull(notificationManager).createNotificationChannel(high_channel);
+        }
+}
 }
 
