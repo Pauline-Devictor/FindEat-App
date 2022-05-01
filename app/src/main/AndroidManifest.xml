@@ -32,9 +32,6 @@
         <activity
             android:name=".map.Map"
             android:exported="false" />
-        <activity android:name=".Notifications"
-            android:exported="false"
-             />
         <activity
             android:name=".home.MainActivity"
             android:exported="true">
@@ -44,8 +41,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NotificationSender"
-            android:exported="false"/>
     </application>
 
     <meta-data
