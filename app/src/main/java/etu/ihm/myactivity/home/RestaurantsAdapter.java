@@ -7,12 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import etu.ihm.myactivity.R;
-import etu.ihm.myactivity.restaurants.Restaurant;
 
 /**
  * This is the view adapter of the view from the MVC
@@ -44,7 +42,7 @@ public class RestaurantsAdapter extends BaseAdapter {
     }
 
     public Object getItem(int position) {
-        return model.get(position);
+        return model.getRestaurant(position);
     }
 
     public long getItemId(int position) {
@@ -66,8 +64,8 @@ public class RestaurantsAdapter extends BaseAdapter {
         //ImageView restaurantPicture = layoutItem.findViewById(R.id.restaurantPicture);
 
         //(3) : Renseignement des valeurs
-        tvName.setText(model.get(position).getName());
-        tvGrade.setText("" + model.get(position).getRate() + "/5");
+        tvName.setText(model.getRestaurant(position).getName());
+        tvGrade.setText("" + model.getRestaurant(position).getRate() + "/5");
         //restaurantPicture.setImageBitmap(RestaurantsList.get(position).getPicture());
 
         layoutItem.setOnClickListener(click -> {
