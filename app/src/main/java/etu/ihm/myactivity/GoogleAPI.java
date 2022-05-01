@@ -39,7 +39,7 @@ public class  GoogleAPI extends Thread {
     //rating et price level a nous de le faire a la main
 
     private static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/";
-    private static final String NEAY_BY_SEARCH = "nearbysearch/json?keyword=";
+    private static final String NEAY_BY_SEARCH = "nearbysearch/json?keyword=&";
     private static final String TEXT_SEARCH = "textsearch/json?query=";
 
 

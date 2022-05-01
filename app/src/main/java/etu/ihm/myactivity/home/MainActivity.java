@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
 
     private double userLatitude = 0;
     private double userLongitude = 0;
-    private int radius = 3000; //3km
+    private int radius = 5000; //5km
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
 
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
                             userLatitude = location.getLatitude();
                             userLongitude = location.getLongitude();
                             ArrayList<FiltreEnum> filtres = new ArrayList<>();
-                            filtres.add(FiltreEnum.VEGAN);
+                            //filtres.add(FiltreEnum.VEGAN);
                             LocationGPS locationGPS = new LocationGPS(userLatitude,userLongitude);
                             new GoogleAPI(restaurantsList,radius,locationGPS,filtres,4).start();
                         } else {
