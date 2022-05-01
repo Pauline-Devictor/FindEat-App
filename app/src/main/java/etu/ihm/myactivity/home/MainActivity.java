@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import etu.ihm.myactivity.GoogleAPI;
 import etu.ihm.myactivity.LocationGPS;
 import etu.ihm.myactivity.favorites.Favorites;
+import etu.ihm.myactivity.map.MapFragment;
 import etu.ihm.myactivity.restaurants.DataBase;
 import etu.ihm.myactivity.map.Map;
 
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
 
     private RestaurantFragment restaurantFragment;
     private RestaurantListFragment restaurantListFragment;
+    private MapFragment mapFragment;
 
     public RestaurantsList restaurantsList;
 
@@ -78,6 +80,10 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        restaurantFragment = new RestaurantFragment();
+        restaurantListFragment = new RestaurantListFragment();
+        mapFragment = new MapFragment();
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         retrieveLocation();
@@ -99,12 +105,22 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
                     case R.id.decouvrir:
                         return true;
                     case R.id.carte:
+                        /*
                         Intent intent = new Intent(getApplicationContext(), Map.class);
                         Log.d(TAG,"putting "+userLatitude+" and "+userLongitude+" in map");
                         intent.putExtra("userLatitude", userLatitude);
                         intent.putExtra("userLongitude",userLongitude);
                         intent.putExtra("restoList", restaurantsList);
                         startActivity(intent);
+                         */
+
+                        Bundle args = new Bundle();
+                        args.putSerializable("restoList", (Serializable) restaurantsList);
+                        args.putDouble("userLatitude", userLatitude);
+                        args.putDouble("userLongitude", userLongitude);
+                        mapFragment.setArguments(args);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, mapFragment).commit();
+
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.favoris:
@@ -119,10 +135,6 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
                 return false;
             }
         });
-
-        restaurantFragment = new RestaurantFragment();
-        restaurantListFragment = new RestaurantListFragment();
-
 
         Bundle args = new Bundle();
         args.putSerializable("restoList", (Serializable) restaurantsList);

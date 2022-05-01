@@ -108,7 +108,6 @@ public class Map extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mapController.setCenter(new GeoPoint(userLatitude, userLongitude));
-                mapController.setZoom(DEFAULT_ZOOM);
             }
         });
 
@@ -169,7 +168,7 @@ public class Map extends AppCompatActivity {
                 Log.d("MAP","Element à afficher lat " + resto.getLatitude() + " long " + resto.getLongitude()+" nom "+resto.getName());
             }
             //Le new Geo Point compile pas ici  !!!!
-            map.getOverlays().add(addMarker(R.drawable.bar_position, null, resto.getName(), R.drawable.ic_home));
+            //map.getOverlays().add(addMarker(R.drawable.bar_position, null, resto.getName(), R.drawable.ic_home));
 
         }
     }
