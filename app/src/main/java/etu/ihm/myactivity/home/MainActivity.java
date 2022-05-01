@@ -55,7 +55,7 @@ import etu.ihm.myactivity.restaurants.FiltreEnum;
 import etu.ihm.myactivity.restaurants.RestaurantFragment;
 
 
-public class MainActivity extends AppCompatActivity implements IListner, RestaurantListFragment.OnRestaurantClickedListener {
+public class MainActivity extends AppCompatActivity implements RestaurantListFragment.OnRestaurantClickedListener {
     private final String TAG = "polytech-" + getClass().getSimpleName();
     public static int REQUEST_LOCATION_CODE = 1001;
 
@@ -103,24 +103,10 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.decouvrir:
+                        displayRestaurantsList();
                         return true;
                     case R.id.carte:
-                        /*
-                        Intent intent = new Intent(getApplicationContext(), Map.class);
-                        Log.d(TAG,"putting "+userLatitude+" and "+userLongitude+" in map");
-                        intent.putExtra("userLatitude", userLatitude);
-                        intent.putExtra("userLongitude",userLongitude);
-                        intent.putExtra("restoList", restaurantsList);
-                        startActivity(intent);
-                         */
-
-                        Bundle args = new Bundle();
-                        args.putSerializable("restoList", (Serializable) restaurantsList);
-                        args.putDouble("userLatitude", userLatitude);
-                        args.putDouble("userLongitude", userLongitude);
-                        mapFragment.setArguments(args);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, mapFragment).commit();
-
+                        displayMap();
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.favoris:
@@ -136,33 +122,39 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
             }
         });
 
-        Bundle args = new Bundle();
-        args.putSerializable("restoList", (Serializable) restaurantsList);
-        restaurantListFragment.setArguments(args);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantListFragment).commit();
+        displayRestaurantsList();
     }
 
     public static MainActivity getInstance() {
         return instance;
     }
 
-    @Override
-    public void onClickRestaurant(int position) {
+    private void displayRestaurantsList(){
+        Bundle args = new Bundle();
+        args.putSerializable("restoList", (Serializable) restaurantsList);
+        restaurantListFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantListFragment).commit();
+    }
+
+    private void displayRestaurant(int position){
         Bundle args = new Bundle();
         args.putSerializable("resto", (Serializable) restaurantsList.getRestaurant(position));
         restaurantFragment.setArguments(args);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).addToBackStack(null).commit();
+    }
+
+    private void displayMap(){
+        Bundle args = new Bundle();
+        args.putSerializable("restoList", (Serializable) restaurantsList);
+        args.putDouble("userLatitude", userLatitude);
+        args.putDouble("userLongitude", userLongitude);
+        mapFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, mapFragment).commit();
     }
 
     @Override
     public void onRestaurantClicked(int position) {
-        Bundle args = new Bundle();
-        args.putSerializable("resto", (Serializable) restaurantsList.getRestaurant(position));
-        restaurantFragment.setArguments(args);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_fragment, restaurantFragment)
-                .addToBackStack(null)
-                .commit();
+        displayRestaurant(position);
     }
 
     private void retrieveLocation() {

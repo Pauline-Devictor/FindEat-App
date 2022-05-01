@@ -1,6 +1,8 @@
 package etu.ihm.myactivity.map;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import org.osmdroid.api.IMapController;
+import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -41,10 +44,14 @@ public class MapFragment extends Fragment {
         userLatitude = getArguments().getDouble("userLatitude");
         userLongitude = getArguments().getDouble("userLongitude");
 
+        Configuration.getInstance().load(
+                getActivity().getApplicationContext(),
+                PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()));
+
         rootView.findViewById(R.id.focusButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //mapController.setCenter(new GeoPoint(userLatitude, userLongitude));
+                mapController.setCenter(new GeoPoint(userLatitude, userLongitude));
             }
         });
 
