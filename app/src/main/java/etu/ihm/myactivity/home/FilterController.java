@@ -14,7 +14,7 @@ public class FilterController {
     public FilterController(RestaurantListFragment view, RestaurantsList model){
         this.view=view;
         this.model=model;
-        Log.d(TAG,"controller created");
+        //Log.d(TAG,"controller created");
     }
 
     public void filterOver4(){

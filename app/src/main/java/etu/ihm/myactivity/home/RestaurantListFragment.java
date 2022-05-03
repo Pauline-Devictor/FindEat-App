@@ -111,19 +111,19 @@ public class RestaurantListFragment extends Fragment implements IListner, Observ
             throw new RuntimeException(context.toString() + "must implement OnButtonClickedListener");
     }
 
-        @Override
-        public void onDetach () {
-            super.onDetach();
-            mCallback = null;
-            filterCallback = null;
-        }
-
-        @Override
-        public void onClickRestaurant ( int position){
-            Toast toast = Toast.makeText(getActivity(), "restaurant " + position, Toast.LENGTH_SHORT);
-            toast.show();
-            mCallback.onRestaurantClicked(position);
-        }
-
-
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
+        filterCallback = null;
     }
+
+    @Override
+    public void onClickRestaurant(int position) {
+        Toast toast = Toast.makeText(getActivity(), "restaurant " + position, Toast.LENGTH_SHORT);
+        toast.show();
+        mCallback.onRestaurantClicked(position);
+    }
+
+
+}

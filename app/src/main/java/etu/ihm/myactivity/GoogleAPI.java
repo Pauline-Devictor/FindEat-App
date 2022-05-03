@@ -23,6 +23,7 @@ import etu.ihm.myactivity.home.RestaurantsList;
 import etu.ihm.myactivity.restaurants.FiltreEnum;
 
 public class  GoogleAPI extends Thread {
+    private final String TAG = "polytech-" + getClass().getSimpleName();
 
     String data = "";
     ArrayList<String> restoList = new ArrayList<>();
@@ -109,6 +110,7 @@ public class  GoogleAPI extends Thread {
     }
 
     public void runTest() {
+        Log.d(TAG,"runTest");
         String URLlocation = "location=" + location.getLatitude() + "%2C" + location.getLongitude() + "&radius=" + radius;
         String filter = "";
         for (FiltreEnum f : filters) {

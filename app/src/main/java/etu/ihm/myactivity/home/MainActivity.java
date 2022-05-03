@@ -55,7 +55,7 @@ import etu.ihm.myactivity.restaurants.FiltreEnum;
 import etu.ihm.myactivity.restaurants.RestaurantFragment;
 
 
-public class MainActivity extends AppCompatActivity implements RestaurantListFragment.OnRestaurantClickedListener, RestaurantListFragment.OnFilterClickedListener {
+public class MainActivity extends AppCompatActivity implements RestaurantListFragment.OnRestaurantClickedListener, RestaurantListFragment.OnFilterClickedListener, FilterFragment.OnSubmitListener {
     private final String TAG = "polytech-" + getClass().getSimpleName();
     public static int REQUEST_LOCATION_CODE = 1001;
 
@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
     private RestaurantListFragment restaurantListFragment;
     private MapFragment mapFragment;
     private FilterFragment filterFragment;
+    private VideFragment videFragment;
 
     public RestaurantsList restaurantsList;
 
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         restaurantListFragment = new RestaurantListFragment();
         mapFragment = new MapFragment();
         filterFragment = new FilterFragment();
+        videFragment = new VideFragment();
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         retrieveLocation();
@@ -160,6 +162,11 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         args.putDouble("userLongitude", userLongitude);
         mapFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, filterFragment).addToBackStack(null).commit();
+    }
+
+    private void displayVide(){
+        Toast.makeText(getApplicationContext(),"displaying void", Toast.LENGTH_SHORT).show();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, videFragment).addToBackStack(null).commit();
     }
 
     @Override
@@ -263,6 +270,14 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
                 });
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    @Override
+    public void onSubmit(int radius, int maxPrice, ArrayList<FiltreEnum> options){
+        Log.d(TAG,"fetching restaurants after filter");
+        LocationGPS locationGPS = new LocationGPS(userLatitude,userLongitude);
+        new GoogleAPI(restaurantsList,radius,locationGPS,options,maxPrice).start();
+        displayRestaurantsList();
     }
 
 
