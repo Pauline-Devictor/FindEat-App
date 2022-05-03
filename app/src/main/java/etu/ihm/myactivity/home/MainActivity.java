@@ -55,7 +55,7 @@ import etu.ihm.myactivity.restaurants.FiltreEnum;
 import etu.ihm.myactivity.restaurants.RestaurantFragment;
 
 
-public class MainActivity extends AppCompatActivity implements RestaurantListFragment.OnRestaurantClickedListener {
+public class MainActivity extends AppCompatActivity implements RestaurantListFragment.OnRestaurantClickedListener, RestaurantListFragment.OnFilterClickedListener {
     private final String TAG = "polytech-" + getClass().getSimpleName();
     public static int REQUEST_LOCATION_CODE = 1001;
 
@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
     private RestaurantFragment restaurantFragment;
     private RestaurantListFragment restaurantListFragment;
     private MapFragment mapFragment;
+    private FilterFragment filterFragment;
 
     public RestaurantsList restaurantsList;
 
@@ -77,13 +78,14 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
 
     //Découvrir == Home
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         restaurantFragment = new RestaurantFragment();
         restaurantListFragment = new RestaurantListFragment();
         mapFragment = new MapFragment();
+        filterFragment = new FilterFragment();
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         retrieveLocation();
@@ -152,9 +154,22 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, mapFragment).commit();
     }
 
+    private void displayFilter(){
+        Bundle args = new Bundle();
+        args.putDouble("userLatitude", userLatitude);
+        args.putDouble("userLongitude", userLongitude);
+        mapFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, filterFragment).addToBackStack(null).commit();
+    }
+
     @Override
     public void onRestaurantClicked(int position) {
         displayRestaurant(position);
+    }
+
+    @Override
+    public void onFilterClicked(){
+        displayFilter();
     }
 
     private void retrieveLocation() {
