@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -26,7 +27,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import etu.ihm.myactivity.R;
 import etu.ihm.myactivity.factoryTests.Lieux;
@@ -39,12 +41,13 @@ public class StorageFragment extends Fragment {
     private IStorageActivity activity;
     private Button buttonSave;
     private Button buttonLoad;
-    private String restoName;
+    private TextView textView;
     private Lieux restaurant;
     private String directoryName;
+    private static final String filename="data.dat";
+    private Set<Lieux> mesRestaurantsFavoris;
 
-    public StorageFragment() {
-    }
+    public StorageFragment() { }
 
     public StorageFragment(IStorageActivity activity) {
         this.activity = activity;
@@ -53,7 +56,6 @@ public class StorageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragement_storage, container, false);
-        restoName = "ChezRallo";
         Log.d("a", "PASSE");
 
         ContextWrapper contextWrapper = new ContextWrapper(getContext());
@@ -62,6 +64,13 @@ public class StorageFragment extends Fragment {
 
         buttonLoad = rootView.findViewById(R.id.buttonLoad);
         buttonSave = rootView.findViewById(R.id.buttonSave);
+        textView = rootView.findViewById(R.id.favorisText);
+
+        mesRestaurantsFavoris = new HashSet<>();
+
+
+
+        //loadRestoFromStorage();
 
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
@@ -82,9 +91,6 @@ public class StorageFragment extends Fragment {
         });
 
 
-
-
-
         buttonLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,13 +107,6 @@ public class StorageFragment extends Fragment {
         });
 
 
-
-
-
-
-
-
-
         return rootView;
 
     }
@@ -115,59 +114,55 @@ public class StorageFragment extends Fragment {
 
     private void loadRestoFromStorage() {
 
+        textView.setText("");
         Log.d("a", "paaseLOAD");
 
-        String filename = "data.dat";
         File file = new File(directoryName, filename);
+        String nomToutResto = "";
 
-        Lieux resto;
+
+
 
 
         try {
             FileInputStream file_input_stream = new FileInputStream(file);
             ObjectInputStream object_input_stream = new ObjectInputStream(file_input_stream);
-             resto = (Lieux) object_input_stream.readObject();
+             mesRestaurantsFavoris = (Set<Lieux>) object_input_stream.readObject();
             object_input_stream.close();
-            Log.d("a", "fin loading");
+            file_input_stream.close();
 
+            Log.d("a", "Fin loading, on a nb resto = "+mesRestaurantsFavoris.size());
 
-            Log.d("a", resto.toString());
+            for(Lieux l : mesRestaurantsFavoris){
+                Log.d("a",l.toString());
+                nomToutResto+=" "+l.getName();
+            }
 
             Log.d("a", "fin fun");
 
 
         }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
+        catch (FileNotFoundException e) { e.printStackTrace(); }
+        catch (ClassNotFoundException e) { e.printStackTrace(); }
+        catch (IOException e) { e.printStackTrace(); }
 
-        catch (ClassNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        textView.setText(nomToutResto);
 
-
-
-
-
-        Toast.makeText(getContext(), "Resto Load", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), "Favoris chargés", Toast.LENGTH_LONG).show();
 
     }
 
     private void saveToInternalStorage(Lieux resto) {
         //Faire un fichier par resto ?
-        Log.d("a", "paaseSasve");
+        Log.d("a", "Save, on va add "+resto.getName());
 
-        String filename = "data.dat";
+        mesRestaurantsFavoris.add(resto);
 
         File file = new File(directoryName, filename);
 
         Log.d("a","path "+file.getAbsolutePath());
+        Log.d("a","on sauv "+mesRestaurantsFavoris.size());
+
 
 
         FileOutputStream file_output_stream = null;
@@ -176,15 +171,13 @@ public class StorageFragment extends Fragment {
         try {
             file_output_stream = new FileOutputStream(file);
             object_output_stream = new ObjectOutputStream(file_output_stream);
-            object_output_stream.writeObject(resto);
+            object_output_stream.writeObject(mesRestaurantsFavoris);
 
             object_output_stream.close();
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        catch (FileNotFoundException e) { e.printStackTrace(); }
+        catch (IOException e) { e.printStackTrace(); }
 
         Toast.makeText(getContext(), "Favori ajouté", Toast.LENGTH_LONG).show();
 
@@ -192,7 +185,6 @@ public class StorageFragment extends Fragment {
         Log.d("a", "finito");
 
     }
-
 
 
 
@@ -218,13 +210,6 @@ public class StorageFragment extends Fragment {
         this.buttonLoad = buttonLoad;
     }
 
-    public String getRestoName() {
-        return restoName;
-    }
-
-    public void setRestoName(String restoName) {
-        this.restoName = restoName;
-    }
 
     public Lieux getRestaurant() {
         return restaurant;
