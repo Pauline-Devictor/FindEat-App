@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
     private RestaurantListFragment restaurantListFragment;
     private MapFragment mapFragment;
     private FilterFragment filterFragment;
-    private VideFragment videFragment;
 
     public RestaurantsList restaurantsList;
 
@@ -94,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         restaurantListFragment = new RestaurantListFragment();
         mapFragment = new MapFragment();
         filterFragment = new FilterFragment();
-        videFragment = new VideFragment();
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         retrieveLocation();
@@ -167,11 +165,6 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         args.putDouble("userLongitude", userLongitude);
         mapFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, filterFragment).addToBackStack(null).commit();
-    }
-
-    private void displayVide(){
-        Toast.makeText(getApplicationContext(),"displaying void", Toast.LENGTH_SHORT).show();
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, videFragment).addToBackStack(null).commit();
     }
 
     @Override
