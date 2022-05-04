@@ -50,7 +50,7 @@ public class RestaurantsList extends Observable implements Serializable {
         notifyObservers(this);
     }
     public void empty(){
-        restaurantsArrayList = new ArrayList<>();
+        restaurantsArrayList.clear();
         notifyObservers(this);
     }
 

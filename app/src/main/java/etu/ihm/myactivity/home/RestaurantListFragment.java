@@ -33,12 +33,18 @@ public class RestaurantListFragment extends Fragment implements IListner, Observ
 
     private OnRestaurantClickedListener mCallback;
 
+    private OnFilterClickedListener filterCallback;
+
     private FilterController filterController; //the controller
 
     private RestaurantsList model;
 
     public interface OnRestaurantClickedListener {
         void onRestaurantClicked(int position);
+    }
+
+    public interface OnFilterClickedListener {
+        void onFilterClicked();
     }
 
 
@@ -49,7 +55,7 @@ public class RestaurantListFragment extends Fragment implements IListner, Observ
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG,"cration of RestaurantListFragment");
+        Log.d(TAG, "cration of RestaurantListFragment");
         model = (RestaurantsList) getArguments().getSerializable("restoList");
 
         model.addObserver(this);
@@ -74,13 +80,20 @@ public class RestaurantListFragment extends Fragment implements IListner, Observ
             }
         });
 
+        rootView.findViewById(R.id.filter).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                filterCallback.onFilterClicked();
+            }
+        });
+
         return rootView;
 
     }
 
     @Override
     public void update(Observable observable, Object object) {
-        Log.d(TAG,"updating observer");
+        Log.d(TAG, "updating observer");
         RestaurantsList restaurantsList = (RestaurantsList) observable;
         //restaurantsAdapter.notifyDataSetChanged();
         restaurantsAdapter.refresh(model);
@@ -91,15 +104,18 @@ public class RestaurantListFragment extends Fragment implements IListner, Observ
         super.onAttach(context);
         if (context instanceof OnRestaurantClickedListener) {
             mCallback = (OnRestaurantClickedListener) context;
-        } else {
+            if (context instanceof OnFilterClickedListener) {
+                filterCallback = (OnFilterClickedListener) context;
+            }
+        } else
             throw new RuntimeException(context.toString() + "must implement OnButtonClickedListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mCallback = null;
+        filterCallback = null;
     }
 
     @Override

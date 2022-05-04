@@ -11,7 +11,7 @@ public abstract class Lieux implements Serializable {
     protected String name;
     protected String placeID;
     protected boolean openNow;
-    protected Bitmap picture;
+    protected String picture;
     protected double rate;
     protected double longitude;
     protected double latitude;
@@ -19,7 +19,7 @@ public abstract class Lieux implements Serializable {
 
 
 
-    public Lieux(String name, String placeID, boolean openNow, Bitmap picture, double rate, double longitude, double latitude, Integer priceLevel) {
+    public Lieux(String name, String placeID, boolean openNow, String picture, double rate, double longitude, double latitude, Integer priceLevel) {
         this.name = name;
         this.placeID = placeID;
         this.openNow = openNow;
@@ -55,11 +55,11 @@ public abstract class Lieux implements Serializable {
         this.openNow = openNow;
     }
 
-    public Bitmap getPicture() {
+    public String getPicture() {
         return picture;
     }
 
-    public void setPicture(Bitmap picture) {
+    public void setPicture(String picture) {
         this.picture = picture;
     }
 
@@ -93,5 +93,19 @@ public abstract class Lieux implements Serializable {
 
     public void setPriceLevel(Integer priceLevel) {
         this.priceLevel = priceLevel;
+    }
+
+    @Override
+    public String toString() {
+        return "Lieux{" +
+                "name='" + name + '\'' +
+                ", placeID='" + placeID + '\'' +
+                ", openNow=" + openNow +
+                ", picture='" + picture + '\'' +
+                ", rate=" + rate +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", priceLevel=" + priceLevel +
+                '}';
     }
 }

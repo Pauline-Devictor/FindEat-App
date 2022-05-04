@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+
+
+
+
+
+
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:text="Save"
+    />
+
+
+
+    <Button
+        android:id="@+id/buttonLoad"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:text="Load"
+        />
+
+
+
+    <ListView
+        android:id="@+id/listFavoris"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+

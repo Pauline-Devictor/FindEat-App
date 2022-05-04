@@ -23,6 +23,7 @@ import etu.ihm.myactivity.home.RestaurantsList;
 import etu.ihm.myactivity.restaurants.FiltreEnum;
 
 public class  GoogleAPI extends Thread {
+    private final String TAG = "polytech-" + getClass().getSimpleName();
 
     String data = "";
     ArrayList<String> restoList = new ArrayList<>();
@@ -35,8 +36,8 @@ public class  GoogleAPI extends Thread {
     private int numConstru=0; //Savoir si on passe Location ou nom ville
 
 
-    //filtres alimtentaire dans jquery maxprice
-    //rating et price level a nous de le faire a la main
+    //filtres alimtentaire dans jquery
+    //rating a nous de le faire a la main
 
     private static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/";
     private static final String NEAY_BY_SEARCH = "nearbysearch/json?keyword=";
@@ -55,6 +56,15 @@ public class  GoogleAPI extends Thread {
     private static final String API_KEY = "AIzaSyAaSrozKCZYHXJD4F5zynJxebwsvf5nA9I";
 
     private String URL = "";
+
+
+    /**
+     * PHOTOOOOOO
+     * https://maps.googleapis.com/maps/api/place/photo
+     *   ?maxwidth=400
+     *   &photo_reference=Aap_uEBCWua9-el2nF6NhMZR8HGRFJA-3OL_Z-aPwdKdHN8Xpqik96Nrm_bBCAXoIuSkEuOoHsmrDmlsJGyC1UbrAHYZQN-gyP-ZUrUkhSFvdRNwDMnibt1V65hEYPQcOy1Zsit87pL_xvZ1i3B_L1WLkWjQk87EIQlgQSNix7lBvKnK3lli
+     *   &key=AIzaSyAaSrozKCZYHXJD4F5zynJxebwsvf5nA9I
+     */
 
 
     //https://maps.googleapis.com/maps/api/place/
@@ -90,6 +100,7 @@ public class  GoogleAPI extends Thread {
 
     @Override
     public void run(){
+        restaurantsList.empty();
         if(this.numConstru==2){ //On est au debut
             runDebut();
         }
@@ -109,14 +120,18 @@ public class  GoogleAPI extends Thread {
     }
 
     public void runTest() {
+        Log.d(TAG,"runTest");
+        String titreMaxPrice = "maxprice=";
         String URLlocation = "location=" + location.getLatitude() + "%2C" + location.getLongitude() + "&radius=" + radius;
         String filter = "";
+        if(filters.isEmpty()){Log.d("a","filtreVide");titreMaxPrice = "&maxprice=";}
         for (FiltreEnum f : filters) {
+            Log.d("a","le filtre vaut "+f.name());
             filter += f.name().toLowerCase(Locale.ROOT) + "&";
         }
         Log.d("a", "filtre vaut " + filter);
 
-        this.URL = BASE_URL + NEAY_BY_SEARCH + filter + "maxprice=" + maxPrice + "&" + URLlocation + "&" + TYPE_RESTAURANT + "&key=" + API_KEY;
+        this.URL = BASE_URL + NEAY_BY_SEARCH + filter + titreMaxPrice + maxPrice + "&" + URLlocation + "&" + TYPE_RESTAURANT + "&key=" + API_KEY;
 
         Log.d("a", "URL vaut " + URL);
 
@@ -180,14 +195,13 @@ public class  GoogleAPI extends Thread {
                 PlacesApiParser.ResultsDTO tmp = resultsDTOList.get(i);
                 Log.d("info",tmp.toString());
                 if(tmp.getOpening_hours()==null){continue;}
-                Bitmap bitmap = null; //TRAITER POUR CHAQUE TMP la valeur de ce bitmap, stocker String reference ?
 
                 if(tmp.getTypes().contains("bar")) {
-                    resto = restaurationFactory.build(LieuxFactory.BAR, tmp.getName(), tmp.getPlace_id(), tmp.getOpening_hours().getOpen_now(), bitmap, tmp.getRating(), tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat(), tmp.getPrice_level());
+                    resto = restaurationFactory.build(LieuxFactory.BAR, tmp.getName(), tmp.getPlace_id(), tmp.getOpening_hours().getOpen_now(), tmp.getPhotos().get(0).getPhoto_reference(), tmp.getRating(), tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat(), tmp.getPrice_level());
                     Log.d("a", tmp.getName() + " C'est un restoBar ");
                 }
                 else{
-                    resto = restaurationFactory.build(LieuxFactory.RESTAURANT, tmp.getName(), tmp.getPlace_id(), tmp.getOpening_hours().getOpen_now(), bitmap, tmp.getRating(), tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat(), tmp.getPrice_level());
+                    resto = restaurationFactory.build(LieuxFactory.RESTAURANT, tmp.getName(), tmp.getPlace_id(), tmp.getOpening_hours().getOpen_now(), tmp.getPhotos().get(0).getPhoto_reference(), tmp.getRating(), tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat(), tmp.getPrice_level());
                     Log.d("a", tmp.getName() + " C'est un vrai resto ");
 
                 }

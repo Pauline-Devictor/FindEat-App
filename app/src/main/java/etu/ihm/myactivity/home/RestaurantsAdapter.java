@@ -51,7 +51,7 @@ public class RestaurantsAdapter extends BaseAdapter {
 
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d(TAG,"getView position "+position+" pour une taille de "+model.size()+" et une taille fournie de "+getCount());
+        //Log.d(TAG,"getView position "+position+" pour une taille de "+model.size()+" et une taille fournie de "+getCount());
         LinearLayout layoutItem;
 
         //(1) : Réutilisation des layouts

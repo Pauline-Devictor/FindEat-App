@@ -16,7 +16,7 @@ public class RestoBar extends Lieux{
 
     //RANDOM HAPPYHOUR
 
-    public RestoBar(String name, String placeID, boolean openNow, Bitmap picture, double rate, double longitude, double latitude, Integer priceLevel, int debut, int fin){
+    public RestoBar(String name, String placeID, boolean openNow, String picture, double rate, double longitude, double latitude, Integer priceLevel, int debut, int fin){
         super(name,placeID, openNow, picture, rate, longitude, latitude, priceLevel);
         this.debutHP = debut;
         this.finHP = fin;

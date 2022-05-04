@@ -24,7 +24,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp" />-->
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/main_fragment"
         android:name="etu.ihm.myactivity.home.VideFragment"
         android:layout_width="match_parent"

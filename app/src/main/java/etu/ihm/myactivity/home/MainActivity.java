@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.os.Looper;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.widget.Toast;
 
@@ -45,6 +47,9 @@ import java.util.ArrayList;
 import etu.ihm.myactivity.GoogleAPI;
 import etu.ihm.myactivity.LocationGPS;
 import etu.ihm.myactivity.favorites.Favorites;
+import etu.ihm.myactivity.favorites.IStorageActivity;
+import etu.ihm.myactivity.favorites.StorageFragment;
+import etu.ihm.myactivity.map.MapFragment;
 import etu.ihm.myactivity.restaurants.DataBase;
 import etu.ihm.myactivity.map.Map;
 
@@ -54,7 +59,7 @@ import etu.ihm.myactivity.restaurants.FiltreEnum;
 import etu.ihm.myactivity.restaurants.RestaurantFragment;
 
 
-public class MainActivity extends AppCompatActivity implements IListner, RestaurantListFragment.OnRestaurantClickedListener {
+public class MainActivity extends AppCompatActivity implements RestaurantListFragment.OnRestaurantClickedListener, RestaurantListFragment.OnFilterClickedListener, FilterFragment.OnSubmitListener, IStorageActivity {
     private final String TAG = "polytech-" + getClass().getSimpleName();
     public static int REQUEST_LOCATION_CODE = 1001;
 
@@ -62,12 +67,16 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
 
     private RestaurantFragment restaurantFragment;
     private RestaurantListFragment restaurantListFragment;
+    private MapFragment mapFragment;
+    private FilterFragment filterFragment;
+
+    private StorageFragment storageFragment;
 
     public RestaurantsList restaurantsList;
 
     private double userLatitude = 0;
     private double userLongitude = 0;
-    private int radius = 3000; //3km
+    private int radius = 5000; //5km
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
 
@@ -75,16 +84,24 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
 
     //Découvrir == Home
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d(TAG, "creation of MainActivity");
+
         setContentView(R.layout.activity_main);
+
+        Log.d(TAG, "content view set");
+
+        restaurantFragment = new RestaurantFragment();
+        restaurantListFragment = new RestaurantListFragment();
+        mapFragment = new MapFragment();
+        filterFragment = new FilterFragment();
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         retrieveLocation();
 
         instance = this;
-
-        Log.d(TAG, "creation of MainActivity");
 
         restaurantsList = new RestaurantsList();
 
@@ -97,18 +114,15 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.decouvrir:
+                        displayRestaurantsList();
                         return true;
                     case R.id.carte:
-                        Intent intent = new Intent(getApplicationContext(), Map.class);
-                        Log.d(TAG,"putting "+userLatitude+" and "+userLongitude+" in map");
-                        intent.putExtra("userLatitude", userLatitude);
-                        intent.putExtra("userLongitude",userLongitude);
-                        intent.putExtra("restoList", restaurantsList);
-                        startActivity(intent);
+                        displayMap();
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.favoris:
-                        startActivity(new Intent(getApplicationContext(), Favorites.class));
+                        //startActivity(new Intent(getApplicationContext(), Favorites.class));
+                        displayFavoris();
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.compte:
@@ -120,37 +134,56 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
             }
         });
 
-        restaurantFragment = new RestaurantFragment();
-        restaurantListFragment = new RestaurantListFragment();
-
-
-        Bundle args = new Bundle();
-        args.putSerializable("restoList", (Serializable) restaurantsList);
-        restaurantListFragment.setArguments(args);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantListFragment).commit();
+        displayRestaurantsList();
     }
 
     public static MainActivity getInstance() {
         return instance;
     }
 
-    @Override
-    public void onClickRestaurant(int position) {
+    private void displayRestaurantsList(){
+        Bundle args = new Bundle();
+        args.putSerializable("restoList", (Serializable) restaurantsList);
+        restaurantListFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantListFragment).commit();
+    }
+
+    private void displayFavoris(){
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, storageFragment).commit();
+    }
+
+    private void displayRestaurant(int position){
         Bundle args = new Bundle();
         args.putSerializable("resto", (Serializable) restaurantsList.getRestaurant(position));
         restaurantFragment.setArguments(args);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).addToBackStack(null).commit();
+    }
+
+    private void displayMap(){
+        Bundle args = new Bundle();
+        args.putSerializable("restoList", (Serializable) restaurantsList);
+        args.putDouble("userLatitude", userLatitude);
+        args.putDouble("userLongitude", userLongitude);
+        mapFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, mapFragment).commit();
+    }
+
+    private void displayFilter(){
+        Bundle args = new Bundle();
+        args.putDouble("userLatitude", userLatitude);
+        args.putDouble("userLongitude", userLongitude);
+        mapFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, filterFragment).addToBackStack(null).commit();
     }
 
     @Override
     public void onRestaurantClicked(int position) {
-        Bundle args = new Bundle();
-        args.putSerializable("resto", (Serializable) restaurantsList.getRestaurant(position));
-        restaurantFragment.setArguments(args);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_fragment, restaurantFragment)
-                .addToBackStack(null)
-                .commit();
+        displayRestaurant(position);
+    }
+
+    @Override
+    public void onFilterClicked(){
+        displayFilter();
     }
 
     private void retrieveLocation() {
@@ -189,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
                             userLatitude = location.getLatitude();
                             userLongitude = location.getLongitude();
                             ArrayList<FiltreEnum> filtres = new ArrayList<>();
-                            filtres.add(FiltreEnum.VEGAN);
+                            //filtres.add(FiltreEnum.VEGAN);
                             LocationGPS locationGPS = new LocationGPS(userLatitude,userLongitude);
                             new GoogleAPI(restaurantsList,radius,locationGPS,filtres,4).start();
                         } else {
@@ -246,5 +279,12 @@ public class MainActivity extends AppCompatActivity implements IListner, Restaur
         alert.show();
     }
 
+    @Override
+    public void onSubmit(int radius, int maxPrice, ArrayList<FiltreEnum> options){
+        Log.d(TAG,"fetching restaurants after filter : "+radius+" "+maxPrice+" "+options.size());
+        LocationGPS locationGPS = new LocationGPS(userLatitude,userLongitude);
+        new GoogleAPI(restaurantsList,radius,locationGPS,options,maxPrice).start();
+        displayRestaurantsList();
+    }
 
 }

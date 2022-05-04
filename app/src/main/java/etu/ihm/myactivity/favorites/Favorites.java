@@ -34,7 +34,9 @@ public class Favorites extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.carte:
-                        startActivity(new Intent(getApplicationContext(), Map.class));
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra("displayMap",true);
+                        startActivity(intent);
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.favoris:
