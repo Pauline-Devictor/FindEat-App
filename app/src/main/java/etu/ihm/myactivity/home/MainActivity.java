@@ -290,5 +290,4 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         displayRestaurantsList();
     }
 
-
 }
