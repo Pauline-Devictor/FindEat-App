@@ -36,11 +36,11 @@ public class  GoogleAPI extends Thread {
     private int numConstru=0; //Savoir si on passe Location ou nom ville
 
 
-    //filtres alimtentaire dans jquery maxprice
-    //rating et price level a nous de le faire a la main
+    //filtres alimtentaire dans jquery
+    //rating a nous de le faire a la main
 
     private static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/";
-    private static final String NEAY_BY_SEARCH = "nearbysearch/json?keyword=&";
+    private static final String NEAY_BY_SEARCH = "nearbysearch/json?keyword=";
     private static final String TEXT_SEARCH = "textsearch/json?query=";
 
 
@@ -91,6 +91,7 @@ public class  GoogleAPI extends Thread {
 
     @Override
     public void run(){
+        restaurantsList.empty();
         if(this.numConstru==2){ //On est au debut
             runDebut();
         }
@@ -111,14 +112,17 @@ public class  GoogleAPI extends Thread {
 
     public void runTest() {
         Log.d(TAG,"runTest");
+        String titreMaxPrice = "maxprice=";
         String URLlocation = "location=" + location.getLatitude() + "%2C" + location.getLongitude() + "&radius=" + radius;
         String filter = "";
+        if(filters.isEmpty()){Log.d("a","filtreVide");titreMaxPrice = "&maxprice=";}
         for (FiltreEnum f : filters) {
+            Log.d("a","le filtre vaut "+f.name());
             filter += f.name().toLowerCase(Locale.ROOT) + "&";
         }
         Log.d("a", "filtre vaut " + filter);
 
-        this.URL = BASE_URL + NEAY_BY_SEARCH + filter + "maxprice=" + maxPrice + "&" + URLlocation + "&" + TYPE_RESTAURANT + "&key=" + API_KEY;
+        this.URL = BASE_URL + NEAY_BY_SEARCH + filter + titreMaxPrice + maxPrice + "&" + URLlocation + "&" + TYPE_RESTAURANT + "&key=" + API_KEY;
 
         Log.d("a", "URL vaut " + URL);
 

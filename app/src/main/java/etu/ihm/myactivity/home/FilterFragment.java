@@ -42,8 +42,8 @@ public class FilterFragment extends Fragment {
     private SwitchCompat halalSwitch;
     private SwitchCompat casherSwitch;
 
-    private int radius;
-    private int maxPrice;
+    private int radius = 5000;
+    private int maxPrice = 4;
     private ArrayList<FiltreEnum> options = new ArrayList<>();
 
     public FilterFragment() {
@@ -68,7 +68,7 @@ public class FilterFragment extends Fragment {
         this.radiusSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                radiusDisplayed.setText("" + i + "km");
+                radiusDisplayed.setText("" + i/1000 + "km");
                 radius = i;
             }
 

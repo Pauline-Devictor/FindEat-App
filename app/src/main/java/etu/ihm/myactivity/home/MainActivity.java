@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
 
     @Override
     public void onSubmit(int radius, int maxPrice, ArrayList<FiltreEnum> options){
-        Log.d(TAG,"fetching restaurants after filter");
+        Log.d(TAG,"fetching restaurants after filter : "+radius+" "+maxPrice+" "+options.size());
         LocationGPS locationGPS = new LocationGPS(userLatitude,userLongitude);
         new GoogleAPI(restaurantsList,radius,locationGPS,options,maxPrice).start();
         displayRestaurantsList();
