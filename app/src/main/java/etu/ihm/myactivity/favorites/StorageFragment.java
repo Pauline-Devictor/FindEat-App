@@ -7,6 +7,7 @@ import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,9 @@ import androidx.fragment.app.Fragment;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import etu.ihm.myactivity.R;
@@ -26,6 +30,7 @@ import etu.ihm.myactivity.factoryTests.Lieux;
 import etu.ihm.myactivity.factoryTests.LieuxFactory;
 import etu.ihm.myactivity.factoryTests.Restaurants;
 import etu.ihm.myactivity.factoryTests.RestaurationFactory;
+import etu.ihm.myactivity.home.MainActivity;
 
 public class StorageFragment extends Fragment {
     private IStorageActivity activity;
@@ -46,6 +51,8 @@ public class StorageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragement_storage, container, false);
         restoName = "ChezRallo";
+        Log.d("a","PASSE");
+
         ContextWrapper contextWrapper = new ContextWrapper(getContext());
         directoryName = contextWrapper.getDir("RestoDir", ContextWrapper.MODE_PRIVATE).getPath(); //chemin par defaut fichier
 
@@ -57,6 +64,7 @@ public class StorageFragment extends Fragment {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("a","CLICK");
                 restaurant = new Restaurants("test","id",true,null,5.0,55,44,2);
                 if(restaurant!=null){
                     if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_DENIED){
@@ -72,25 +80,6 @@ public class StorageFragment extends Fragment {
         });
 
 
-
-
-        buttonLoad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                    ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            IStorageActivity.REQUEST_MEDIA_READ);
-                } else { //Permission ok
-                    //activity.onPictureLoad( loadImageFromStorage ());
-                }
-            }
-        }
-
-
-
-
-
         return rootView;
 
     }
@@ -104,15 +93,38 @@ public class StorageFragment extends Fragment {
     }
 
     private void saveToInternalStorage(Lieux resto){
-        ArrayList<Lieux> data = new ArrayList<>();
-        data.add(resto);
+        //Faire un fichier par resto ?
+        Log.d("a","paaseSasve");
 
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME,restoName);
-        contentValues.put(MediaStore.MediaColumns.MIME_TYPE,"resto/*");
-        contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH,directoryName);
-        contentValues.put(MediaStore.Images.Media.MIME_TYPE="image/bin");
-        getActivity().getContentResolver().insert(MediaStore)
+        String filecontent ="";
+         filecontent = resto.toString().trim();
+         String filename = "data";
+
+        FileOutputStream fos = null;
+
+         File myExternalFile = new File(directoryName,filename);
+
+        Log.d("a","dirname"+directoryName);
+
+
+        try{
+            Log.d("a","passetryWrite");
+
+            fos = new FileOutputStream(myExternalFile);
+             fos.write(filecontent.getBytes(StandardCharsets.UTF_8));
+
+             Toast.makeText(getContext(),"file Ajouter",Toast.LENGTH_LONG).show();
+
+            Log.d("a","Finito ");
+
+
+
+
+        } catch (FileNotFoundException e) {
+             e.printStackTrace();
+         } catch (IOException e) {
+             e.printStackTrace();
+         }
 
 
     }

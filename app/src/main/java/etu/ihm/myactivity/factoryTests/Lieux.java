@@ -94,4 +94,18 @@ public abstract class Lieux implements Serializable {
     public void setPriceLevel(Integer priceLevel) {
         this.priceLevel = priceLevel;
     }
+
+    @Override
+    public String toString() {
+        return "Lieux{" +
+                "name='" + name + '\'' +
+                ", placeID='" + placeID + '\'' +
+                ", openNow=" + openNow +
+                ", picture='" + picture + '\'' +
+                ", rate=" + rate +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", priceLevel=" + priceLevel +
+                '}';
+    }
 }
