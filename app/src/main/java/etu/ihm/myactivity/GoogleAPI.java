@@ -58,6 +58,15 @@ public class  GoogleAPI extends Thread {
     private String URL = "";
 
 
+    /**
+     * PHOTOOOOOO
+     * https://maps.googleapis.com/maps/api/place/photo
+     *   ?maxwidth=400
+     *   &photo_reference=Aap_uEBCWua9-el2nF6NhMZR8HGRFJA-3OL_Z-aPwdKdHN8Xpqik96Nrm_bBCAXoIuSkEuOoHsmrDmlsJGyC1UbrAHYZQN-gyP-ZUrUkhSFvdRNwDMnibt1V65hEYPQcOy1Zsit87pL_xvZ1i3B_L1WLkWjQk87EIQlgQSNix7lBvKnK3lli
+     *   &key=AIzaSyAaSrozKCZYHXJD4F5zynJxebwsvf5nA9I
+     */
+
+
     //https://maps.googleapis.com/maps/api/place/
     // nearbysearch/json?keyword=cruise&
     // location=43.6153531%2C7.0719072
@@ -186,14 +195,13 @@ public class  GoogleAPI extends Thread {
                 PlacesApiParser.ResultsDTO tmp = resultsDTOList.get(i);
                 Log.d("info",tmp.toString());
                 if(tmp.getOpening_hours()==null){continue;}
-                Bitmap bitmap = null; //TRAITER POUR CHAQUE TMP la valeur de ce bitmap, stocker String reference ?
 
                 if(tmp.getTypes().contains("bar")) {
-                    resto = restaurationFactory.build(LieuxFactory.BAR, tmp.getName(), tmp.getPlace_id(), tmp.getOpening_hours().getOpen_now(), bitmap, tmp.getRating(), tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat(), tmp.getPrice_level());
+                    resto = restaurationFactory.build(LieuxFactory.BAR, tmp.getName(), tmp.getPlace_id(), tmp.getOpening_hours().getOpen_now(), tmp.getPhotos().get(0).getPhoto_reference(), tmp.getRating(), tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat(), tmp.getPrice_level());
                     Log.d("a", tmp.getName() + " C'est un restoBar ");
                 }
                 else{
-                    resto = restaurationFactory.build(LieuxFactory.RESTAURANT, tmp.getName(), tmp.getPlace_id(), tmp.getOpening_hours().getOpen_now(), bitmap, tmp.getRating(), tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat(), tmp.getPrice_level());
+                    resto = restaurationFactory.build(LieuxFactory.RESTAURANT, tmp.getName(), tmp.getPlace_id(), tmp.getOpening_hours().getOpen_now(), tmp.getPhotos().get(0).getPhoto_reference(), tmp.getRating(), tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat(), tmp.getPrice_level());
                     Log.d("a", tmp.getName() + " C'est un vrai resto ");
 
                 }
