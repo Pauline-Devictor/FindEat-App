@@ -1,45 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <Button
         android:id="@+id/buttonSave"
-        android:layout_width="0dp"
-        android:layout_height="61dp"
-        android:layout_marginStart="61dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="61dp"
+        android:layout_width="97dp"
+        android:layout_height="326dp"
         android:text="Save"
-        app:layout_constraintEnd_toStartOf="@+id/buttonLoad"
+        tools:layout_editor_absoluteX="35dp"
+        tools:layout_editor_absoluteY="50dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 
     <Button
         android:id="@+id/buttonLoad"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="49dp"
-        android:layout_marginEnd="63dp"
-        android:layout_marginBottom="63dp"
+        android:layout_width="96dp"
+        android:layout_height="99dp"
         android:text="Load"
-        app:layout_constraintBottom_toTopOf="@+id/favorisText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonSave"
+        tools:layout_editor_absoluteX="213dp"
+        tools:layout_editor_absoluteY="50dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/favorisText"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="69dp"
-        android:layout_marginEnd="69dp"
-        android:layout_marginBottom="321dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+
+    <ListView
+        android:layout_width="411dp"
+        android:layout_height="326dp"
+        tools:layout_editor_absoluteY="395dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLoad" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -41,7 +41,7 @@ public class StorageFragment extends Fragment {
     private IStorageActivity activity;
     private Button buttonSave;
     private Button buttonLoad;
-    private TextView textView;
+    //private TextView textView;
     private Lieux restaurant;
     private String directoryName;
     private static final String filename="data.dat";
@@ -64,7 +64,7 @@ public class StorageFragment extends Fragment {
 
         buttonLoad = rootView.findViewById(R.id.buttonLoad);
         buttonSave = rootView.findViewById(R.id.buttonSave);
-        textView = rootView.findViewById(R.id.favorisText);
+        //textView = rootView.findViewById(R.id.favorisText);
 
         mesRestaurantsFavoris = new HashSet<>();
 
@@ -114,7 +114,7 @@ public class StorageFragment extends Fragment {
 
     private void loadRestoFromStorage() {
 
-        textView.setText("");
+        //textView.setText("");
         Log.d("a", "paaseLOAD");
 
         File file = new File(directoryName, filename);
@@ -146,7 +146,7 @@ public class StorageFragment extends Fragment {
         catch (ClassNotFoundException e) { e.printStackTrace(); }
         catch (IOException e) { e.printStackTrace(); }
 
-        textView.setText(nomToutResto);
+        //textView.setText(nomToutResto);
 
         Toast.makeText(getContext(), "Favoris chargés", Toast.LENGTH_LONG).show();
 
