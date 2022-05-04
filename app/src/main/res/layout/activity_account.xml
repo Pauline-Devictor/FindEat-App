@@ -14,25 +14,25 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginStart="116dp"
-        android:drawableTop="@drawable/ic_accountpage"
-        android:text="Compte"
+        android:text="@string/account"
         android:textSize="50sp"
         android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteY="0dp"
+        app:drawableTopCompat="@drawable/ic_accountpage" />
 
     <Button
         android:id="@+id/buttonNotif"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="Voir vos commentaires"
-        android:textSize="20dp" />
+        android:text="@string/see_your_comments"
+        android:textSize="20sp" />
     
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

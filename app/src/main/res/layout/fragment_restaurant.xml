@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/fragment_restaurant"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_restaurant"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EAE7D1"
     tools:context=".restaurants.RestaurantFragment">
-
 
 
     <TextView
@@ -16,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
-        android:text="Name"
+        tools:text="Name"
         android:textColor="#9F0E0E"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,14 +37,15 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/restaurantName"
-        app:srcCompat="@drawable/mockrestaurant" />
+        app:srcCompat="@drawable/mockrestaurant"
+        android:contentDescription="@string/photo_of_the_restaurant" />
 
     <TextView
         android:id="@+id/restaurantGrade"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="260dp"
-        android:text="Grade"
+        android:text="@string/grade"
         android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="260dp"
-        android:text="Distance"
+        android:text="@string/distance"
         android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,46 +68,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/favoriteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
-        android:layout_marginBottom="5dp"
-        android:layout_weight="1"
-        android:backgroundTint="#1B90CF"
-        android:text="Mettre en favori"
-        app:layout_constraintBottom_toTopOf="@+id/restaurantDescription"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/favoriteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#1B90CF"
+            android:text="@string/add_to_favorites"
+            app:layout_constraintTop_toBottomOf="@id/restaurantDistance"
+            android:layout_marginTop="40dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="TextContrastCheck" />
 
-    <Button
-        android:id="@+id/commentsButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="26dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_weight="1"
-        android:backgroundTint="#4CAF50"
-        android:text="Commentaires"
-        app:layout_constraintBottom_toTopOf="@+id/restaurantDescription"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="240" />
+        <Button
+            android:id="@+id/commentsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#4CAF50"
+            android:text="@string/comments"
+            app:layout_constraintTop_toBottomOf="@id/favoriteButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="TextContrastCheck" />
 
     <TextView
         android:id="@+id/restaurantDescription"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="0dp"
         android:layout_margin="20dp"
-        android:ems="10"
         android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:text="Description du restaurant : Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
         android:scrollbars="vertical"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/showOnMapButton"
-        tools:ignore="MissingConstraints"
+        tools:text="Description du restaurant : Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/commentsButton"
+        app:layout_constraintBottom_toTopOf="@id/showOnMapButton"
         tools:layout_editor_absoluteX="20dp" />
 
     <Button
@@ -116,10 +109,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:layout_weight="1"
         android:backgroundTint="#D1B21D"
-        android:text="Voir sur la carte"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:text="@string/see_on_map"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="TextContrastCheck"
+        tools:layout_editor_absoluteX="10dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

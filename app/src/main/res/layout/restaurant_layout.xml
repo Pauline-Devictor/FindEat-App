@@ -1,7 +1,7 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="90dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal">
 
     <!--<ImageView
@@ -14,9 +14,9 @@
         android:id="@+id/restaurantName"
         android:layout_width="227dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:gravity="center_vertical"
-        android:text="Nom du restaurant"
+        tools:text="Nom du restaurant"
         android:textSize="35sp" />
 
     <TextView
@@ -24,14 +24,14 @@
         android:layout_width="85dp"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="x/5"
+        tools:text="3.2/5"
         android:textSize="30sp" />
 
     <TextView
         android:id="@+id/restaurantDistance"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="xkm"
+        tools:text="5 km"
         android:gravity="center"
         android:textSize="30sp" />
 

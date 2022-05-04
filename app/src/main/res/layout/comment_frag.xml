@@ -10,7 +10,7 @@
         android:id="@+id/textView"
         android:layout_width="345dp"
         android:layout_height="70dp"
-        android:text="Ceci est un commentaire"
+        android:text="@string/this_is_a_comment"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="31dp"
         tools:ignore="MissingConstraints" />
@@ -24,5 +24,5 @@
         app:icon="@android:drawable/ic_delete"
         tools:layout_editor_absoluteX="361dp"
         tools:layout_editor_absoluteY="47dp"
-        tools:ignore="MissingConstraints"/>
+        tools:ignore="HardcodedText,MissingConstraints"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

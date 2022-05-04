@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">"FindEat"</string>
+    <string name="account">Compte</string>
+    <string name="see_your_comments">Voir vos commentaires</string>
+    <string name="input">Saisie</string>
+    <string name="submit">submit</string>
+    <string name="favorites">Favoris</string>
+    <string name="locate">locate</string>
+    <string name="this_is_a_comment">Ceci est un commentaire</string>
+    <string name="type_in_a_restaurant_name">Entrez un nom de restaurant</string>
+    <string name="ok">OK</string>
+    <string name="add_to_favorites">Mettre en favori</string>
+    <string name="comments">Commentaires</string>
+    <string name="see_on_map">Voir sur la carte</string>
+    <string name="photo_of_the_restaurant">Photo du restaurant</string>
+    <string name="grade">Grade</string>
+    <string name="distance">Distance</string>
+    <string name="_4_5_5">+4.5/5</string>
 </resources>
