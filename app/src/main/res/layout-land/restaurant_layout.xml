@@ -1,0 +1,38 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:orientation="horizontal">
+
+    <!--<ImageView
+        android:id="@+id/restaurantPicture"
+        android:layout_width="90dp"
+        android:layout_height="90dp" />-->
+
+
+    <TextView
+        android:id="@+id/restaurantName"
+        android:layout_width="227dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:gravity="center_vertical"
+        android:text="Nom du restaurant"
+        android:textSize="35sp" />
+
+    <TextView
+        android:id="@+id/restaurantGrade"
+        android:layout_width="85dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="x/5"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/restaurantDistance"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="xkm"
+        android:gravity="center"
+        android:textSize="30sp" />
+
+</LinearLayout>
