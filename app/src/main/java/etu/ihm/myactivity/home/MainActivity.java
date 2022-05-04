@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.os.Looper;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.widget.Toast;
 
@@ -67,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
     private RestaurantListFragment restaurantListFragment;
     private MapFragment mapFragment;
     private FilterFragment filterFragment;
-    private VideFragment videFragment;
 
     private StorageFragment storageFragment;
 
@@ -85,21 +86,22 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d(TAG, "creation of MainActivity");
+
         setContentView(R.layout.activity_main);
+
+        Log.d(TAG, "content view set");
 
         restaurantFragment = new RestaurantFragment();
         restaurantListFragment = new RestaurantListFragment();
         mapFragment = new MapFragment();
         filterFragment = new FilterFragment();
-        videFragment = new VideFragment();
-        storageFragment = new StorageFragment();
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         retrieveLocation();
 
         instance = this;
-
-        Log.d(TAG, "creation of MainActivity");
 
         restaurantsList = new RestaurantsList();
 
@@ -172,11 +174,6 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         args.putDouble("userLongitude", userLongitude);
         mapFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, filterFragment).addToBackStack(null).commit();
-    }
-
-    private void displayVide(){
-        Toast.makeText(getApplicationContext(),"displaying void", Toast.LENGTH_SHORT).show();
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, videFragment).addToBackStack(null).commit();
     }
 
     @Override
