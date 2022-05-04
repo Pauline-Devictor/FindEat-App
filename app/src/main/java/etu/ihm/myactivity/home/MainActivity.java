@@ -84,7 +84,11 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d(TAG, "creation of MainActivity");
+
         setContentView(R.layout.activity_main);
+
+        Log.d(TAG, "content view set");
 
         restaurantFragment = new RestaurantFragment();
         restaurantListFragment = new RestaurantListFragment();
@@ -96,8 +100,6 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         retrieveLocation();
 
         instance = this;
-
-        Log.d(TAG, "creation of MainActivity");
 
         restaurantsList = new RestaurantsList();
 
