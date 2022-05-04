@@ -45,6 +45,8 @@ import java.util.ArrayList;
 import etu.ihm.myactivity.GoogleAPI;
 import etu.ihm.myactivity.LocationGPS;
 import etu.ihm.myactivity.favorites.Favorites;
+import etu.ihm.myactivity.favorites.IStorageActivity;
+import etu.ihm.myactivity.favorites.StorageFragment;
 import etu.ihm.myactivity.map.MapFragment;
 import etu.ihm.myactivity.restaurants.DataBase;
 import etu.ihm.myactivity.map.Map;
@@ -55,7 +57,7 @@ import etu.ihm.myactivity.restaurants.FiltreEnum;
 import etu.ihm.myactivity.restaurants.RestaurantFragment;
 
 
-public class MainActivity extends AppCompatActivity implements RestaurantListFragment.OnRestaurantClickedListener, RestaurantListFragment.OnFilterClickedListener, FilterFragment.OnSubmitListener {
+public class MainActivity extends AppCompatActivity implements RestaurantListFragment.OnRestaurantClickedListener, RestaurantListFragment.OnFilterClickedListener, FilterFragment.OnSubmitListener, IStorageActivity {
     private final String TAG = "polytech-" + getClass().getSimpleName();
     public static int REQUEST_LOCATION_CODE = 1001;
 
@@ -66,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
     private MapFragment mapFragment;
     private FilterFragment filterFragment;
     private VideFragment videFragment;
+
+    private StorageFragment storageFragment;
 
     public RestaurantsList restaurantsList;
 
@@ -88,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         mapFragment = new MapFragment();
         filterFragment = new FilterFragment();
         videFragment = new VideFragment();
+        storageFragment = new StorageFragment();
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         retrieveLocation();
@@ -114,7 +119,8 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.favoris:
-                        startActivity(new Intent(getApplicationContext(), Favorites.class));
+                        //startActivity(new Intent(getApplicationContext(), Favorites.class));
+                        displayFavoris();
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.compte:
@@ -138,6 +144,10 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         args.putSerializable("restoList", (Serializable) restaurantsList);
         restaurantListFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantListFragment).commit();
+    }
+
+    private void displayFavoris(){
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, storageFragment).commit();
     }
 
     private void displayRestaurant(int position){
