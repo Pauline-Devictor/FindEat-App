@@ -11,7 +11,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,7 +48,14 @@ public class StorageFragment extends Fragment {
     private Lieux restaurant;
     private String directoryName;
     private static final String filename="data.dat";
-    private Set<Lieux> mesRestaurantsFavoris;
+
+    private ArrayList<Lieux> mesRestaurantsFavoris;
+
+
+    private ArrayList<String> nomFavoris;
+    private ArrayAdapter<String> adapter;
+
+    private ListView listView;
 
     public StorageFragment() { }
 
@@ -65,11 +75,19 @@ public class StorageFragment extends Fragment {
         buttonLoad = rootView.findViewById(R.id.buttonLoad);
         buttonSave = rootView.findViewById(R.id.buttonSave);
         //textView = rootView.findViewById(R.id.favorisText);
+        listView =rootView.findViewById(R.id.listFavoris);
 
-        mesRestaurantsFavoris = new HashSet<>();
+        mesRestaurantsFavoris = new ArrayList<>();
+        nomFavoris = new ArrayList<>();
+        nomFavoris.add("TSTTTTTT");
+        nomFavoris.add("TSTTTTTT");
+        nomFavoris.add("TSTTTTTT");
+
+        adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, nomFavoris);
+        listView.setAdapter(adapter);
 
 
-
+        //listView.setAdapter(adapter);
         //loadRestoFromStorage();
 
 
@@ -114,6 +132,8 @@ public class StorageFragment extends Fragment {
 
     private void loadRestoFromStorage() {
 
+        nomFavoris.clear();
+
         //textView.setText("");
         Log.d("a", "paaseLOAD");
 
@@ -127,7 +147,7 @@ public class StorageFragment extends Fragment {
         try {
             FileInputStream file_input_stream = new FileInputStream(file);
             ObjectInputStream object_input_stream = new ObjectInputStream(file_input_stream);
-             mesRestaurantsFavoris = (Set<Lieux>) object_input_stream.readObject();
+             mesRestaurantsFavoris = (ArrayList<Lieux>) object_input_stream.readObject();
             object_input_stream.close();
             file_input_stream.close();
 
@@ -136,6 +156,7 @@ public class StorageFragment extends Fragment {
             for(Lieux l : mesRestaurantsFavoris){
                 Log.d("a",l.toString());
                 nomToutResto+=" "+l.getName();
+                nomFavoris.add(l.getName());
             }
 
             Log.d("a", "fin fun");
@@ -147,6 +168,8 @@ public class StorageFragment extends Fragment {
         catch (IOException e) { e.printStackTrace(); }
 
         //textView.setText(nomToutResto);
+
+        //adapter.notifyDataSetChanged();
 
         Toast.makeText(getContext(), "Favoris chargés", Toast.LENGTH_LONG).show();
 
