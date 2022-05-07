@@ -159,6 +159,8 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
     private void displayRestaurant(int position){
         Bundle args = new Bundle();
         args.putSerializable("resto", (Serializable) restaurantsList.getRestaurant(position));
+        args.putDouble("lat",this.userLatitude);
+        args.putDouble("long",this.userLongitude);
         restaurantFragment = new RestaurantFragment();
         restaurantFragment.setArguments(args);
         if (this.orientation == Configuration.ORIENTATION_PORTRAIT) {

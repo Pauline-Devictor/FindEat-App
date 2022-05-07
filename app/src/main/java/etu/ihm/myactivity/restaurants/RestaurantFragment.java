@@ -2,6 +2,7 @@ package etu.ihm.myactivity.restaurants;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.icu.text.DecimalFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,10 +17,17 @@ import etu.ihm.myactivity.home.MainActivity;
 import etu.ihm.myactivity.home.RestaurantsList;
 
 import androidx.fragment.app.Fragment;
+
+import org.osmdroid.util.GeoPoint;
 //import android.app.Fragment;
 
 public class RestaurantFragment extends Fragment {
     private final String TAG = "polytech-" + getClass().getSimpleName();
+
+    private double userLatitude;
+    private double userLongitude;
+    private double restaurantLatitude;
+    private double restaurantLongitude;
 
     private Button putInFavoritesButton;
     private Button seeCommentsButton;
@@ -36,9 +44,19 @@ public class RestaurantFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_restaurant, container, false);
 
+        Log.d(TAG,"RestaurantFragment created");
 
         //int position = getArguments().getInt("position");
         restaurant = (Lieux) getArguments().getSerializable("resto");
+
+        userLatitude = getArguments().getDouble("lat");
+        Log.d(TAG,"userLat : "+userLatitude);
+        userLongitude  = getArguments().getDouble("long");
+        Log.d(TAG,"userLong : "+userLongitude);
+        restaurantLatitude = this.restaurant.getLatitude();
+        Log.d(TAG,"restoLat : "+restaurantLatitude);
+        restaurantLongitude = this.restaurant.getLongitude();
+        Log.d(TAG,"restoLong : "+restaurantLongitude);
 
 
         putInFavoritesButton = rootView.findViewById(R.id.favoriteButton);
@@ -71,12 +89,24 @@ public class RestaurantFragment extends Fragment {
         name.setText(restaurant.getName());
 
         TextView grade = rootView.findViewById(R.id.restaurantGrade);
-        grade.setText(""+restaurant.getRate()+"/5");
+        grade.setText("Note : "+restaurant.getRate()+"/5");
 
         TextView distance = rootView.findViewById(R.id.restaurantDistance);
-        distance.setText("xkm");
+        DecimalFormat df = new DecimalFormat("0.00");
+        distance.setText("Distance : "+df.format(distance()) + "km");
 
         return rootView;
+    }
+
+    /**
+     * @return distance between the user and the restaurant in km
+     */
+    private double distance(){
+        GeoPoint userPoint = new GeoPoint(userLatitude,userLongitude);
+        GeoPoint restoPoint = new GeoPoint(restaurantLatitude,restaurantLongitude);
+        double res = userPoint.distanceToAsDouble(restoPoint);
+        Log.d(TAG,"distance to the user in m : "+ res);
+        return res/1000.;
     }
 
 }
