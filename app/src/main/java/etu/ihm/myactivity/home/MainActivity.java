@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
 
     private StorageFragment storageFragment;
 
+    private int orientation;
+
     public RestaurantsList restaurantsList;
 
     private double userLatitude = 0;
@@ -97,6 +99,9 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         restaurantListFragment = new RestaurantListFragment();
         mapFragment = new MapFragment();
         filterFragment = new FilterFragment();
+
+        this.orientation = getResources().getConfiguration().orientation;
+
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         retrieveLocation();
@@ -133,7 +138,6 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
                 return false;
             }
         });
-
         displayRestaurantsList();
     }
 
@@ -155,8 +159,13 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
     private void displayRestaurant(int position){
         Bundle args = new Bundle();
         args.putSerializable("resto", (Serializable) restaurantsList.getRestaurant(position));
+        restaurantFragment = new RestaurantFragment();
         restaurantFragment.setArguments(args);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).addToBackStack(null).commit();
+        if (this.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).addToBackStack(null).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.sideInfo, restaurantFragment).commit();
+        }
     }
 
     private void displayMap(){

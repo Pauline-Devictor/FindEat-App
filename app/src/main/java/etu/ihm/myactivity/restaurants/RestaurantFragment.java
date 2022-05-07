@@ -1,6 +1,7 @@
 package etu.ihm.myactivity.restaurants;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,10 +21,9 @@ import androidx.fragment.app.Fragment;
 public class RestaurantFragment extends Fragment {
     private final String TAG = "polytech-" + getClass().getSimpleName();
 
-    private Button back;
-    private Button putInFavorites;
-    private Button seeComments;
-    private Button showOnMap;
+    private Button putInFavoritesButton;
+    private Button seeCommentsButton;
+    private Button showOnMapButton;
 
     private Lieux restaurant;
 
@@ -41,27 +41,31 @@ public class RestaurantFragment extends Fragment {
         restaurant = (Lieux) getArguments().getSerializable("resto");
 
 
-
-        rootView.findViewById(R.id.favoriteButton).setOnClickListener(new View.OnClickListener() {
+        putInFavoritesButton = rootView.findViewById(R.id.favoriteButton);
+        putInFavoritesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //put in favorites
             }
         });
 
-        rootView.findViewById(R.id.commentsButton).setOnClickListener(new View.OnClickListener() {
+        seeCommentsButton = rootView.findViewById(R.id.commentsButton);
+        seeCommentsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //see comments
             }
         });
 
-        rootView.findViewById(R.id.showOnMapButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //see on map
-            }
-        });
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            showOnMapButton = rootView.findViewById(R.id.showOnMapButton);
+            showOnMapButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //see on map
+                }
+            });
+        }
 
         TextView name = rootView.findViewById(R.id.restaurantName);
         name.setText(restaurant.getName());
@@ -71,10 +75,6 @@ public class RestaurantFragment extends Fragment {
 
         TextView distance = rootView.findViewById(R.id.restaurantDistance);
         distance.setText("xkm");
-
-        TextView description = rootView.findViewById(R.id.restaurantDescription);
-        //description.setText(restaurant.getDescription());
-
 
         return rootView;
     }

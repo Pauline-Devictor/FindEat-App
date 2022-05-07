@@ -2,6 +2,7 @@ package etu.ihm.myactivity.home;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -72,20 +73,22 @@ public class RestaurantListFragment extends Fragment implements IListner, Observ
 
         restaurantsAdapter.addListener(this);
 
-        rootView.findViewById(R.id.over4).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //clicked on filter over 4
-                filterController.filterOver4();
-            }
-        });
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            rootView.findViewById(R.id.over4).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //clicked on filter over 4
+                    filterController.filterOver4();
+                }
+            });
 
-        rootView.findViewById(R.id.filter).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                filterCallback.onFilterClicked();
-            }
-        });
+            rootView.findViewById(R.id.filter).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    filterCallback.onFilterClicked();
+                }
+            });
+        }
 
         return rootView;
 
@@ -120,8 +123,6 @@ public class RestaurantListFragment extends Fragment implements IListner, Observ
 
     @Override
     public void onClickRestaurant(int position) {
-        Toast toast = Toast.makeText(getActivity(), "restaurant " + position, Toast.LENGTH_SHORT);
-        toast.show();
         mCallback.onRestaurantClicked(position);
     }
 
