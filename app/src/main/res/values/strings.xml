@@ -15,5 +15,7 @@
     <string name="photo_of_the_restaurant">Photo du restaurant</string>
     <string name="grade">Grade</string>
     <string name="distance">Distance</string>
-    <string name="_4_5_5">+4.5/5</string>
+    <string name="distanceButton">Plus proches</string>
+    <string name="gradeButton">Mieux notés</string>
+    <string name="filterButton">Filtrer</string>
 </resources>

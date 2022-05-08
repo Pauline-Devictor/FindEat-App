@@ -5,11 +5,34 @@ import android.util.Log;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import etu.ihm.myactivity.restaurants.Commentaire;
 
 public abstract class Lieux implements Serializable {
     private final String TAG = "polytech-" + getClass().getSimpleName();
+
+    public static final Comparator<Lieux> DISTANCE_COMPARATOR = new Comparator<Lieux>() {
+        @Override
+        public int compare(Lieux l1, Lieux l2) {
+            if (l1.getDistance()>l2.getDistance())
+                return 1;
+            if (l1.getDistance()<l2.getDistance())
+                return -1;
+            return 0;
+        }
+    };
+
+    public static final Comparator<Lieux> GRADE_COMPARATOR = new Comparator<Lieux>() {
+        @Override
+        public int compare(Lieux l1, Lieux l2) {
+            if (l1.getRate()>l2.getRate())
+                return -1;
+            if (l1.getRate()<l2.getRate())
+                return 1;
+            return 0;
+        }
+    };
 
     protected String name;
     protected String placeID;

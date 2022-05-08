@@ -17,9 +17,12 @@ public class FilterController {
         //Log.d(TAG,"controller created");
     }
 
-    public void filterOver4(){
-        Log.d(TAG,"filter over 4");
-        model.filterOver4();
+    public void sortByDistance(){
+        model.sortByDistance();
+    }
+
+    public void sortByGrade(){
+        model.sortByGrade();
     }
 
 }

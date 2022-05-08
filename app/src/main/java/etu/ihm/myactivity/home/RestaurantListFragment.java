@@ -74,11 +74,17 @@ public class RestaurantListFragment extends Fragment implements IListner, Observ
         restaurantsAdapter.addListener(this);
 
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            rootView.findViewById(R.id.over4).setOnClickListener(new View.OnClickListener() {
+            rootView.findViewById(R.id.sortDistance).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //clicked on filter over 4
-                    filterController.filterOver4();
+                    filterController.sortByDistance();
+                }
+            });
+
+            rootView.findViewById(R.id.sortGrade).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    filterController.sortByGrade();
                 }
             });
 

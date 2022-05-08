@@ -93,7 +93,7 @@ public class RestaurantFragment extends Fragment {
 
         TextView distance = rootView.findViewById(R.id.restaurantDistance);
         DecimalFormat df = new DecimalFormat("0.00");
-        distance.setText("Distance : "+df.format(distance()) + "km");
+        distance.setText(String.format("Distance : %.1fkm", restaurant.getDistance()));
 
         return rootView;
     }
