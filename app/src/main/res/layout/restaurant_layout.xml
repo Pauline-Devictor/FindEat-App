@@ -12,7 +12,8 @@
 
     <TextView
         android:id="@+id/restaurantName"
-        android:layout_width="227dp"
+        android:layout_width="0px"
+        android:layout_weight="50"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
         android:gravity="center_vertical"
@@ -20,19 +21,22 @@
         android:textSize="35sp" />
 
     <TextView
-        android:id="@+id/restaurantGrade"
-        android:layout_width="85dp"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        tools:text="3.2/5"
-        android:textSize="30sp" />
-
-    <TextView
         android:id="@+id/restaurantDistance"
-        android:layout_width="match_parent"
+        android:layout_width="0px"
+        android:layout_weight="25"
         android:layout_height="match_parent"
         tools:text="5 km"
         android:gravity="center"
         android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/restaurantGrade"
+        android:layout_width="0px"
+        android:layout_weight="25"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        tools:text="3.2/5"
+        android:textSize="30sp"
+        android:layout_marginRight="10dp"/>
 
 </LinearLayout>
