@@ -1,6 +1,7 @@
 package etu.ihm.myactivity.factoryTests;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import java.util.ArrayList;
 import etu.ihm.myactivity.restaurants.Commentaire;
 
 public abstract class Lieux implements Serializable {
+    private final String TAG = "polytech-" + getClass().getSimpleName();
+
     protected String name;
     protected String placeID;
     protected boolean openNow;
@@ -16,10 +19,11 @@ public abstract class Lieux implements Serializable {
     protected double longitude;
     protected double latitude;
     protected Integer priceLevel;
+    protected double distance;
 
 
 
-    public Lieux(String name, String placeID, boolean openNow, String picture, double rate, double longitude, double latitude, Integer priceLevel) {
+    public Lieux(String name, String placeID, boolean openNow, String picture, double rate, double longitude, double latitude, Integer priceLevel, double distance) {
         this.name = name;
         this.placeID = placeID;
         this.openNow = openNow;
@@ -28,6 +32,7 @@ public abstract class Lieux implements Serializable {
         this.longitude = longitude;
         this.latitude = latitude;
         this.priceLevel = priceLevel;
+        this.distance = distance;
     }
 
 
@@ -95,6 +100,14 @@ public abstract class Lieux implements Serializable {
         this.priceLevel = priceLevel;
     }
 
+    public double getDistance(){
+        return this.distance;
+    }
+
+    public void setDistance(double distance){
+        this.distance = distance;
+    }
+
     @Override
     public String toString() {
         return "Lieux{" +
@@ -106,6 +119,7 @@ public abstract class Lieux implements Serializable {
                 ", longitude=" + longitude +
                 ", latitude=" + latitude +
                 ", priceLevel=" + priceLevel +
+                ", distance=" + distance +
                 '}';
     }
 }

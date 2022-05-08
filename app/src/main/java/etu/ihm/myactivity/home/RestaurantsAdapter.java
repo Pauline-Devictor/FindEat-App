@@ -61,11 +61,13 @@ public class RestaurantsAdapter extends BaseAdapter {
         //(2) : Récupération des TextView de notre layout
         TextView tvName = layoutItem.findViewById(R.id.restaurantName);
         TextView tvGrade = layoutItem.findViewById(R.id.restaurantGrade);
+        TextView tvDistance = layoutItem.findViewById(R.id.restaurantDistance);
         //ImageView restaurantPicture = layoutItem.findViewById(R.id.restaurantPicture);
 
         //(3) : Renseignement des valeurs
         tvName.setText(model.getRestaurant(position).getName());
         tvGrade.setText("" + model.getRestaurant(position).getRate() + "/5");
+        tvDistance.setText(String.format("%.2f km", model.getRestaurant(position).getDistance()));
         //restaurantPicture.setImageBitmap(RestaurantsList.get(position).getPicture());
 
         layoutItem.setOnClickListener(click -> {

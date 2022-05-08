@@ -95,7 +95,7 @@ public class StorageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d("a", "CLICK");
-                restaurant = new Restaurants("test", "id", true, null, 5.0, 55, 44, 2);
+                restaurant = new Restaurants("test", "id", true, null, 5.0, 55, 44, 2,3);
                 if (restaurant != null) {
                     if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                         ActivityCompat.requestPermissions(getActivity(),

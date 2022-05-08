@@ -1,9 +1,12 @@
 package etu.ihm.myactivity;
 
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.util.Log;
 
 import com.google.gson.Gson;
+
+import org.osmdroid.util.GeoPoint;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -197,13 +200,12 @@ public class  GoogleAPI extends Thread {
                 if(tmp.getOpening_hours()==null){continue;}
 
                 if(tmp.getTypes().contains("bar")) {
-                    resto = restaurationFactory.build(LieuxFactory.BAR, tmp.getName(), tmp.getPlace_id(), tmp.getOpening_hours().getOpen_now(), tmp.getPhotos().get(0).getPhoto_reference(), tmp.getRating(), tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat(), tmp.getPrice_level());
+                    resto = restaurationFactory.build(LieuxFactory.BAR, tmp.getName(), tmp.getPlace_id(), tmp.getOpening_hours().getOpen_now(), tmp.getPhotos().get(0).getPhoto_reference(), tmp.getRating(), tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat(), tmp.getPrice_level(), distance(tmp.getGeometry().getLocation().getLat(),tmp.getGeometry().getLocation().getLng()));
                     Log.d("a", tmp.getName() + " C'est un restoBar ");
                 }
                 else{
-                    resto = restaurationFactory.build(LieuxFactory.RESTAURANT, tmp.getName(), tmp.getPlace_id(), tmp.getOpening_hours().getOpen_now(), tmp.getPhotos().get(0).getPhoto_reference(), tmp.getRating(), tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat(), tmp.getPrice_level());
+                    resto = restaurationFactory.build(LieuxFactory.RESTAURANT, tmp.getName(), tmp.getPlace_id(), tmp.getOpening_hours().getOpen_now(), tmp.getPhotos().get(0).getPhoto_reference(), tmp.getRating(), tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat(), tmp.getPrice_level(), distance(tmp.getGeometry().getLocation().getLat(),tmp.getGeometry().getLocation().getLng()));
                     Log.d("a", tmp.getName() + " C'est un vrai resto ");
-
                 }
                 restaurantsList.add(resto);
                 Log.d("a","on a add un resto" + resto.getName());
@@ -213,6 +215,16 @@ public class  GoogleAPI extends Thread {
         else{
             Log.d("a","AUCUN RESTO TROUVE");
         }
+    }
+
+    /**
+     * Distance betweeen user and restaurant
+     * @return distance in km
+     */
+    private double distance(double restoLat, double restoLong){
+        GeoPoint userPoint = new GeoPoint(this.location.getLatitude(),this.location.getLongitude());
+        GeoPoint restoPoint = new GeoPoint(restoLat, restoLong);
+        return userPoint.distanceToAsDouble(restoPoint)/1000.;
     }
 
 }
