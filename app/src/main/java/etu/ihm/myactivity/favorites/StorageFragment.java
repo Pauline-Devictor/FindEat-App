@@ -62,7 +62,7 @@ public class StorageFragment extends Fragment {
 
         Log.d("a","on va créer adapteur");
 
-        adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, nomFavoris);
+        adapter = new ArrayAdapter<String>(activity, R.layout.favorite_text_list, nomFavoris);
 
         try{
             if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
