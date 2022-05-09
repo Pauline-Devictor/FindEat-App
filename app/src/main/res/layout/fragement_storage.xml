@@ -21,12 +21,6 @@
 
 
 
-    <Button
-        android:id="@+id/buttonLoad"
-        android:layout_width="100dp"
-        android:layout_height="80dp"
-        android:text="Load"
-        />
 
 
 

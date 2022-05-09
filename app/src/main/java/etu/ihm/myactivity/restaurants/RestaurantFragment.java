@@ -1,6 +1,8 @@
 package etu.ihm.myactivity.restaurants;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.icu.text.DecimalFormat;
 import android.os.Bundle;
@@ -13,9 +15,13 @@ import android.widget.TextView;
 
 import etu.ihm.myactivity.R;
 import etu.ihm.myactivity.factoryTests.Lieux;
+import etu.ihm.myactivity.favorites.IStorageActivity;
+import etu.ihm.myactivity.favorites.StorageFragment;
 import etu.ihm.myactivity.home.MainActivity;
 import etu.ihm.myactivity.home.RestaurantsList;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import org.osmdroid.util.GeoPoint;
@@ -63,7 +69,24 @@ public class RestaurantFragment extends Fragment {
         putInFavoritesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //put in favorites
+                //Faudrait checker si il est en favori ou pas pour savoir des le debut quel texte mettre
+                Log.d(TAG,"On va me put en favori");
+
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                    ActivityCompat.requestPermissions(getActivity(),
+                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            IStorageActivity.REQUEST_MEDIA_WRITE);
+                }
+                    else{
+                        Log.d(TAG,"permission ok");
+                    StorageFragment storageFragment = MainActivity.getStorageFragment();
+                    Log.d(TAG,"on a get storageFragment");
+                    storageFragment.addInFavorite(restaurant);
+                }
+
+                putInFavoritesButton.setText("En favori");
+                Log.d(TAG,"Fin ajout favori depuis restoFragment");
+
             }
         });
 

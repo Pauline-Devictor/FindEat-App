@@ -43,56 +43,54 @@ import etu.ihm.myactivity.home.MainActivity;
 public class StorageFragment extends Fragment {
     private IStorageActivity activity;
     private Button buttonSave;
-    private Button buttonLoad;
-    //private TextView textView;
     private Lieux restaurant;
     private String directoryName;
     private static final String filename="data.dat";
 
     private ArrayList<Lieux> mesRestaurantsFavoris;
-
-
     private ArrayList<String> nomFavoris;
     private ArrayAdapter<String> adapter;
-
     private ListView listView;
 
-    public StorageFragment() {
-        Log.d("a","constructeur fragment favori");
+    public StorageFragment(Activity activity) {
+        mesRestaurantsFavoris = new ArrayList<>();
+        nomFavoris = new ArrayList<>();
+        Log.d("a","constructeur fragment favori on va les charger");
+
+        ContextWrapper contextWrapper = new ContextWrapper(activity);
+        directoryName = contextWrapper.getDir("RestoDir", ContextWrapper.MODE_PRIVATE).getPath(); //chemin par defaut fichier
+
+        Log.d("a","on va créer adapteur");
+
+        adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, nomFavoris);
+
+        try{
+            if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(activity,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        IStorageActivity.REQUEST_MEDIA_READ);
+            Log.d("a","on va load favoris");}
+            loadRestoFromStorage();
+        }
+        catch (Exception e){
+            Log.wtf("a","Erro d'autorisation dans fragmentFavori");
+            Log.d("vaut",activity.toString());
+        }
+
     }
 
-    public StorageFragment(IStorageActivity activity) {
-        this.activity = activity;
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d("a","onCreate fragment favori");
-
         View rootView = inflater.inflate(R.layout.fragement_storage, container, false);
-        Log.d("a", "PASSE");
 
-        ContextWrapper contextWrapper = new ContextWrapper(getContext());
-        directoryName = contextWrapper.getDir("RestoDir", ContextWrapper.MODE_PRIVATE).getPath(); //chemin par defaut fichier
-
-
-        buttonLoad = rootView.findViewById(R.id.buttonLoad);
         buttonSave = rootView.findViewById(R.id.buttonSave);
         listView =rootView.findViewById(R.id.listFavoris);
-
-        mesRestaurantsFavoris = new ArrayList<>();
-        nomFavoris = new ArrayList<>();
-        nomFavoris.add("TSTTTTTT");
-        nomFavoris.add("TSTTTTTT");
-        nomFavoris.add("TSTTTTTT");
-
-        adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, nomFavoris);
         listView.setAdapter(adapter);
 
-
-        listView.setAdapter(adapter);
         loadRestoFromStorage();
-
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,40 +110,24 @@ public class StorageFragment extends Fragment {
         });
 
 
-        buttonLoad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("a", "CLICK LOAD");
-                    if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                        ActivityCompat.requestPermissions(getActivity(),
-                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                IStorageActivity.REQUEST_MEDIA_READ);
-                    } else { //Permission ok
-                        loadRestoFromStorage();
-                    }
-                }
-
-        });
-
 
         return rootView;
 
     }
 
 
+
+    public void addInFavorite(Lieux resto){
+        saveToInternalStorage(resto);
+    }
+
+
     private void loadRestoFromStorage() {
 
         nomFavoris.clear();
-
-        //textView.setText("");
         Log.d("a", "paaseLOAD");
-
         File file = new File(directoryName, filename);
         String nomToutResto = "";
-
-
-
-
 
         try {
             FileInputStream file_input_stream = new FileInputStream(file);
@@ -173,7 +155,7 @@ public class StorageFragment extends Fragment {
 
         adapter.notifyDataSetChanged();
 
-        Toast.makeText(getContext(), "Favoris chargés", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getContext(), "Favoris chargés", Toast.LENGTH_LONG).show();
 
     }
 
@@ -199,31 +181,17 @@ public class StorageFragment extends Fragment {
         catch (FileNotFoundException e) { e.printStackTrace(); }
         catch (IOException e) { e.printStackTrace(); }
 
-        Toast.makeText(getContext(), "Favori ajouté", Toast.LENGTH_LONG).show();
-
+        //Toast.makeText(getContext(), "Favori ajouté", Toast.LENGTH_LONG).show();
         Log.d("a", "fini ajout favori");
 
-        loadRestoFromStorage();
+        if(getContext()==null) { Log.d("a","appelé depuis l'exterieur"); }
+        else { loadRestoFromStorage();Log.d("a","appel depuis fragmentFavori"); }
+
 
     }
 
 
 
-    public Button getButtonSave() {
-        return buttonSave;
-    }
-
-    public void setButtonSave(Button buttonSave) {
-        this.buttonSave = buttonSave;
-    }
-
-    public Button getButtonLoad() {
-        return buttonLoad;
-    }
-
-    public void setButtonLoad(Button buttonLoad) {
-        this.buttonLoad = buttonLoad;
-    }
 
 
     public Lieux getRestaurant() {
@@ -234,11 +202,4 @@ public class StorageFragment extends Fragment {
         this.restaurant = restaurant;
     }
 
-    public String getDirectoryName() {
-        return directoryName;
-    }
-
-    public void setDirectoryName(String directoryName) {
-        this.directoryName = directoryName;
-    }
 }

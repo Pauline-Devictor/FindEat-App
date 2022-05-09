@@ -69,8 +69,7 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
     private RestaurantListFragment restaurantListFragment;
     private MapFragment mapFragment;
     private FilterFragment filterFragment;
-
-    private StorageFragment storageFragment;
+    private static StorageFragment storageFragment;
 
     private int orientation;
 
@@ -97,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
 
         restaurantFragment = new RestaurantFragment();
         restaurantListFragment = new RestaurantListFragment();
-        storageFragment = new StorageFragment();
+        storageFragment = new StorageFragment(this);
         mapFragment = new MapFragment();
         filterFragment = new FilterFragment();
 
@@ -297,6 +296,11 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         LocationGPS locationGPS = new LocationGPS(userLatitude,userLongitude);
         new GoogleAPI(restaurantsList,radius,locationGPS,options,maxPrice).start();
         displayRestaurantsList();
+    }
+
+
+    public static StorageFragment getStorageFragment(){
+        return storageFragment;
     }
 
 }
