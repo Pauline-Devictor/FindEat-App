@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
 
         restaurantFragment = new RestaurantFragment();
         restaurantListFragment = new RestaurantListFragment();
+        storageFragment = new StorageFragment();
         mapFragment = new MapFragment();
         filterFragment = new FilterFragment();
 

@@ -156,7 +156,7 @@ public class  GoogleAPI extends Thread {
 
 
             while ((line = bufferedReader.readLine()) != null) {
-                Log.d("a","dans le while "+line);
+                //Log.d("a","dans le while "+line);
                 data = data + line;
 
             }

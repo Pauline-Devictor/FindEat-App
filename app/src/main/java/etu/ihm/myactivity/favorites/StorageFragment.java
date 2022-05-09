@@ -57,7 +57,9 @@ public class StorageFragment extends Fragment {
 
     private ListView listView;
 
-    public StorageFragment() { }
+    public StorageFragment() {
+        Log.d("a","constructeur fragment favori");
+    }
 
     public StorageFragment(IStorageActivity activity) {
         this.activity = activity;
@@ -65,6 +67,8 @@ public class StorageFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("a","onCreate fragment favori");
+
         View rootView = inflater.inflate(R.layout.fragement_storage, container, false);
         Log.d("a", "PASSE");
 
@@ -74,7 +78,6 @@ public class StorageFragment extends Fragment {
 
         buttonLoad = rootView.findViewById(R.id.buttonLoad);
         buttonSave = rootView.findViewById(R.id.buttonSave);
-        //textView = rootView.findViewById(R.id.favorisText);
         listView =rootView.findViewById(R.id.listFavoris);
 
         mesRestaurantsFavoris = new ArrayList<>();
@@ -87,8 +90,8 @@ public class StorageFragment extends Fragment {
         listView.setAdapter(adapter);
 
 
-        //listView.setAdapter(adapter);
-        //loadRestoFromStorage();
+        listView.setAdapter(adapter);
+        loadRestoFromStorage();
 
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
@@ -167,26 +170,20 @@ public class StorageFragment extends Fragment {
         catch (ClassNotFoundException e) { e.printStackTrace(); }
         catch (IOException e) { e.printStackTrace(); }
 
-        //textView.setText(nomToutResto);
 
-        //adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
 
         Toast.makeText(getContext(), "Favoris chargés", Toast.LENGTH_LONG).show();
 
     }
 
     private void saveToInternalStorage(Lieux resto) {
-        //Faire un fichier par resto ?
         Log.d("a", "Save, on va add "+resto.getName());
-
         mesRestaurantsFavoris.add(resto);
-
         File file = new File(directoryName, filename);
 
         Log.d("a","path "+file.getAbsolutePath());
         Log.d("a","on sauv "+mesRestaurantsFavoris.size());
-
-
 
         FileOutputStream file_output_stream = null;
         ObjectOutputStream object_output_stream = null;
@@ -204,16 +201,11 @@ public class StorageFragment extends Fragment {
 
         Toast.makeText(getContext(), "Favori ajouté", Toast.LENGTH_LONG).show();
 
+        Log.d("a", "fini ajout favori");
 
-        Log.d("a", "finito");
+        loadRestoFromStorage();
 
     }
-
-
-
-
-
-
 
 
 
