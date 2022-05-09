@@ -89,11 +89,11 @@ public class MapFragment extends Fragment {
         for (int i =0;i<restaurantsList.size();i++){//TODO recuperer liste des restos quand on créé l'activité
             Lieux resto = restaurantsList.getRestaurant(i);
             if (resto instanceof Restaurants){
-                map.getOverlays().add(addMarker(R.drawable.restaurant_position, new GeoPoint(resto.getLatitude(), resto.getLongitude()), resto.getName(), R.drawable.ic_home));
+                map.getOverlays().add(addMarker(R.drawable.restaurant_position, new GeoPoint(resto.getLatitude(), resto.getLongitude()), resto.getName(), R.drawable.ic_restaurant));
                 Log.d("MAP","Element à afficher lat " + resto.getLatitude() + " long " + resto.getLongitude()+" nom "+resto.getName());
             }
             else {
-                map.getOverlays().add(addMarker(R.drawable.bar_position, new GeoPoint(resto.getLatitude(), resto.getLongitude()), resto.getName(), R.drawable.ic_home));
+                map.getOverlays().add(addMarker(R.drawable.bar_position, new GeoPoint(resto.getLatitude(), resto.getLongitude()), resto.getName(), R.drawable.ic_bar));
                 Log.d("MAP","Element à afficher lat " + resto.getLatitude() + " long " + resto.getLongitude()+" nom "+resto.getName());
             }
             //Le new Geo Point compile pas ici  !!!!

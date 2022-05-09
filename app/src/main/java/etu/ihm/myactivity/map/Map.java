@@ -51,9 +51,12 @@ import etu.ihm.myactivity.home.MainActivity;
 import etu.ihm.myactivity.home.RestaurantsList;
 import etu.ihm.myactivity.restaurants.Restaurant;
 
+/**
+ * No longer used (fragment instead)
+ */
 public class Map extends AppCompatActivity {
     private final String TAG = "polytech-" + getClass().getSimpleName();
-
+/*
     public static int REQUEST_LOCATION_CODE = 1001;
     public static float DEFAULT_ZOOM = 14f; //entre 0 et 25
 
@@ -172,4 +175,5 @@ public class Map extends AppCompatActivity {
 
         }
     }
+    */
 }

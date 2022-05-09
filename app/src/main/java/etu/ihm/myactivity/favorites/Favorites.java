@@ -18,9 +18,13 @@ import etu.ihm.myactivity.home.MainActivity;
 import etu.ihm.myactivity.map.Map;
 import etu.ihm.myactivity.restaurants.RestaurantFragment;
 
+/**
+ * This class is not used anymore (fragment instead)
+ */
 public class Favorites extends AppCompatActivity{
     private final String TAG = "polytech-" + getClass().getSimpleName();
 
+    /*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +59,7 @@ public class Favorites extends AppCompatActivity{
         });
     }
 
-    /*
+
     public void displayRestaurant(Lieux lieux){
         RestaurantFragment restaurantFragment = new RestaurantFragment();
         Bundle args = new Bundle();
