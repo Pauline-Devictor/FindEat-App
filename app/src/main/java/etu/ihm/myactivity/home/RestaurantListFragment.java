@@ -105,7 +105,7 @@ public class RestaurantListFragment extends Fragment implements IListner, Observ
         Log.d(TAG, "updating observer");
         RestaurantsList restaurantsList = (RestaurantsList) observable;
         //restaurantsAdapter.notifyDataSetChanged();
-        restaurantsAdapter.refresh(model);
+        restaurantsAdapter.refresh(restaurantsList);
     }
 
     @Override
