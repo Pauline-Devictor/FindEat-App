@@ -67,15 +67,6 @@ public class RestaurantFragment extends Fragment {
 
         imageView = rootView.findViewById(R.id.imageView);
 
-        userLatitude = getArguments().getDouble("lat");
-        Log.d(TAG,"userLat : "+userLatitude);
-        userLongitude  = getArguments().getDouble("long");
-        Log.d(TAG,"userLong : "+userLongitude);
-        restaurantLatitude = this.restaurant.getLatitude();
-        Log.d(TAG,"restoLat : "+restaurantLatitude);
-        restaurantLongitude = this.restaurant.getLongitude();
-        Log.d(TAG,"restoLong : "+restaurantLongitude);
-
         estFavori = storageFragment.estFavori(restaurant.getName());
         putInFavoritesButton = rootView.findViewById(R.id.favoriteButton);
 
@@ -133,21 +124,9 @@ public class RestaurantFragment extends Fragment {
         grade.setText("Note : "+restaurant.getRate()+"/5");
 
         TextView distance = rootView.findViewById(R.id.restaurantDistance);
-        DecimalFormat df = new DecimalFormat("0.00");
         distance.setText(String.format("Distance : %.1fkm", restaurant.getDistance()));
 
         return rootView;
-    }
-
-    /**
-     * @return distance between the user and the restaurant in km
-     */
-    private double distance(){
-        GeoPoint userPoint = new GeoPoint(userLatitude,userLongitude);
-        GeoPoint restoPoint = new GeoPoint(restaurantLatitude,restaurantLongitude);
-        double res = userPoint.distanceToAsDouble(restoPoint);
-        Log.d(TAG,"distance to the user in m : "+ res);
-        return res/1000.;
     }
 
     public static void updateBitmap(Bitmap image){

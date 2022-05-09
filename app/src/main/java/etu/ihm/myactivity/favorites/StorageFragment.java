@@ -3,6 +3,7 @@ package etu.ihm.myactivity.favorites;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -52,6 +54,12 @@ public class StorageFragment extends Fragment {
     private ArrayAdapter<String> adapter;
     private ListView listView;
 
+    private OnFavoriteClickedListener favoriteCallback;
+
+    public interface OnFavoriteClickedListener {
+        void onFavoriteClicked(Lieux lieux);
+    }
+
     public StorageFragment(Activity activity) {
         mesRestaurantsFavoris = new ArrayList<>();
         nomFavoris = new ArrayList<>();
@@ -88,6 +96,14 @@ public class StorageFragment extends Fragment {
 
         listView =rootView.findViewById(R.id.listFavoris);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //Toast.makeText(getActivity(),"clicked on "+i,Toast.LENGTH_SHORT).show();
+                favoriteCallback.onFavoriteClicked(getRestaurantByPosition(i));
+            }
+        });
 
         loadRestoFromStorage();
 
@@ -197,6 +213,9 @@ public class StorageFragment extends Fragment {
 
     }
 
+    public Lieux getRestaurantByPosition(int i){
+        return this.mesRestaurantsFavoris.get(i);
+    }
 
 
 
@@ -207,6 +226,22 @@ public class StorageFragment extends Fragment {
 
     public void setRestaurant(Lieux restaurant) {
         this.restaurant = restaurant;
+    }
+
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+        if (context instanceof OnFavoriteClickedListener){
+            favoriteCallback = (OnFavoriteClickedListener) context;
+        } else{
+            throw new RuntimeException(context.toString() + " must implement OnFavoriteClickedListener");
+        }
+    }
+
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        favoriteCallback = null;
     }
 
 }

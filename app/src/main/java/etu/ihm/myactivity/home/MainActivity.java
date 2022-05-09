@@ -46,6 +46,7 @@ import java.util.ArrayList;
 
 import etu.ihm.myactivity.GoogleAPI;
 import etu.ihm.myactivity.LocationGPS;
+import etu.ihm.myactivity.factoryTests.Lieux;
 import etu.ihm.myactivity.favorites.Favorites;
 import etu.ihm.myactivity.favorites.IStorageActivity;
 import etu.ihm.myactivity.favorites.StorageFragment;
@@ -59,7 +60,7 @@ import etu.ihm.myactivity.restaurants.FiltreEnum;
 import etu.ihm.myactivity.restaurants.RestaurantFragment;
 
 
-public class MainActivity extends AppCompatActivity implements RestaurantListFragment.OnRestaurantClickedListener, RestaurantListFragment.OnFilterClickedListener, FilterFragment.OnSubmitListener, IStorageActivity {
+public class MainActivity extends AppCompatActivity implements RestaurantListFragment.OnRestaurantClickedListener, RestaurantListFragment.OnFilterClickedListener, FilterFragment.OnSubmitListener, IStorageActivity, StorageFragment.OnFavoriteClickedListener {
     private final String TAG = "polytech-" + getClass().getSimpleName();
     public static int REQUEST_LOCATION_CODE = 1001;
 
@@ -159,8 +160,18 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
     private void displayRestaurant(int position){
         Bundle args = new Bundle();
         args.putSerializable("resto", (Serializable) restaurantsList.getRestaurant(position));
-        args.putDouble("lat",this.userLatitude);
-        args.putDouble("long",this.userLongitude);
+        restaurantFragment = new RestaurantFragment();
+        restaurantFragment.setArguments(args);
+        if (this.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantFragment).addToBackStack(null).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.sideInfo, restaurantFragment).commit();
+        }
+    }
+
+    private void displayRestaurant(Lieux lieux){
+        Bundle args = new Bundle();
+        args.putSerializable("resto", (Serializable) lieux);
         restaurantFragment = new RestaurantFragment();
         restaurantFragment.setArguments(args);
         if (this.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -303,4 +314,8 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         return storageFragment;
     }
 
+    @Override
+    public void onFavoriteClicked(Lieux lieux) {
+        displayRestaurant(lieux);
+    }
 }
