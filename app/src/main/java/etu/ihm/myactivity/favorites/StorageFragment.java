@@ -43,7 +43,6 @@ import etu.ihm.myactivity.home.MainActivity;
 
 public class StorageFragment extends Fragment {
     private IStorageActivity activity;
-    private Button buttonSave;
     private Lieux restaurant;
     private String directoryName;
     private static final String filename="data.dat";
@@ -87,31 +86,10 @@ public class StorageFragment extends Fragment {
         Log.d("a","onCreate fragment favori");
         View rootView = inflater.inflate(R.layout.fragement_storage, container, false);
 
-        buttonSave = rootView.findViewById(R.id.buttonSave);
         listView =rootView.findViewById(R.id.listFavoris);
         listView.setAdapter(adapter);
 
         loadRestoFromStorage();
-
-        buttonSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("a", "CLICK");
-                restaurant = new Restaurants("test", "id", true, null, 5.0, 55, 44, 2,3);
-                if (restaurant != null) {
-                    if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                        ActivityCompat.requestPermissions(getActivity(),
-                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                IStorageActivity.REQUEST_MEDIA_WRITE);
-                    } else { //Permission ok
-                        mesRestaurantsFavoris.add(restaurant);
-                        saveToInternalStorage();
-                    }
-                }
-            }
-        });
-
-
 
         return rootView;
 
