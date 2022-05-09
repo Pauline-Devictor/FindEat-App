@@ -7,6 +7,7 @@ import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.service.textservice.SpellCheckerService;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,7 +104,8 @@ public class StorageFragment extends Fragment {
                                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                 IStorageActivity.REQUEST_MEDIA_WRITE);
                     } else { //Permission ok
-                        saveToInternalStorage(restaurant);
+                        mesRestaurantsFavoris.add(restaurant);
+                        saveToInternalStorage();
                     }
                 }
             }
@@ -118,7 +120,37 @@ public class StorageFragment extends Fragment {
 
 
     public void addInFavorite(Lieux resto){
-        saveToInternalStorage(resto);
+        Log.d("a", "Save, on va add "+resto.getName());
+        mesRestaurantsFavoris.add(resto);
+        saveToInternalStorage();
+    }
+
+    public void deleteFavorite(Lieux resto){
+        Log.d("liste vaut",""+mesRestaurantsFavoris.size());
+
+
+        for(int i=0;i<mesRestaurantsFavoris.size();i++){
+            if(mesRestaurantsFavoris.get(i).getName().equals(resto.getName())){
+                mesRestaurantsFavoris.remove(i);break;
+            }
+        }
+
+        Log.d("a", "Delete, on va suppr "+resto.getName());
+        Log.d("liste vaut",""+mesRestaurantsFavoris.size());
+        saveToInternalStorage();
+    }
+
+    public void deleteAllFavorite(){
+        Log.d("a","deleteAll");
+        mesRestaurantsFavoris.clear();
+        saveToInternalStorage();
+    }
+
+    public boolean estFavori(String nomResto){
+        for(Lieux l : mesRestaurantsFavoris){
+            if(l.getName().equals(nomResto)){return true;}
+        }
+        return false;
     }
 
 
@@ -159,9 +191,8 @@ public class StorageFragment extends Fragment {
 
     }
 
-    private void saveToInternalStorage(Lieux resto) {
-        Log.d("a", "Save, on va add "+resto.getName());
-        mesRestaurantsFavoris.add(resto);
+    private void saveToInternalStorage() {
+
         File file = new File(directoryName, filename);
 
         Log.d("a","path "+file.getAbsolutePath());
@@ -181,12 +212,10 @@ public class StorageFragment extends Fragment {
         catch (FileNotFoundException e) { e.printStackTrace(); }
         catch (IOException e) { e.printStackTrace(); }
 
+        loadRestoFromStorage();
+
         //Toast.makeText(getContext(), "Favori ajouté", Toast.LENGTH_LONG).show();
         Log.d("a", "fini ajout favori");
-
-        if(getContext()==null) { Log.d("a","appelé depuis l'exterieur"); }
-        else { loadRestoFromStorage();Log.d("a","appel depuis fragmentFavori"); }
-
 
     }
 

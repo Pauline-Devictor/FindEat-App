@@ -38,6 +38,8 @@ public class RestaurantFragment extends Fragment {
     private Button putInFavoritesButton;
     private Button seeCommentsButton;
     private Button showOnMapButton;
+    private boolean estFavori;
+    private StorageFragment storageFragment;
 
     private Lieux restaurant;
 
@@ -49,6 +51,7 @@ public class RestaurantFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_restaurant, container, false);
+        storageFragment = MainActivity.getStorageFragment();
 
         Log.d(TAG,"RestaurantFragment created");
 
@@ -64,29 +67,35 @@ public class RestaurantFragment extends Fragment {
         restaurantLongitude = this.restaurant.getLongitude();
         Log.d(TAG,"restoLong : "+restaurantLongitude);
 
-
+        estFavori = storageFragment.estFavori(restaurant.getName());
         putInFavoritesButton = rootView.findViewById(R.id.favoriteButton);
+
+        if(estFavori){putInFavoritesButton.setText("En favori");}
+
+
         putInFavoritesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Faudrait checker si il est en favori ou pas pour savoir des le debut quel texte mettre
                 Log.d(TAG,"On va me put en favori");
-
                 if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-                    ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            IStorageActivity.REQUEST_MEDIA_WRITE);
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, IStorageActivity.REQUEST_MEDIA_WRITE);
                 }
                     else{
-                        Log.d(TAG,"permission ok");
-                    StorageFragment storageFragment = MainActivity.getStorageFragment();
-                    Log.d(TAG,"on a get storageFragment");
-                    storageFragment.addInFavorite(restaurant);
+                    Log.d(TAG, "permission ok, ajout/sup favori");
+
+                    if(estFavori){
+                        storageFragment.deleteFavorite(restaurant);
+                        putInFavoritesButton.setText("Mettre en favori");
+
+                    }
+                        else {
+                            storageFragment.addInFavorite(restaurant);
+                            putInFavoritesButton.setText("En favori");
+
+                        }
                 }
-
-                putInFavoritesButton.setText("En favori");
-                Log.d(TAG,"Fin ajout favori depuis restoFragment");
-
+                    estFavori = !estFavori;
+                Log.d(TAG,"Fin ajout/sup favori depuis restoFragment");
             }
         });
 
