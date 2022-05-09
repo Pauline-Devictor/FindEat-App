@@ -1,9 +1,10 @@
 package etu.ihm.myactivity.restaurants;
 
 import android.Manifest;
-import android.content.Intent;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.icu.text.DecimalFormat;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,14 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import etu.ihm.myactivity.GoogleAPI;
 import etu.ihm.myactivity.R;
 import etu.ihm.myactivity.factoryTests.Lieux;
 import etu.ihm.myactivity.favorites.IStorageActivity;
 import etu.ihm.myactivity.favorites.StorageFragment;
 import etu.ihm.myactivity.home.MainActivity;
-import etu.ihm.myactivity.home.RestaurantsList;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -40,6 +42,7 @@ public class RestaurantFragment extends Fragment {
     private Button showOnMapButton;
     private boolean estFavori;
     private StorageFragment storageFragment;
+    private static ImageView imageView;
 
     private Lieux restaurant;
 
@@ -57,6 +60,12 @@ public class RestaurantFragment extends Fragment {
 
         //int position = getArguments().getInt("position");
         restaurant = (Lieux) getArguments().getSerializable("resto");
+
+        Log.d("n","start");
+        new GoogleAPI(this.restaurant.getPicture()).start();
+        Log.d("fin","fin");
+
+        imageView = rootView.findViewById(R.id.imageView);
 
         userLatitude = getArguments().getDouble("lat");
         Log.d(TAG,"userLat : "+userLatitude);
@@ -140,5 +149,20 @@ public class RestaurantFragment extends Fragment {
         Log.d(TAG,"distance to the user in m : "+ res);
         return res/1000.;
     }
+
+    public static void updateBitmap(Bitmap image){
+        if(image==null){ Log.d("a","bitmap null ici "); }
+        Activity activity = MainActivity.getInstance();
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                imageView.setImageBitmap(image);
+            }
+        });
+
+        Log.d("a","passe set bitmpa");
+
+    }
+
 
 }

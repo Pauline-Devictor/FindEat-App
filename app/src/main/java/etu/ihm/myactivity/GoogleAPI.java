@@ -1,6 +1,7 @@
 package etu.ihm.myactivity;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.util.Log;
 
@@ -24,6 +25,8 @@ import etu.ihm.myactivity.factoryTests.RestaurationFactory;
 import etu.ihm.myactivity.factoryTests.LieuxFactory;
 import etu.ihm.myactivity.home.RestaurantsList;
 import etu.ihm.myactivity.restaurants.FiltreEnum;
+import etu.ihm.myactivity.restaurants.Restaurant;
+import etu.ihm.myactivity.restaurants.RestaurantFragment;
 
 public class  GoogleAPI extends Thread {
     private final String TAG = "polytech-" + getClass().getSimpleName();
@@ -36,46 +39,25 @@ public class  GoogleAPI extends Thread {
     private int maxPrice;
     private String ville;
     private RestaurantsList restaurantsList;
+    private String reference;
     private int numConstru=0; //Savoir si on passe Location ou nom ville
 
 
-    //filtres alimtentaire dans jquery
-    //rating a nous de le faire a la main
 
     private static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/";
     private static final String NEAY_BY_SEARCH = "nearbysearch/json?keyword=";
     private static final String TEXT_SEARCH = "textsearch/json?query=";
-
-
-    //ON MET TYPE RESTAURANT ET TYPE BAR MAIS A SEPRARER APRES SI BESOIN
     private static final String TYPE_RESTAURANT = "type=restaurant&bar";
-
-
-
-
     private static final String MAX_PRICE = "maxprice=";
-
-
     private static final String API_KEY = "AIzaSyAaSrozKCZYHXJD4F5zynJxebwsvf5nA9I";
-
+    public static final String PHOTO = "photo?maxwidth=400&maxheight=300&photo_reference=";
     private String URL = "";
 
 
     /**
      * PHOTOOOOOO
-     * https://maps.googleapis.com/maps/api/place/photo
-     *   ?maxwidth=400
-     *   &photo_reference=Aap_uEBCWua9-el2nF6NhMZR8HGRFJA-3OL_Z-aPwdKdHN8Xpqik96Nrm_bBCAXoIuSkEuOoHsmrDmlsJGyC1UbrAHYZQN-gyP-ZUrUkhSFvdRNwDMnibt1V65hEYPQcOy1Zsit87pL_xvZ1i3B_L1WLkWjQk87EIQlgQSNix7lBvKnK3lli
-     *   &key=AIzaSyAaSrozKCZYHXJD4F5zynJxebwsvf5nA9I
+     * https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&maxheight=300&photo_reference=Aap_uEBCWua9-el2nF6NhMZR8HGRFJA-3OL_Z-aPwdKdHN8Xpqik96Nrm_bBCAXoIuSkEuOoHsmrDmlsJGyC1UbrAHYZQN-gyP-ZUrUkhSFvdRNwDMnibt1V65hEYPQcOy1Zsit87pL_xvZ1i3B_L1WLkWjQk87EIQlgQSNix7lBvKnK3lli&key=AIzaSyAaSrozKCZYHXJD4F5zynJxebwsvf5nA9I
      */
-
-
-    //https://maps.googleapis.com/maps/api/place/
-    // nearbysearch/json?keyword=cruise&
-    // location=43.6153531%2C7.0719072
-    // &radius=1500
-    // &type=restaurant
-    // &key=AIzaSyAaSrozKCZYHXJD4F5zynJxebwsvf5nA9I
 
     //https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=pizza&location=43.6153531%2C7.0719072&radius=1500&type=restaurant&key=AIzaSyAaSrozKCZYHXJD4F5zynJxebwsvf5nA9I
 
@@ -96,19 +78,28 @@ public class  GoogleAPI extends Thread {
         this.ville = ville;
         this.restaurantsList = restaurantsList;
         this.numConstru = 2;
+    }
 
+    public GoogleAPI(String reference){
+        this.reference = reference;
+        this.numConstru = 3;
     }
 
     //if this ville bla bla else recherche avec location
 
     @Override
     public void run(){
-        restaurantsList.empty();
+
         if(this.numConstru==2){ //On est au debut
+            restaurantsList.empty();
             runDebut();
         }
         else if(this.numConstru==1){ //Run avec location, filtres ...
+            restaurantsList.empty();
             runTest();
+        }
+        else if(this.numConstru==3){
+            getPhoto();
         }
 
 
@@ -140,6 +131,24 @@ public class  GoogleAPI extends Thread {
 
         fetchData();
 
+    }
+
+    public void getPhoto(){
+        String tmp =  BASE_URL+PHOTO+reference+"&key="+API_KEY;
+        Log.d("a","url photo vaut : "+tmp);
+        Bitmap image = null;
+
+        try{
+            URL url = new URL(tmp);
+            image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(image==null){ Log.d("a","bitmap null"); }
+        Log.d("a","tout c'esrt bien passé :"+image.toString());
+        RestaurantFragment.updateBitmap(image);
     }
 
 
