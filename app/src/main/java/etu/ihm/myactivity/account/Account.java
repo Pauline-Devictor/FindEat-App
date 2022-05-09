@@ -55,13 +55,15 @@ public class Account extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.carte:
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        intent.putExtra("displayMap",true);
-                        startActivity(intent);
+                        Intent intentMap = new Intent(getApplicationContext(), MainActivity.class);
+                        intentMap.putExtra("displayMap",true);
+                        startActivity(intentMap);
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.favoris:
-                        startActivity(new Intent(getApplicationContext(), Favorites.class));
+                        Intent intentFav = new Intent(getApplicationContext(), MainActivity.class);
+                        intentFav.putExtra("displayFav",true);
+                        startActivity(intentFav);
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.compte:

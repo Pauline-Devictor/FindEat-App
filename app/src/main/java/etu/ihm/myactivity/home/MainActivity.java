@@ -74,6 +74,9 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
 
     private int orientation;
 
+    public boolean displayMap;
+    public boolean displayFav;
+
     public RestaurantsList restaurantsList;
 
     private double userLatitude = 0;
@@ -90,6 +93,10 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         super.onCreate(savedInstanceState);
 
         Log.d(TAG, "creation of MainActivity");
+
+        Intent intent = getIntent();
+        displayMap = intent.getBooleanExtra("displayMap",false);
+        displayFav = intent.getBooleanExtra("displayFav",false);
 
         setContentView(R.layout.activity_main);
 
@@ -113,7 +120,13 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        bottomNavigationView.setSelectedItemId(R.id.decouvrir);
+        if (this.displayMap){
+            bottomNavigationView.setSelectedItemId(R.id.carte);
+        } else if (this.displayFav){
+            bottomNavigationView.setSelectedItemId(R.id.favoris);
+        } else {
+            bottomNavigationView.setSelectedItemId(R.id.decouvrir);
+        }
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -139,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
                 return false;
             }
         });
-        displayRestaurantsList();
+        //displayRestaurantsList();
     }
 
     public static MainActivity getInstance() {
@@ -198,6 +211,18 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, filterFragment).addToBackStack(null).commit();
     }
 
+    public void displayAfterLoad(){
+        if (displayMap){
+            displayMap = false;
+            displayMap();
+        } else if (displayFav){
+            displayFav = false;
+            displayFavoris();
+        } else {
+            displayRestaurantsList();
+        }
+    }
+
     @Override
     public void onRestaurantClicked(int position) {
         displayRestaurant(position);
@@ -246,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
                             ArrayList<FiltreEnum> filtres = new ArrayList<>();
                             //filtres.add(FiltreEnum.VEGAN);
                             LocationGPS locationGPS = new LocationGPS(userLatitude,userLongitude);
-                            new GoogleAPI(restaurantsList,radius,locationGPS,filtres,4).start();
+                            new GoogleAPI(restaurantsList,radius,locationGPS,filtres,4, instance).start();
                         } else {
                             Log.d(TAG, "cannot retrieve location");
                             Toast.makeText(getApplicationContext(),"cannot retrieve location",Toast.LENGTH_SHORT).show();
@@ -305,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
     public void onSubmit(int radius, int maxPrice, ArrayList<FiltreEnum> options){
         Log.d(TAG,"fetching restaurants after filter : "+radius+" "+maxPrice+" "+options.size());
         LocationGPS locationGPS = new LocationGPS(userLatitude,userLongitude);
-        new GoogleAPI(restaurantsList,radius,locationGPS,options,maxPrice).start();
+        new GoogleAPI(restaurantsList,radius,locationGPS,options,maxPrice,this).start();
         displayRestaurantsList();
     }
 

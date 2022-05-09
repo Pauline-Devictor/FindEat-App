@@ -1,5 +1,6 @@
 package etu.ihm.myactivity;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -23,6 +24,7 @@ import java.util.Locale;
 import etu.ihm.myactivity.factoryTests.Lieux;
 import etu.ihm.myactivity.factoryTests.RestaurationFactory;
 import etu.ihm.myactivity.factoryTests.LieuxFactory;
+import etu.ihm.myactivity.home.MainActivity;
 import etu.ihm.myactivity.home.RestaurantsList;
 import etu.ihm.myactivity.restaurants.FiltreEnum;
 import etu.ihm.myactivity.restaurants.Restaurant;
@@ -41,6 +43,8 @@ public class  GoogleAPI extends Thread {
     private RestaurantsList restaurantsList;
     private String reference;
     private int numConstru=0; //Savoir si on passe Location ou nom ville
+
+    private MainActivity mainActivity;
 
 
 
@@ -65,19 +69,21 @@ public class  GoogleAPI extends Thread {
 
 
     //2eme constructeur si cherche avec text places
-    public GoogleAPI(RestaurantsList restaurantsList, int radius, LocationGPS location, ArrayList<FiltreEnum> filters, int maxPrice) {
+    public GoogleAPI(RestaurantsList restaurantsList, int radius, LocationGPS location, ArrayList<FiltreEnum> filters, int maxPrice, MainActivity mainActivity) {
         this.radius = radius;
         this.location = location;
         this.filters = filters;
         this.maxPrice = maxPrice;
         this.restaurantsList = restaurantsList;
         this.numConstru=1;
+        this.mainActivity = mainActivity;
     }
 
-    public GoogleAPI(String ville, RestaurantsList restaurantsList) {
+    public GoogleAPI(String ville, RestaurantsList restaurantsList, MainActivity mainActivity) {
         this.ville = ville;
         this.restaurantsList = restaurantsList;
         this.numConstru = 2;
+        this.mainActivity = mainActivity;
     }
 
     public GoogleAPI(String reference){
@@ -224,6 +230,7 @@ public class  GoogleAPI extends Thread {
         else{
             Log.d("a","AUCUN RESTO TROUVE");
         }
+        mainActivity.displayAfterLoad();
     }
 
     /**
