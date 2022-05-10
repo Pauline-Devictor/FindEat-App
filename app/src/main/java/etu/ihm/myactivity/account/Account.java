@@ -2,10 +2,13 @@ package etu.ihm.myactivity.account;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,12 +41,24 @@ public class Account extends AppCompatActivity {
         setContentView(R.layout.activity_account);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
+        Intent HomeActivityIntent = new Intent(getApplicationContext(),MainActivity.class);
+        HomeActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingHomeActivityIntent = PendingIntent.getActivity(getApplicationContext(),1,HomeActivityIntent,PendingIntent.FLAG_ONE_SHOT);
+
         createNotificationChannels();
         notificationSender = new NotificationSender(getApplicationContext());
-        NotificationSender.makeNotification(notificationSender);
 
-        //Button button = findViewById(R.id.buttonNotif);
-        //button.setOnClickListener(notifListener);
+
+        Button notifybutton = findViewById(R.id.buttonNotif2);
+        notifybutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NotificationSender.makeNotification(notificationSender,pendingHomeActivityIntent);
+            }
+        });
+
+
+
 
         bottomNavigationView.setSelectedItemId(R.id.compte);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -73,14 +88,6 @@ public class Account extends AppCompatActivity {
             }
         });
     }
-
-    /**
-    private View.OnClickListener notifListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            NotificationSender.sendNotificationOnChannel(CHANNEL3_ID, NotificationManager.IMPORTANCE_HIGH);
-            ;}
-    };
-     */
 
     private void createNotificationChannels(){
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
