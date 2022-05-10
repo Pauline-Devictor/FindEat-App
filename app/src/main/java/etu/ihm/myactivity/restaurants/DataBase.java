@@ -8,9 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import etu.ihm.myactivity.DAOECommentaire;
+import etu.ihm.myactivity.FireBaseCommentaire;
 import etu.ihm.myactivity.R;
-import etu.ihm.myactivity.restaurants.Commentaire;
 
 public class DataBase extends AppCompatActivity {
 
@@ -20,7 +19,7 @@ public class DataBase extends AppCompatActivity {
         setContentView(R.layout.activity_data_base);
         final EditText edit_data = findViewById(R.id.edit_data);
         Button btn = findViewById(R.id.btn_submit);
-        DAOECommentaire dao =  new DAOECommentaire();
+        FireBaseCommentaire dao =  new FireBaseCommentaire();
         btn.setOnClickListener(v->{
 
             Commentaire com = new Commentaire("Moi",edit_data.getText().toString(),"IdResto");
