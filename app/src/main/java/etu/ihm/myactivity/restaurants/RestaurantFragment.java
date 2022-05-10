@@ -132,6 +132,16 @@ public class RestaurantFragment extends Fragment {
         TextView name = rootView.findViewById(R.id.restaurantName);
         name.setText(restaurant.getName());
 
+        TextView addr = rootView.findViewById(R.id.ouvert);
+        if(restaurant.isOpenNow()){
+            addr.setText("Restaurant ouvert");
+            addr.setBackgroundColor(Color.parseColor("#52BE80"));
+        }
+        else{
+            addr.setText("Restaurant fermé");
+            addr.setBackgroundColor(Color.parseColor("#CD6155"));
+        }
+
         TextView grade = rootView.findViewById(R.id.restaurantGrade);
         grade.setText("Note : "+restaurant.getRate()+"/5");
 

@@ -195,7 +195,6 @@ public class  GoogleAPI extends Thread {
             List<PlacesApiParser.ResultsDTO> resultsDTOList = response.getResults();
             PlacesApiParser.ResultsDTO results = resultsDTOList.get(0);
             Log.d("premier",results.toString());
-
             restaurantsList.empty();
             Lieux resto;
 

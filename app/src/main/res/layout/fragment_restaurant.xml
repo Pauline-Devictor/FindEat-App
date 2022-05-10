@@ -26,9 +26,9 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="78dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="36dp"
+        android:layout_width="120dp"
+        android:layout_height="84dp"
+        android:layout_marginTop="50dp"
         android:adjustViewBounds="true"
         android:scaleX="2"
         android:scaleY="2"
@@ -38,14 +38,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/restaurantName"
-        app:srcCompat="@drawable/mockrestaurant"
         android:contentDescription="@string/photo_of_the_restaurant" />
 
     <TextView
         android:id="@+id/restaurantGrade"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="260dp"
+        android:layout_marginTop="300dp"
         android:text="@string/grade"
         android:textColor="#000000"
         android:textSize="20sp"
@@ -59,7 +58,7 @@
         android:id="@+id/restaurantDistance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="260dp"
+        android:layout_marginTop="300dp"
         android:text="@string/distance"
         android:textColor="#000000"
         android:textSize="20sp"
@@ -71,7 +70,7 @@
 
         <Button
             android:id="@+id/favoriteButton"
-            android:layout_width="wrap_content"
+            android:layout_width="190dp"
             android:layout_height="wrap_content"
             android:backgroundTint="#1B90CF"
             android:text="@string/add_to_favorites"
@@ -83,7 +82,7 @@
 
         <Button
             android:id="@+id/commentsButton"
-            android:layout_width="wrap_content"
+            android:layout_width="190dp"
             android:layout_height="wrap_content"
             android:backgroundTint="#4CAF50"
             android:text="@string/comments"
@@ -102,6 +101,21 @@
         android:text="@string/see_on_map"
         app:layout_constraintBottom_toBottomOf="parent"
          />
+
+
+    <TextView
+        android:id="@+id/ouvert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="500dp"
+        android:text="a"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.188"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
