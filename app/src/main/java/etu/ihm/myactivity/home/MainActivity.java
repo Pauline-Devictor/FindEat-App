@@ -256,12 +256,8 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
                     Log.d(TAG, "locationresult null");
                     return;
                 }
-                Log.d(TAG, "locationresult not null");
-                /*for (Location location : locationResult.getLocations()) {
-                    Log.d(TAG,"lat "+location.getLatitude()+" long "+location.getLongitude());
-                }*/
 
-                Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
+                Task<Location> locationTask = fusedLocationProviderClient.getLastLocation(); // already checked the permission
                 locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
@@ -283,6 +279,7 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.d(TAG, "on faillure " + e.getLocalizedMessage());
+                        Toast.makeText(getApplicationContext(),"Cannot retrieve location",Toast.LENGTH_SHORT).show();
                     }
                 });
 

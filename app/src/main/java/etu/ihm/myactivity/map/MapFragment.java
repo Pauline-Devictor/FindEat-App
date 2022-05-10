@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.fragment.app.Fragment;
 
 import org.osmdroid.api.IMapController;
@@ -15,6 +17,8 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.infowindow.InfoWindow;
+import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow;
 
 import etu.ihm.myactivity.R;
 import etu.ihm.myactivity.factoryTests.Lieux;
@@ -79,6 +83,31 @@ public class MapFragment extends Fragment {
         marker.setIcon(getActivity().getDrawable(icon));
         marker.setPosition(location);
         marker.setTitle(title);
+        /*
+        marker.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker, MapView mapView) {
+                Toast.makeText(getActivity(),"clicked",Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+        */
+        //MarkerInfoWindow markerInfoWindow = new MarkerInfoWindow(R.layout.fragment_vide,map);
+        //marker.setInfoWindow(markerInfoWindow);
+        /*
+        marker.setInfoWindow(new InfoWindow() {
+        } {
+            @Override
+            public void onOpen(Object item) {
+                Log.d(TAG,"a");
+            }
+
+            @Override
+            public void onClose() {
+                Log.d(TAG,"b");
+            }
+        });
+        */
         marker.setImage(getActivity().getDrawable(imageResource));
         marker.setPanToView(true);  //the map will be centered on the marker position.
         marker.setDraggable(true);
