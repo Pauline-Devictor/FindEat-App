@@ -134,6 +134,8 @@ public class  GoogleAPI extends Thread {
         this.URL = BASE_URL + NEAY_BY_SEARCH + filter + titreMaxPrice + maxPrice + "&" + URLlocation + "&" + TYPE_RESTAURANT + "&key=" + API_KEY;
 
         Log.d("a", "URL vaut " + URL);
+        filters.clear(); maxPrice=4;
+
 
         fetchData();
 
@@ -213,6 +215,7 @@ public class  GoogleAPI extends Thread {
                 PlacesApiParser.ResultsDTO tmp = resultsDTOList.get(i);
                 Log.d("info",tmp.toString());
                 if(tmp.getOpening_hours()==null){continue;}
+                if(tmp.getPhotos()==null){continue;}
 
                 if(tmp.getTypes().contains("bar")) {
                     resto = restaurationFactory.build(LieuxFactory.BAR, tmp.getName(), tmp.getPlace_id(), tmp.getOpening_hours().getOpen_now(), tmp.getPhotos().get(0).getPhoto_reference(), tmp.getRating(), tmp.getGeometry().getLocation().getLng(), tmp.getGeometry().getLocation().getLat(), tmp.getPrice_level(), distance(tmp.getGeometry().getLocation().getLat(),tmp.getGeometry().getLocation().getLng()));
