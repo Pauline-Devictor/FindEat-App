@@ -25,15 +25,16 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="20dp"
-        android:text="5km"
+        android:text="distance in km"
         android:textSize="20sp"
         android:textColor="@color/black"
         />
 
     <SeekBar
         android:id="@+id/radiusSeekBar"
-        android:layout_width="400dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:thumbTint="@color/black"
@@ -48,15 +49,16 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="20dp"
-        android:text="4"
+        android:text="priceLevel"
         android:textSize="20sp"
         android:textColor="@color/black"
         />
 
     <SeekBar
         android:id="@+id/maxPriceSeekBar"
-        android:layout_width="400dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:thumbTint="@color/black"
