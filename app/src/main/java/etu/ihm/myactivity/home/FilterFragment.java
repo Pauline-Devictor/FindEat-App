@@ -24,8 +24,10 @@ public class FilterFragment extends Fragment {
 
     public static int RADIUS_MIN = 1; //radius min in km
     public static int RADIUS_MAX = 30; //radius max in km
+    public static int RADIUS_DEFAULT = 5;
     public static int PRICE_MIN = 1;
     public static int PRICE_MAX = 4;
+    public static int PRICE_DEFAULT = PRICE_MAX;
 
     private OnSubmitListener submitCallback;
 
@@ -42,8 +44,8 @@ public class FilterFragment extends Fragment {
     private SwitchCompat halalSwitch;
     private SwitchCompat casherSwitch;
 
-    private int radius = 5000;
-    private int maxPrice = 4;
+    private int radius = RADIUS_DEFAULT*1000; //radius in m
+    private int maxPrice = PRICE_DEFAULT;
     private ArrayList<FiltreEnum> options = new ArrayList<>();
 
     public FilterFragment() {
@@ -62,14 +64,23 @@ public class FilterFragment extends Fragment {
         this.radiusDisplayed = rootView.findViewById(R.id.radiusValue);
         this.maxPriceDisplayed = rootView.findViewById(R.id.maxPriceValue);
 
+        this.radiusDisplayed.setText("Distance : "+RADIUS_DEFAULT+"km");
+        this.maxPriceDisplayed.setText("Prix maximum : "+PRICE_DEFAULT);
+        String price = "";
+        for (int k = 0; k<maxPrice; k++){
+            price+="€";
+        }
+        this.maxPriceDisplayed.setText("Prix maximum : "+price);
+
         this.radiusSeekBar = rootView.findViewById(R.id.radiusSeekBar);
         this.radiusSeekBar.setMin(RADIUS_MIN);
         this.radiusSeekBar.setMax(RADIUS_MAX);
+        this.radiusSeekBar.setProgress(RADIUS_DEFAULT);
         this.radiusSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                radiusDisplayed.setText("" + i/1000 + "km");
-                radius = i;
+                radiusDisplayed.setText("Distance : " + i + "km");
+                radius = i*1000;
             }
 
             @Override
@@ -86,10 +97,15 @@ public class FilterFragment extends Fragment {
         this.maxPriceSeekBar = rootView.findViewById(R.id.maxPriceSeekBar);
         this.maxPriceSeekBar.setMin(PRICE_MIN);
         this.maxPriceSeekBar.setMax(PRICE_MAX);
+        this.maxPriceSeekBar.setProgress(PRICE_DEFAULT);
         this.maxPriceSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                maxPriceDisplayed.setText("" + i);
+                String s = "";
+                for (int k = 0; k<i; k++){
+                    s+="€";
+                }
+                maxPriceDisplayed.setText("Prix maximum : "+s);
                 maxPrice = i;
             }
 

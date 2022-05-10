@@ -204,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
     }
 
     private void displayFilter(){
+        filterFragment = new FilterFragment();
         Bundle args = new Bundle();
         args.putDouble("userLatitude", userLatitude);
         args.putDouble("userLongitude", userLongitude);
