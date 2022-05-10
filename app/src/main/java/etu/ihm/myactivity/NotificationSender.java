@@ -1,5 +1,6 @@
 package etu.ihm.myactivity;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,23 +25,27 @@ public class NotificationSender extends AppCompatActivity {
         this.context = context;
     }
 
-    public void sendNotificationOnChannel(String CHANNEL_ID, int priority) {
+
+    public void sendNotificationOnChannel(String CHANNEL_ID, int priority,PendingIntent pendingIntent) {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.mockrestaurant);
         NotificationCompat.Builder notification = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.logojpeg)
                 .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap).setSummaryText("FindEat"))
-                .setContentTitle("Chez Jean")
-                .setContentText("Venez faire un tour chez Jean")
+                .setContentTitle("Une petite faim ?")
+                .setContentText("De nombreux restaurants vous attendent")
+                .setContentIntent(pendingIntent)
                 .setPriority(priority)
                 .setTimeoutAfter(10000)
-                .setAutoCancel(true); // Enlève la notification après avoir cliqué dessus
+                .setAutoCancel(true)
+                .addAction(R.drawable.ic_logoapp,"Découvrir",pendingIntent);
+
 
         NotificationManagerCompat.from(context).notify(nofiticationID, notification.build());
     }
 
-    public static void makeNotification(NotificationSender notificationSender){
+    public static void makeNotification(NotificationSender notificationSender, PendingIntent pendingIntent){
         int priority = 2;
-        notificationSender.sendNotificationOnChannel(CHANNEL3_ID,priority);
+        notificationSender.sendNotificationOnChannel(CHANNEL3_ID,priority,pendingIntent);
     }
 }
 
