@@ -43,11 +43,9 @@ public class  GoogleAPI extends Thread {
     private RestaurantsList restaurantsList;
     private String reference;
     private int numConstru=0; //Savoir si on passe Location ou nom ville
-
     private MainActivity mainActivity;
 
-
-
+    //Pour la construction de l'URL de recherche
     private static final String BASE_URL = "https://maps.googleapis.com/maps/api/place/";
     private static final String NEAY_BY_SEARCH = "nearbysearch/json?keyword=";
     private static final String TEXT_SEARCH = "textsearch/json?query=";
@@ -58,13 +56,9 @@ public class  GoogleAPI extends Thread {
     private String URL = "";
 
 
-    /**
-     * PHOTOOOOOO
-     * https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&maxheight=300&photo_reference=Aap_uEBCWua9-el2nF6NhMZR8HGRFJA-3OL_Z-aPwdKdHN8Xpqik96Nrm_bBCAXoIuSkEuOoHsmrDmlsJGyC1UbrAHYZQN-gyP-ZUrUkhSFvdRNwDMnibt1V65hEYPQcOy1Zsit87pL_xvZ1i3B_L1WLkWjQk87EIQlgQSNix7lBvKnK3lli&key=AIzaSyAaSrozKCZYHXJD4F5zynJxebwsvf5nA9I
-     */
 
+    //https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&maxheight=300&photo_reference=Aap_uEBCWua9-el2nF6NhMZR8HGRFJA-3OL_Z-aPwdKdHN8Xpqik96Nrm_bBCAXoIuSkEuOoHsmrDmlsJGyC1UbrAHYZQN-gyP-ZUrUkhSFvdRNwDMnibt1V65hEYPQcOy1Zsit87pL_xvZ1i3B_L1WLkWjQk87EIQlgQSNix7lBvKnK3lli&key=AIzaSyAaSrozKCZYHXJD4F5zynJxebwsvf5nA9
     //https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=pizza&location=43.6153531%2C7.0719072&radius=1500&type=restaurant&key=AIzaSyAaSrozKCZYHXJD4F5zynJxebwsvf5nA9I
-
     //https://maps.googleapis.com/maps/api/place/textsearch/json?query=cafes+in+nice&key=AIzaSyAaSrozKCZYHXJD4F5zynJxebwsvf5nA9I
 
 
@@ -79,6 +73,7 @@ public class  GoogleAPI extends Thread {
         this.mainActivity = mainActivity;
     }
 
+    //Requete si on a accès à la position
     public GoogleAPI(String ville, RestaurantsList restaurantsList, MainActivity mainActivity) {
         this.ville = ville;
         this.restaurantsList = restaurantsList;
@@ -86,25 +81,25 @@ public class  GoogleAPI extends Thread {
         this.mainActivity = mainActivity;
     }
 
+    //Requete à l'API Photos
     public GoogleAPI(String reference){
         this.reference = reference;
         this.numConstru = 3;
     }
 
-    //if this ville bla bla else recherche avec location
 
     @Override
     public void run(){
 
-        if(this.numConstru==2){ //On est au debut
+        if(this.numConstru==2){ //Location non activée
             restaurantsList.empty();
             runDebut();
         }
-        else if(this.numConstru==1){ //Run avec location, filtres ...
+        else if(this.numConstru==1){ //Api avec position
             restaurantsList.empty();
             runTest();
         }
-        else if(this.numConstru==3){
+        else if(this.numConstru==3){ //Api photos
             getPhoto();
         }
 
@@ -112,11 +107,9 @@ public class  GoogleAPI extends Thread {
     }
 
     public void runDebut(){
-        //https://maps.googleapis.com/maps/api/place/textsearch/json?query=cafes+in+nice&key=AIzaSyAaSrozKCZYHXJD4F5zynJxebwsvf5nA9I
         this.URL = BASE_URL + TEXT_SEARCH +"restaurant+"+this.ville+"+"+"restaurant"+ "&key=" + API_KEY;
         Log.d("a", "URL vaut de BASE vaut " + URL);
         fetchData();
-
     }
 
     public void runTest() {
@@ -135,10 +128,7 @@ public class  GoogleAPI extends Thread {
 
         Log.d("a", "URL vaut " + URL);
         filters.clear(); maxPrice=4;
-
-
         fetchData();
-
     }
 
     public void getPhoto(){
@@ -160,6 +150,7 @@ public class  GoogleAPI extends Thread {
     }
 
 
+    //Charge les données depuis l'api
     public void fetchData() {
 
         Log.d("a", "run passe");
@@ -178,7 +169,6 @@ public class  GoogleAPI extends Thread {
 
             }
 
-
             Log.d("a", "onnnn est laaaaa");
             decodage(data);
 
@@ -191,10 +181,9 @@ public class  GoogleAPI extends Thread {
             throwable.printStackTrace();
         }
 
-
     }
 
-
+    //Parse le GSON obtenu
     private void decodage(String s) throws Throwable {
         Log.d("a","passe Decodage");
 
@@ -206,7 +195,6 @@ public class  GoogleAPI extends Thread {
             List<PlacesApiParser.ResultsDTO> resultsDTOList = response.getResults();
             PlacesApiParser.ResultsDTO results = resultsDTOList.get(0);
             Log.d("premier",results.toString());
-
 
             restaurantsList.empty();
             Lieux resto;
