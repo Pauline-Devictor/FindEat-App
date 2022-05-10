@@ -69,6 +69,7 @@ public class RestaurantFragment extends Fragment {
         imageView = rootView.findViewById(R.id.imageView);
 
         estFavori = storageFragment.estFavori(restaurant.getName());
+
         putInFavoritesButton = rootView.findViewById(R.id.favoriteButton);
 
         if(estFavori){
@@ -127,6 +128,8 @@ public class RestaurantFragment extends Fragment {
                     //see on map
                 }
             });
+
+
         }
 
         TextView name = rootView.findViewById(R.id.restaurantName);

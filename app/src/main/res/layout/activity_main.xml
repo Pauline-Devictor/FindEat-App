@@ -24,6 +24,17 @@
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp" />-->
 
+    <!--<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chargement..."
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />-->
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/main_fragment"
         android:name="etu.ihm.myactivity.home.VideFragment"
