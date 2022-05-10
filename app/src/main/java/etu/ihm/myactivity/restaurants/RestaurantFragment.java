@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.icu.text.DecimalFormat;
 import android.os.Bundle;
 import android.util.Log;
@@ -70,7 +71,14 @@ public class RestaurantFragment extends Fragment {
         estFavori = storageFragment.estFavori(restaurant.getName());
         putInFavoritesButton = rootView.findViewById(R.id.favoriteButton);
 
-        if(estFavori){putInFavoritesButton.setText("En favori");}
+        if(estFavori){
+            putInFavoritesButton.setText("Retirer des favoris");
+            putInFavoritesButton.setBackgroundColor(Color.parseColor("#F0B27A"));
+        }
+        else{
+            putInFavoritesButton.setText("Mettre en favori");
+            putInFavoritesButton.setBackgroundColor(Color.parseColor("#1B90CF"));
+        }
 
 
         putInFavoritesButton.setOnClickListener(new View.OnClickListener() {
@@ -86,13 +94,17 @@ public class RestaurantFragment extends Fragment {
                     if(estFavori){
                         storageFragment.deleteFavorite(restaurant);
                         putInFavoritesButton.setText("Mettre en favori");
+                        putInFavoritesButton.setBackgroundColor(Color.parseColor("#1B90CF"));
+
 
                     }
                         else {
                             storageFragment.addInFavorite(restaurant);
-                            putInFavoritesButton.setText("En favori");
+                            putInFavoritesButton.setText("Retirer des favoris");
+                            putInFavoritesButton.setBackgroundColor(Color.parseColor("#F0B27A"));
 
-                        }
+
+                    }
                 }
                     estFavori = !estFavori;
                 Log.d(TAG,"Fin ajout/sup favori depuis restoFragment");
