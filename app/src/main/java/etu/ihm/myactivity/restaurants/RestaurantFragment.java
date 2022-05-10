@@ -2,6 +2,7 @@ package etu.ihm.myactivity.restaurants;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -22,6 +23,7 @@ import etu.ihm.myactivity.factoryTests.Lieux;
 import etu.ihm.myactivity.favorites.IStorageActivity;
 import etu.ihm.myactivity.favorites.StorageFragment;
 import etu.ihm.myactivity.home.MainActivity;
+import etu.ihm.myactivity.home.RestaurantListFragment;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -46,6 +48,12 @@ public class RestaurantFragment extends Fragment {
     private static ImageView imageView;
 
     private Lieux restaurant;
+
+    public OnSeeOnMapClickedListener seeOnMapCallback;
+
+    public interface OnSeeOnMapClickedListener {
+        void onSeeOnMapClicked(Lieux lieux);
+    }
 
     public RestaurantFragment() {
     }
@@ -125,7 +133,7 @@ public class RestaurantFragment extends Fragment {
             showOnMapButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //see on map
+                    seeOnMap();
                 }
             });
 
@@ -166,6 +174,25 @@ public class RestaurantFragment extends Fragment {
 
         Log.d("a","passe set bitmpa");
 
+    }
+
+    public void seeOnMap(){
+        seeOnMapCallback.onSeeOnMapClicked(this.restaurant);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnSeeOnMapClickedListener) {
+            seeOnMapCallback = (OnSeeOnMapClickedListener) context;
+        } else
+            throw new RuntimeException(context.toString() + "must implement OnSeeOnMapClickedListener");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        seeOnMapCallback = null;
     }
 
 

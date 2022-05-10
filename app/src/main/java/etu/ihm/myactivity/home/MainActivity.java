@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import etu.ihm.myactivity.GoogleAPI;
 import etu.ihm.myactivity.LocationGPS;
 import etu.ihm.myactivity.factoryTests.Lieux;
+import etu.ihm.myactivity.factoryTests.RestoBar;
 import etu.ihm.myactivity.favorites.Favorites;
 import etu.ihm.myactivity.favorites.IStorageActivity;
 import etu.ihm.myactivity.favorites.StorageFragment;
@@ -60,7 +61,7 @@ import etu.ihm.myactivity.restaurants.FiltreEnum;
 import etu.ihm.myactivity.restaurants.RestaurantFragment;
 
 
-public class MainActivity extends AppCompatActivity implements RestaurantListFragment.OnRestaurantClickedListener, RestaurantListFragment.OnFilterClickedListener, FilterFragment.OnSubmitListener, IStorageActivity, StorageFragment.OnFavoriteClickedListener {
+public class MainActivity extends AppCompatActivity implements RestaurantListFragment.OnRestaurantClickedListener, RestaurantListFragment.OnFilterClickedListener, FilterFragment.OnSubmitListener, IStorageActivity, StorageFragment.OnFavoriteClickedListener, RestaurantFragment.OnSeeOnMapClickedListener {
     private final String TAG = "polytech-" + getClass().getSimpleName();
     public static int REQUEST_LOCATION_CODE = 1001;
 
@@ -71,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
     private MapFragment mapFragment;
     private FilterFragment filterFragment;
     private static StorageFragment storageFragment;
+
+    BottomNavigationView bottomNavigationView;
 
     private int orientation;
 
@@ -118,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
 
         restaurantsList = new RestaurantsList();
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         if (this.displayMap){
             bottomNavigationView.setSelectedItemId(R.id.carte);
@@ -163,11 +166,11 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         Bundle args = new Bundle();
         args.putSerializable("restoList", (Serializable) restaurantsList);
         restaurantListFragment.setArguments(args);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantListFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, restaurantListFragment).addToBackStack(null).commit();
     }
 
     private void displayFavoris(){
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, storageFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, storageFragment).addToBackStack(null).commit();
     }
 
     private void displayRestaurant(int position){
@@ -200,7 +203,18 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         args.putDouble("userLatitude", userLatitude);
         args.putDouble("userLongitude", userLongitude);
         mapFragment.setArguments(args);
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, mapFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, mapFragment).addToBackStack(null).commit();
+    }
+
+    private void displayMapFocused(Lieux lieux){
+        bottomNavigationView.setSelectedItemId(R.id.carte);
+        Bundle args = new Bundle();
+        args.putSerializable("restoList", (Serializable) restaurantsList);
+        args.putDouble("userLatitude", userLatitude);
+        args.putDouble("userLongitude", userLongitude);
+        args.putSerializable("restoToFocus",(Serializable) lieux);
+        mapFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, mapFragment).addToBackStack(null).commit();
     }
 
     private void displayFilter(){
@@ -340,5 +354,10 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
     @Override
     public void onFavoriteClicked(Lieux lieux) {
         displayRestaurant(lieux);
+    }
+
+    @Override
+    public void onSeeOnMapClicked(Lieux lieux) {
+        displayMapFocused(lieux);
     }
 }

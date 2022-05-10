@@ -20,15 +20,20 @@ import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow;
 
+import java.io.Serializable;
+
 import etu.ihm.myactivity.R;
 import etu.ihm.myactivity.factoryTests.Lieux;
 import etu.ihm.myactivity.factoryTests.Restaurants;
+import etu.ihm.myactivity.factoryTests.RestoBar;
 import etu.ihm.myactivity.home.RestaurantsList;
+import etu.ihm.myactivity.restaurants.Restaurant;
 
 public class MapFragment extends Fragment {
     private final String TAG = "polytech-" + getClass().getSimpleName();
 
     public static float DEFAULT_ZOOM = 14f; //entre 0 et 25
+    public static float FOCUS_ZOOM = 19f;
 
     private MapView map;
     private IMapController mapController; //gere les options de la map == zoom et centre au lancement
@@ -44,9 +49,10 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
-        restaurantsList = (RestaurantsList) getArguments().getSerializable("restoList");
         userLatitude = getArguments().getDouble("userLatitude");
         userLongitude = getArguments().getDouble("userLongitude");
+
+        restaurantsList = (RestaurantsList) getArguments().getSerializable("restoList");
 
         Configuration.getInstance().load(
                 getActivity().getApplicationContext(),
@@ -73,6 +79,17 @@ public class MapFragment extends Fragment {
 
         map.getOverlays().add(addMarker(R.drawable.ic_userping2, new GeoPoint(userLatitude, userLongitude), "Votre position", R.drawable.person));
         Log.i(TAG,"setting user ping at "+userLatitude+" "+userLongitude);
+
+        Lieux lieux = (Lieux) getArguments().getSerializable("restoToFocus");
+        if (lieux!=null){
+            GeoPoint restoToFocus = new GeoPoint(lieux.getLatitude(),lieux.getLongitude());
+            Marker marker = addMarker(R.drawable.focus_position, restoToFocus, lieux.getName(), lieux instanceof RestoBar ? R.drawable.ic_restaurant : R.drawable.ic_bar);
+            map.getOverlays().add(marker);
+            mapController.setCenter(restoToFocus);
+            mapController.setZoom(FOCUS_ZOOM);
+            marker.showInfoWindow();
+
+        }
 
         return rootView;
     }
