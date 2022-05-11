@@ -6,11 +6,22 @@ public class Commentaire {
     private String contenu;
     private String idResto;
 
+    @Override
+    public String toString() {
+        return "Commentaire{" +
+                "auteur='" + auteur + '\'' +
+                ", contenu='" + contenu + '\'' +
+                ", idResto='" + idResto + '\'' +
+                '}';
+    }
+
     public Commentaire(String auteur, String contenu, String idResto) {
         this.auteur = auteur;
         this.contenu = contenu;
         this.idResto = idResto;
     }
+
+    public Commentaire(){}
 
 
     public String getAuteur() {

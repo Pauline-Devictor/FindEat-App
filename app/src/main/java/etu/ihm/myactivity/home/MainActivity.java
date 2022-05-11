@@ -35,6 +35,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
@@ -44,6 +45,7 @@ import org.osmdroid.views.overlay.OverlayItem;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import etu.ihm.myactivity.FireBaseCommentaire;
 import etu.ihm.myactivity.GoogleAPI;
 import etu.ihm.myactivity.LocationGPS;
 import etu.ihm.myactivity.factoryTests.Lieux;
@@ -52,6 +54,7 @@ import etu.ihm.myactivity.favorites.Favorites;
 import etu.ihm.myactivity.favorites.IStorageActivity;
 import etu.ihm.myactivity.favorites.StorageFragment;
 import etu.ihm.myactivity.map.MapFragment;
+import etu.ihm.myactivity.restaurants.Commentaire;
 import etu.ihm.myactivity.restaurants.DataBase;
 import etu.ihm.myactivity.map.Map;
 
@@ -104,6 +107,15 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         setContentView(R.layout.activity_main);
 
         Log.d(TAG, "content view set");
+
+
+/**
+        FireBaseCommentaire Fcom = new FireBaseCommentaire();
+        Commentaire com = new Commentaire("a","b","c");
+        Fcom.add(com);
+        ArrayList<Commentaire> data = new ArrayList<>();
+        Fcom.getCommentaireById("c",data);
+ **/
 
         restaurantFragment = new RestaurantFragment();
         restaurantListFragment = new RestaurantListFragment();

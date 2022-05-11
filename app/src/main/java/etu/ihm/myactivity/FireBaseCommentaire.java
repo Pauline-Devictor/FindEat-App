@@ -1,5 +1,6 @@
 package etu.ihm.myactivity;
 
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
@@ -18,7 +19,7 @@ import etu.ihm.myactivity.restaurants.Commentaire;
 public class FireBaseCommentaire {
 
     private DatabaseReference databaseReference;
-    private ArrayList<Commentaire> commentaires;
+    private ArrayList<Commentaire> commentaires = new ArrayList<>();
 
     public FireBaseCommentaire() {
         FirebaseDatabase db = FirebaseDatabase.getInstance(" https://findeat-5db68-default-rtdb.europe-west1.firebasedatabase.app");
@@ -26,24 +27,35 @@ public class FireBaseCommentaire {
     }
 
     public Task<Void> add(Commentaire com) {
+        Log.d("c","dans ADD ");
         return databaseReference.push().setValue(com);
+
     }
 
-    public void getCommentaireById(String idRestaurant) {
+    public void getCommentaireById(String idRestaurant, ArrayList<Commentaire> data) {
+        data.clear();
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                commentaires = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Commentaire tmp = snapshot.getValue(Commentaire.class);
+                    Log.d("h","devb"+tmp.toString());
+
                     if(tmp.getIdResto().equals(idRestaurant)){
-                        commentaires.add(tmp);
+                        data.add(tmp);
+                        Log.d("c","ComSize vaut"+data.size());
                     }
                 }
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
-        });
+        }
+        );
+    }
+
+    public ArrayList<Commentaire> getCommentaires() {
+        return commentaires;
     }
 }
