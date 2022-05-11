@@ -35,6 +35,9 @@
             android:name=".map.Map"
             android:exported="false" />
         <activity
+            android:name=".account.MyCommentsActivity"
+            android:exported="false" />
+        <activity
             android:name=".home.MainActivity"
             android:exported="true">
             <intent-filter>

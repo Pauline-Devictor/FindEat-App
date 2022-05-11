@@ -57,8 +57,14 @@ public class Account extends AppCompatActivity {
             }
         });
 
-
-
+        Button commentbutton = findViewById(R.id.buttonNotif);
+        commentbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),MyCommentsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         bottomNavigationView.setSelectedItemId(R.id.compte);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
