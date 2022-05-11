@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.OrientationEventListener;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -348,6 +349,27 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
                 });
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    /*
+    public void displayMsg(String msg){
+        TextView tv = findViewById(R.id.infoMsg);
+        tv.setText(msg);
+    }
+    */
+
+    public void buildAlertNoResto() {
+        /*final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Aucun restaurant n'a été trouvé")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();*/
+        Toast.makeText(this,"Aucun restaurant trouvé",Toast.LENGTH_LONG).show();
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -219,6 +220,7 @@ public class  GoogleAPI extends Thread {
         }
         else{
             Log.d("a","AUCUN RESTO TROUVE");
+            //mainActivity.displayMsg("Aucun restaurant n'a été trouvé");
         }
         mainActivity.displayAfterLoad();
     }
