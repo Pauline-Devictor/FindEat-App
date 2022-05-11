@@ -29,17 +29,17 @@ public class FireBaseCommentaire {
         return databaseReference.push().setValue(com);
     }
 
-    public void get(String idRestaurant) {
-
+    public void getCommentaireById(String idRestaurant) {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 commentaires = new ArrayList<>();
-                // Result will be holded Here
-                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    commentaires.add((Commentaire) dsp.getValue()); //add result into array list
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Commentaire tmp = snapshot.getValue(Commentaire.class);
+                    if(tmp.getIdResto().equals(idRestaurant)){
+                        commentaires.add(tmp);
+                    }
                 }
-                commentaires.removeIf(id -> !id.getIdResto().equals(idRestaurant));
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
