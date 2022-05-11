@@ -1,6 +1,7 @@
 package etu.ihm.myactivity.account;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +14,23 @@ import java.util.List;
 import etu.ihm.myactivity.R;
 
 public class CommentAdapter extends BaseAdapter {
+    private final String TAG = "polytech-" + getClass().getSimpleName();
 
-    private MyCommentsList myCommentsList;
+    private List<MyComments> myCommentsList;
     private LayoutInflater inflater;
+    private int max;
 
-    public CommentAdapter(Context context, List<MyComments> MyCommentsList){
+    public CommentAdapter(Context context, List<MyComments> myCommentsList,int max){
         this.inflater=LayoutInflater.from(context);
         this.myCommentsList=myCommentsList;
+        Log.d(TAG,"adapter created with list size "+myCommentsList.size());
+        this.max=max;
     }
 
     @Override
-    public int getCount() { return this.myCommentsList.size(); }
+    public int getCount() {
+        Log.d(TAG,"asking for count");
+        return Math.max(this.myCommentsList.size(),max); }
 
     @Override
     public Object getItem(int position) { return this.myCommentsList.get(position); }
