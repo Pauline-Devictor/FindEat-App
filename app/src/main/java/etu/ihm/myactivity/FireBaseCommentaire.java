@@ -42,6 +42,7 @@ public class FireBaseCommentaire {
                     Log.d("h","devb"+tmp.toString());
 
                     if(tmp.getIdResto().equals(idRestaurant)){
+                        Log.d("h","passeIf");
                         data.add(tmp);
                         Log.d("c","ComSize vaut"+data.size());
                     }
@@ -54,6 +55,39 @@ public class FireBaseCommentaire {
         }
         );
     }
+
+
+
+
+
+
+
+    public void getCommentaireByName(String nomUtilisateur, ArrayList<Commentaire> data) {
+        data.clear();
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                             @Override
+                                                             public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                                                     Commentaire tmp = snapshot.getValue(Commentaire.class);
+                                                                     Log.d("h","devb"+tmp.toString());
+
+                                                                     if(tmp.getAuteur().equals(nomUtilisateur)){
+                                                                         Log.d("h","passeIf");
+                                                                         data.add(tmp);
+                                                                         Log.d("c","ComSize vaut"+data.size());
+                                                                     }
+                                                                 }
+
+                                                             }
+                                                             @Override
+                                                             public void onCancelled(@NonNull DatabaseError error) {
+                                                             }
+                                                         }
+        );
+    }
+
+
+
 
     public ArrayList<Commentaire> getCommentaires() {
         return commentaires;

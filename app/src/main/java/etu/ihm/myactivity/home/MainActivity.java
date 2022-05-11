@@ -110,13 +110,16 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         Log.d(TAG, "content view set");
 
 
-/**
+        /**
+
         FireBaseCommentaire Fcom = new FireBaseCommentaire();
-        Commentaire com = new Commentaire("a","b","c");
+        Commentaire com = new Commentaire("b","ff","c");
         Fcom.add(com);
         ArrayList<Commentaire> data = new ArrayList<>();
-        Fcom.getCommentaireById("c",data);
- **/
+        Fcom.getCommentaireByName("b",data);
+
+         **/
+
 
         restaurantFragment = new RestaurantFragment();
         restaurantListFragment = new RestaurantListFragment();
