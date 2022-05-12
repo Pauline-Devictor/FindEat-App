@@ -1,12 +1,15 @@
 package etu.ihm.myactivity.map;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -31,6 +34,12 @@ import etu.ihm.myactivity.restaurants.Restaurant;
 
 public class MapFragment extends Fragment {
     private final String TAG = "polytech-" + getClass().getSimpleName();
+
+    public interface OnSeeRestaurantDetailsClickedListener{
+        void onSeeRestaurantDetailsClicked(int position);
+    }
+
+    private OnSeeRestaurantDetailsClickedListener restoCallback;
 
     public static float DEFAULT_ZOOM = 14f; //entre 0 et 25
     public static float FOCUS_ZOOM = 19f;
@@ -77,13 +86,13 @@ public class MapFragment extends Fragment {
         Log.d("MAP", "User : " + userLatitude + " et " + userLongitude);
         addElement();
 
-        map.getOverlays().add(addMarker(R.drawable.ic_userping2, new GeoPoint(userLatitude, userLongitude), "Votre position", R.drawable.person));
+        map.getOverlays().add(addMarker(R.drawable.ic_userping2, new GeoPoint(userLatitude, userLongitude), "Votre position", R.drawable.person, 0)); //TODO: special marker for user
         Log.i(TAG,"setting user ping at "+userLatitude+" "+userLongitude);
 
         Lieux lieux = (Lieux) getArguments().getSerializable("restoToFocus");
         if (lieux!=null){
             GeoPoint restoToFocus = new GeoPoint(lieux.getLatitude(),lieux.getLongitude());
-            Marker marker = addMarker(R.drawable.focus_position, restoToFocus, lieux.getName(), lieux instanceof RestoBar ? R.drawable.ic_restaurant : R.drawable.ic_bar);
+            Marker marker = addMarker(R.drawable.focus_position, restoToFocus, lieux.getName(), lieux instanceof RestoBar ? R.drawable.ic_restaurant : R.drawable.ic_bar, 0); //TODO: special marker for focused restaurant
             map.getOverlays().add(marker);
             mapController.setCenter(restoToFocus);
             mapController.setZoom(FOCUS_ZOOM);
@@ -94,37 +103,29 @@ public class MapFragment extends Fragment {
         return rootView;
     }
 
-    private Marker addMarker(int icon, GeoPoint location, String title, int imageResource) {
+    private Marker addMarker(int icon, GeoPoint location, String title, int imageResource, int position) {
         Marker marker = new Marker(map);
+
+        MarkerInfoWindow markerInfoWindow = new MarkerInfoWindow(R.layout.map_info_window,map){
+            @Override
+            public void onOpen(Object item){
+                super.onOpen(item);
+                Button openFragmentResto = mView.findViewById(R.id.show_restaurant);
+                openFragmentResto.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.d(TAG,"clicked on a restaurant");
+                        restoCallback.onSeeRestaurantDetailsClicked(position);
+                    }
+                });
+            }
+        };
+        marker.setInfoWindow(markerInfoWindow);
+
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         marker.setIcon(getActivity().getDrawable(icon));
         marker.setPosition(location);
         marker.setTitle(title);
-        /*
-        marker.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker, MapView mapView) {
-                Toast.makeText(getActivity(),"clicked",Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
-        */
-        //MarkerInfoWindow markerInfoWindow = new MarkerInfoWindow(R.layout.fragment_vide,map);
-        //marker.setInfoWindow(markerInfoWindow);
-        /*
-        marker.setInfoWindow(new InfoWindow() {
-        } {
-            @Override
-            public void onOpen(Object item) {
-                Log.d(TAG,"a");
-            }
-
-            @Override
-            public void onClose() {
-                Log.d(TAG,"b");
-            }
-        });
-        */
         marker.setImage(getActivity().getDrawable(imageResource));
         marker.setPanToView(true);  //the map will be centered on the marker position.
         marker.setDraggable(true);
@@ -135,11 +136,11 @@ public class MapFragment extends Fragment {
         for (int i =0;i<restaurantsList.size();i++){//TODO recuperer liste des restos quand on créé l'activité
             Lieux resto = restaurantsList.getRestaurant(i);
             if (resto instanceof Restaurants){
-                map.getOverlays().add(addMarker(R.drawable.restaurant_position, new GeoPoint(resto.getLatitude(), resto.getLongitude()), resto.getName(), R.drawable.ic_restaurant));
+                map.getOverlays().add(addMarker(R.drawable.restaurant_position, new GeoPoint(resto.getLatitude(), resto.getLongitude()), resto.getName(), R.drawable.ic_restaurant, i));
                 Log.d("MAP","Element à afficher lat " + resto.getLatitude() + " long " + resto.getLongitude()+" nom "+resto.getName());
             }
             else {
-                map.getOverlays().add(addMarker(R.drawable.bar_position, new GeoPoint(resto.getLatitude(), resto.getLongitude()), resto.getName(), R.drawable.ic_bar));
+                map.getOverlays().add(addMarker(R.drawable.bar_position, new GeoPoint(resto.getLatitude(), resto.getLongitude()), resto.getName(), R.drawable.ic_bar, i));
                 Log.d("MAP","Element à afficher lat " + resto.getLatitude() + " long " + resto.getLongitude()+" nom "+resto.getName());
             }
             //Le new Geo Point compile pas ici  !!!!
@@ -148,4 +149,19 @@ public class MapFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+        if (context instanceof OnSeeRestaurantDetailsClickedListener){
+            restoCallback = (OnSeeRestaurantDetailsClickedListener) context;
+        } else {
+            throw new RuntimeException(context.toString() + "must implement OnSeeRestaurantDetailsClickedListener");
+        }
+    }
+
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        restoCallback = null;
+    }
 }

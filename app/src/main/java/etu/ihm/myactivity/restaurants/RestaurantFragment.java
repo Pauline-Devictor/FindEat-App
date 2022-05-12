@@ -120,14 +120,6 @@ public class RestaurantFragment extends Fragment {
             }
         });
 
-        seeCommentsButton = rootView.findViewById(R.id.commentsButton);
-        seeCommentsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //see comments
-            }
-        });
-
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             showOnMapButton = rootView.findViewById(R.id.showOnMapButton);
             showOnMapButton.setOnClickListener(new View.OnClickListener() {
@@ -137,6 +129,13 @@ public class RestaurantFragment extends Fragment {
                 }
             });
 
+            seeCommentsButton = rootView.findViewById(R.id.commentsButton);
+            seeCommentsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //see comments
+                }
+            });
 
         }
 
