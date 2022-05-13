@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/btn_submit"
         android:background="@android:color/holo_blue_dark"
-        android:text="@string/submit"/>
+        android:text="Envoyer"/>
 
 
 </LinearLayout>
