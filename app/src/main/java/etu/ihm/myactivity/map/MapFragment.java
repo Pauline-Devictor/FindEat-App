@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -109,6 +110,7 @@ public class MapFragment extends Fragment {
         MarkerInfoWindow markerInfoWindow = new MarkerInfoWindow(R.layout.map_info_window,map){
             @Override
             public void onOpen(Object item){
+                closeAllInfoWindowsOn(map);
                 super.onOpen(item);
                 Button openFragmentResto = mView.findViewById(R.id.show_restaurant);
                 openFragmentResto.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +118,18 @@ public class MapFragment extends Fragment {
                     public void onClick(View view) {
                         Log.d(TAG,"clicked on a restaurant");
                         restoCallback.onSeeRestaurantDetailsClicked(position);
+                    }
+                });
+                mView.findViewById(R.id.close_infowindow).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        close();
+                    }
+                });
+                mView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        return false;
                     }
                 });
             }
