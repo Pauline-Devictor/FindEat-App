@@ -48,7 +48,15 @@ import etu.ihm.myactivity.restaurants.FiltreEnum;
 import etu.ihm.myactivity.restaurants.RestaurantFragment;
 
 
-public class MainActivity extends AppCompatActivity implements RestaurantListFragment.OnRestaurantClickedListener, RestaurantListFragment.OnFilterClickedListener, FilterFragment.OnSubmitListener, IStorageActivity, StorageFragment.OnFavoriteClickedListener, RestaurantFragment.OnSeeOnMapClickedListener, MapFragment.OnSeeRestaurantDetailsClickedListener {
+public class MainActivity extends AppCompatActivity implements
+        RestaurantListFragment.OnRestaurantClickedListener,
+        RestaurantListFragment.OnFilterClickedListener,
+        FilterFragment.OnSubmitListener,
+        IStorageActivity,
+        StorageFragment.OnFavoriteClickedListener,
+        RestaurantFragment.OnSeeOnMapClickedListener,
+        MapFragment.OnSeeRestaurantDetailsClickedListener {
+
     private final String TAG = "polytech-" + getClass().getSimpleName();
     public static int REQUEST_LOCATION_CODE = 1001;
 
@@ -66,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
 
     public boolean displayMap;
     public boolean displayFav;
+
+    public boolean gotLocation = false;
 
     public RestaurantsList restaurantsList;
 
@@ -143,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
                 return false;
             }
         });
+
     }
 
     public static MainActivity getInstance() {
@@ -218,13 +229,17 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
     }
 
     public void displayAfterLoad(){
+
         if (displayMap){
+            Log.d(TAG,"display map");
             displayMap = false;
             displayMap();
         } else if (displayFav){
+            Log.d(TAG,"display fav");
             displayFav = false;
             displayFavoris();
         } else {
+            Log.d(TAG,"display resto list");
             displayRestaurantsList();
         }
     }
@@ -267,6 +282,7 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
                     @Override
                     public void onSuccess(Location location) {
                         if (location != null) {
+                            gotLocation = true;
                             Log.d(TAG, "latitude " + location.getLatitude() + " longitude " + location.getLongitude());
                             userLatitude = location.getLatitude();
                             userLongitude = location.getLongitude();
@@ -376,8 +392,12 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
 
     @Override
     public void onResume(){
+        Log.d(TAG,"mainactivity on resume");
         super.onStart();
         super.onResume();
+        if (gotLocation){
+            displayRestaurantsList();
+        }
     }
 
 }

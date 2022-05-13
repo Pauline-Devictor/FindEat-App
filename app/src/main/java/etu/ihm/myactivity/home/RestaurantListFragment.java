@@ -110,6 +110,7 @@ public class RestaurantListFragment extends Fragment implements IListner, Observ
 
     @Override
     public void onAttach(Context context) {
+        Log.d(TAG,"on attach restolistframgment");
         super.onAttach(context);
         if (context instanceof OnRestaurantClickedListener) {
             mCallback = (OnRestaurantClickedListener) context;
