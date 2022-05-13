@@ -37,7 +37,7 @@ public class MapFragment extends Fragment {
     private final String TAG = "polytech-" + getClass().getSimpleName();
 
     public interface OnSeeRestaurantDetailsClickedListener{
-        void onSeeRestaurantDetailsClicked(int position);
+        void onSeeRestaurantDetailsClicked(String restoId);
     }
 
     private OnSeeRestaurantDetailsClickedListener restoCallback;
@@ -87,13 +87,14 @@ public class MapFragment extends Fragment {
         Log.d("MAP", "User : " + userLatitude + " et " + userLongitude);
         addElement();
 
-        map.getOverlays().add(addMarker(R.drawable.ic_userping2, new GeoPoint(userLatitude, userLongitude), "Votre position", R.drawable.person, 0)); //TODO: special marker for user
+        map.getOverlays().add(addMarker(R.drawable.ic_userping2, new GeoPoint(userLatitude, userLongitude), "Votre position", R.drawable.person, "user"));
         Log.i(TAG,"setting user ping at "+userLatitude+" "+userLongitude);
 
         Lieux lieux = (Lieux) getArguments().getSerializable("restoToFocus");
         if (lieux!=null){
+            restaurantsList.add(lieux);
             GeoPoint restoToFocus = new GeoPoint(lieux.getLatitude(),lieux.getLongitude());
-            Marker marker = addMarker(R.drawable.focus_position, restoToFocus, lieux.getName(), lieux instanceof RestoBar ? R.drawable.ic_restaurant : R.drawable.ic_bar, 0); //TODO: special marker for focused restaurant
+            Marker marker = addMarker(R.drawable.focus_position, restoToFocus, lieux.getName(), lieux instanceof RestoBar ? R.drawable.ic_restaurant : R.drawable.ic_bar, lieux.getPlaceID());
             map.getOverlays().add(marker);
             mapController.setCenter(restoToFocus);
             mapController.setZoom(FOCUS_ZOOM);
@@ -104,37 +105,38 @@ public class MapFragment extends Fragment {
         return rootView;
     }
 
-    private Marker addMarker(int icon, GeoPoint location, String title, int imageResource, int position) {
+    private Marker addMarker(int icon, GeoPoint location, String title, int imageResource, String id) {
         Marker marker = new Marker(map);
-
-        MarkerInfoWindow markerInfoWindow = new MarkerInfoWindow(R.layout.map_info_window,map){
-            @Override
-            public void onOpen(Object item){
-                closeAllInfoWindowsOn(map);
-                super.onOpen(item);
-                Button openFragmentResto = mView.findViewById(R.id.show_restaurant);
-                openFragmentResto.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Log.d(TAG,"clicked on a restaurant");
-                        restoCallback.onSeeRestaurantDetailsClicked(position);
-                    }
-                });
-                mView.findViewById(R.id.close_infowindow).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        close();
-                    }
-                });
-                mView.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        return false;
-                    }
-                });
-            }
-        };
-        marker.setInfoWindow(markerInfoWindow);
+        if (!title.equals("Votre position")) {
+            MarkerInfoWindow markerInfoWindow = new MarkerInfoWindow(R.layout.map_info_window, map) {
+                @Override
+                public void onOpen(Object item) {
+                    closeAllInfoWindowsOn(map);
+                    super.onOpen(item);
+                    Button openFragmentResto = mView.findViewById(R.id.show_restaurant);
+                    openFragmentResto.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Log.d(TAG, "clicked on a restaurant");
+                            restoCallback.onSeeRestaurantDetailsClicked(id);
+                        }
+                    });
+                    mView.findViewById(R.id.close_infowindow).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            close();
+                        }
+                    });
+                    mView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View view, MotionEvent motionEvent) {
+                            return false;
+                        }
+                    });
+                }
+            };
+            marker.setInfoWindow(markerInfoWindow);
+        }
 
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         marker.setIcon(getActivity().getDrawable(icon));
@@ -150,11 +152,11 @@ public class MapFragment extends Fragment {
         for (int i =0;i<restaurantsList.size();i++){//TODO recuperer liste des restos quand on créé l'activité
             Lieux resto = restaurantsList.getRestaurant(i);
             if (resto instanceof Restaurants){
-                map.getOverlays().add(addMarker(R.drawable.restaurant_position, new GeoPoint(resto.getLatitude(), resto.getLongitude()), resto.getName(), R.drawable.ic_restaurant, i));
+                map.getOverlays().add(addMarker(R.drawable.restaurant_position, new GeoPoint(resto.getLatitude(), resto.getLongitude()), resto.getName(), R.drawable.ic_restaurant, resto.getPlaceID()));
                 Log.d("MAP","Element à afficher lat " + resto.getLatitude() + " long " + resto.getLongitude()+" nom "+resto.getName());
             }
             else {
-                map.getOverlays().add(addMarker(R.drawable.bar_position, new GeoPoint(resto.getLatitude(), resto.getLongitude()), resto.getName(), R.drawable.ic_bar, i));
+                map.getOverlays().add(addMarker(R.drawable.bar_position, new GeoPoint(resto.getLatitude(), resto.getLongitude()), resto.getName(), R.drawable.ic_bar, resto.getPlaceID()));
                 Log.d("MAP","Element à afficher lat " + resto.getLatitude() + " long " + resto.getLongitude()+" nom "+resto.getName());
             }
             //Le new Geo Point compile pas ici  !!!!

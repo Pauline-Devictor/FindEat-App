@@ -29,7 +29,8 @@ public class RestaurantsList extends Observable implements Serializable {
         return restaurantsArrayList.size();
     }
     public void add(Lieux lieux) {
-        restaurantsArrayList.add(lieux);
+        if (!restaurantsArrayList.contains(lieux))
+            restaurantsArrayList.add(lieux);
         Log.d(TAG,"resto "+lieux.getName()+" ajouté");
         Log.d("a", "passe ADd");
         setChanged();
@@ -55,5 +56,14 @@ public class RestaurantsList extends Observable implements Serializable {
 
     public static ArrayList<Lieux> getRestaurantsArrayList() {
         return restaurantsArrayList;
+    }
+
+    public Lieux getRestaurantById(String id){
+        for (Lieux l : restaurantsArrayList){
+            if (l.getPlaceID().equals(id)){
+                return l;
+            }
+        }
+        return null;
     }
 }

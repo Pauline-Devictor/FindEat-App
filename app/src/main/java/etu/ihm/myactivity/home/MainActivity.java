@@ -354,13 +354,6 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         alert.show();
     }
 
-    /*
-    public void displayMsg(String msg){
-        TextView tv = findViewById(R.id.infoMsg);
-        tv.setText(msg);
-    }
-    */
-
     public void buildAlertNoResto() {
         /*final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Aucun restaurant n'a été trouvé")
@@ -399,7 +392,10 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
     }
 
     @Override
-    public void onSeeRestaurantDetailsClicked(int position) {
-        displayRestaurant(position);
+    public void onSeeRestaurantDetailsClicked(String id) {
+        Lieux lieux = restaurantsList.getRestaurantById(id);
+        if (lieux!=null) {
+            displayRestaurant(lieux);
+        }
     }
 }
