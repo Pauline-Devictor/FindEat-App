@@ -3,7 +3,11 @@ package etu.ihm.myactivity.restaurants;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import etu.ihm.myactivity.FireBaseCommentaire;
 import etu.ihm.myactivity.R;
@@ -21,6 +26,12 @@ import etu.ihm.myactivity.home.MainActivity;
 public class CommentsActivity extends AppCompatActivity {
 
     private final String TAG = "polytech-" + getClass().getSimpleName();
+    private ArrayList<Commentaire> commentaires;
+    private FireBaseCommentaire data;
+    private ListView listView;
+    private ArrayAdapter<Commentaire> adapter;
+    private Button bouton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -29,16 +40,27 @@ public class CommentsActivity extends AppCompatActivity {
 
         //String idResto = FireBaseCommentaire.getIdResto();
 
+        data = new FireBaseCommentaire();
 
-        ArrayList<Commentaire> commentaires = new ArrayList<>();
-        FireBaseCommentaire data = new FireBaseCommentaire();
-        data.getCommentaireById("c",commentaires);
+        commentaires = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this, R.layout.favorite_text_list, commentaires);
 
-        commentaires = data.getCommentaires();
+        listView = this.findViewById(R.id.listCom);
+        listView.setAdapter(adapter);
+
+        data.getCommentaireById(FireBaseCommentaire.getIdResto(),this);
+        Log.d("e","passe ici BIS, id "+FireBaseCommentaire.getIdResto());
+
+        bouton = this.findViewById(R.id.buttonAddCom);
 
 
-        CommentsAdapter adapter = new CommentsAdapter(getApplicationContext(),commentaires);
-        ((ListView)findViewById(R.id.listViewComments)).setAdapter(adapter);
+        bouton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),AddCommentaire.class);
+                startActivity(i);
+            }
+        });
 
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -69,5 +91,31 @@ public class CommentsActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("e","on resume");
+        data.getCommentaireById(FireBaseCommentaire.getIdResto(),this);
+    }
+
+
+
+
+
+
+    public void upDateData(){
+        commentaires.clear();
+        Log.d("e","upDataData"+commentaires.size());
+
+        for(Commentaire t : data.getCommentaires()){
+            commentaires.add(t);
+        }
+
+        adapter.notifyDataSetChanged();
+        Log.d("e","upDataData"+commentaires.size());
+        listView.invalidateViews();
     }
 }

@@ -11,7 +11,7 @@ import android.widget.Toast;
 import etu.ihm.myactivity.FireBaseCommentaire;
 import etu.ihm.myactivity.R;
 
-public class DataBase extends AppCompatActivity {
+public class AddCommentaire extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,18 +22,23 @@ public class DataBase extends AppCompatActivity {
         FireBaseCommentaire dao =  new FireBaseCommentaire();
         btn.setOnClickListener(v->{
 
-            Commentaire com = new Commentaire("Moi",edit_data.getText().toString(),"IdResto");
+            Commentaire com = new Commentaire("Charles",edit_data.getText().toString(),FireBaseCommentaire.getIdResto());
             dao.add(com).addOnSuccessListener(suc->
             {
                 Log.d("OK","bon");
                 Toast.makeText(this,"Data inserted",Toast.LENGTH_SHORT).show();
+                fin();
             }).addOnFailureListener(er->
             {
                 Log.d("OK","nope");
-
                 Toast.makeText(this,"ERROR",Toast.LENGTH_SHORT).show();
             });
-
         });
+
+    }
+
+
+    public void fin(){
+        super.onBackPressed();
     }
 }

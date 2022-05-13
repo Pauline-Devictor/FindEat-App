@@ -24,7 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyActivity">
         <activity
-            android:name=".restaurants.DataBase"
+            android:name=".restaurants.AddCommentaire"
             android:exported="false" />
         <activity
             android:name=".account.Account"

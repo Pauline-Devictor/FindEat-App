@@ -1,6 +1,7 @@
 package etu.ihm.myactivity;
 
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 
@@ -14,10 +15,13 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import etu.ihm.myactivity.restaurants.Commentaire;
+import etu.ihm.myactivity.restaurants.CommentsActivity;
 
 public  class FireBaseCommentaire {
 
     private DatabaseReference databaseReference;
+
+    private static String idResto;
 
     public DatabaseReference getDatabaseReference() {
         return databaseReference;
@@ -25,15 +29,6 @@ public  class FireBaseCommentaire {
 
     private static ArrayList<Commentaire> commentaires = new ArrayList<>();
 
-    public static String getIdResto() {
-        return idResto;
-    }
-
-    public static void setIdResto(String idResto) {
-        FireBaseCommentaire.idResto = idResto;
-    }
-
-    private static String idResto ="";
 
     public FireBaseCommentaire() {
         FirebaseDatabase db = FirebaseDatabase.getInstance(" https://findeat-5db68-default-rtdb.europe-west1.firebasedatabase.app");
@@ -54,8 +49,8 @@ public  class FireBaseCommentaire {
     }
 
 
-    public void getCommentaireById(String idRestaurant, ArrayList<Commentaire> data) {
-        data.clear();
+    public void getCommentaireById(String idRestaurant, CommentsActivity act) {
+        Log.d("r","id init Resto "+idRestaurant);
         commentaires.clear();
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -65,19 +60,15 @@ public  class FireBaseCommentaire {
                     Log.d("h","devb"+tmp.toString());
 
                     if(tmp.getIdResto().equals(idRestaurant)){
-                        Log.d("h","passeIf");
+                        Log.d("h","passeIf on a "+tmp.getIdResto()+" "+idRestaurant);
                         commentaires.add(tmp);
-                        data.add(tmp);
-                        Log.d("c","ComSize vaut"+data.size());
+                        Log.d("c","ComSize vaut"+commentaires.size());
                     }
                 }
+                Log.d("e","notifu DOne");
 
-
-
-
-
-
-
+                if(act==null)return;
+                act.upDateData();
 
 
             }
@@ -87,9 +78,6 @@ public  class FireBaseCommentaire {
         }
         );
 
-
-
-
     }
 
 
@@ -98,8 +86,8 @@ public  class FireBaseCommentaire {
 
 
 
-    public void getCommentaireByName(String nomUtilisateur, ArrayList<Commentaire> data) {
-        data.clear();
+    public void getCommentaireByName(String nomUtilisateur) {
+        commentaires.clear();
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                                              @Override
                                                              public void onDataChange(DataSnapshot dataSnapshot) {
@@ -109,8 +97,7 @@ public  class FireBaseCommentaire {
 
                                                                      if(tmp.getAuteur().equals(nomUtilisateur)){
                                                                          Log.d("h","passeIf");
-                                                                         data.add(tmp);
-                                                                         Log.d("c","ComSize vaut"+data.size());
+                                                                         Log.d("c","ComSize vaut"+commentaires.size());
                                                                      }
                                                                  }
 
@@ -128,4 +115,12 @@ public  class FireBaseCommentaire {
     public ArrayList<Commentaire> getCommentaires() {
         return commentaires;
     }
+    public static String getIdResto() {
+        return idResto;
+    }
+
+    public static void setIdResto(String idResto) {
+        FireBaseCommentaire.idResto = idResto;
+    }
+
 }

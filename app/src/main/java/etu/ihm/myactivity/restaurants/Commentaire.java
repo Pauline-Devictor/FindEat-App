@@ -8,11 +8,7 @@ public class Commentaire {
 
     @Override
     public String toString() {
-        return "Commentaire{" +
-                "auteur='" + auteur + '\'' +
-                ", contenu='" + contenu + '\'' +
-                ", idResto='" + idResto + '\'' +
-                '}';
+        return contenu+"\n"+" de "+auteur;
     }
 
     public Commentaire(String auteur, String contenu, String idResto) {
