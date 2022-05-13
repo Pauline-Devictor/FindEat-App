@@ -152,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
 
-        displayAfterLoad();
     }
 
     public static MainActivity getInstance() {
