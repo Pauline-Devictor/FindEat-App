@@ -391,4 +391,11 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
             displayRestaurant(lieux);
         }
     }
+
+    @Override
+    public void onResume(){
+        super.onStart();
+        super.onResume();
+    }
+
 }
