@@ -30,9 +30,6 @@
             android:name=".account.Account"
             android:exported="false" />
         <activity
-            android:name=".favorites.Favorites"
-            android:exported="false" />
-        <activity
             android:name=".map.Map"
             android:exported="false" />
         <activity android:name=".restaurants.CommentsActivity"
