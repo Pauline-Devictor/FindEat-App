@@ -48,7 +48,7 @@ public class CommentsActivity extends AppCompatActivity {
         listView = this.findViewById(R.id.listCom);
         listView.setAdapter(adapter);
 
-        data.getCommentaireById(FireBaseCommentaire.getIdResto(),this);
+        //data.getCommentaireById(FireBaseCommentaire.getIdResto(),this);
         Log.d("e","passe ici BIS, id "+FireBaseCommentaire.getIdResto());
 
         bouton = this.findViewById(R.id.buttonAddCom);

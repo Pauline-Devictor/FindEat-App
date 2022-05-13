@@ -52,14 +52,15 @@ public  class FireBaseCommentaire {
     public void getCommentaireById(String idRestaurant, CommentsActivity act) {
         Log.d("r","id init Resto "+idRestaurant);
         commentaires.clear();
+        Log.d("a","taille LAAA");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Commentaire tmp = snapshot.getValue(Commentaire.class);
-                    Log.d("h","devb"+tmp.toString());
 
                     if(tmp.getIdResto().equals(idRestaurant)){
+                        Log.d("a","passse LAAA");
                         Log.d("h","passeIf on a "+tmp.getIdResto()+" "+idRestaurant);
                         commentaires.add(tmp);
                         Log.d("c","ComSize vaut"+commentaires.size());

@@ -145,8 +145,6 @@ public class RestaurantFragment extends Fragment {
                 public void onClick(View view) {
                     //see comments
                     FireBaseCommentaire.setIdResto(restaurant.getPlaceID());
-                    FireBaseCommentaire test = new FireBaseCommentaire();
-                    test.getCommentaireById(restaurant.getPlaceID(),null);
                     Intent intent = new Intent(MainActivity.getInstance(),CommentsActivity.class);
                     startActivity(intent);
                 }
