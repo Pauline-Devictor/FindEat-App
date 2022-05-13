@@ -75,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements
     public boolean displayMap;
     public boolean displayFav;
 
+    public boolean gotLocation = false;
+
     public RestaurantsList restaurantsList;
 
     private double userLatitude = 0;
@@ -280,6 +282,7 @@ public class MainActivity extends AppCompatActivity implements
                     @Override
                     public void onSuccess(Location location) {
                         if (location != null) {
+                            gotLocation = true;
                             Log.d(TAG, "latitude " + location.getLatitude() + " longitude " + location.getLongitude());
                             userLatitude = location.getLatitude();
                             userLongitude = location.getLongitude();
@@ -389,8 +392,12 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onResume(){
+        Log.d(TAG,"mainactivity on resume");
         super.onStart();
         super.onResume();
+        if (gotLocation){
+            displayRestaurantsList();
+        }
     }
 
 }
