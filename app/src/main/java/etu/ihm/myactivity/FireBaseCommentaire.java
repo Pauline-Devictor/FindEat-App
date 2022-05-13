@@ -1,7 +1,6 @@
 package etu.ihm.myactivity;
 
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 
@@ -16,10 +15,25 @@ import java.util.ArrayList;
 
 import etu.ihm.myactivity.restaurants.Commentaire;
 
-public class FireBaseCommentaire {
+public  class FireBaseCommentaire {
 
     private DatabaseReference databaseReference;
-    private ArrayList<Commentaire> commentaires = new ArrayList<>();
+
+    public DatabaseReference getDatabaseReference() {
+        return databaseReference;
+    }
+
+    private static ArrayList<Commentaire> commentaires = new ArrayList<>();
+
+    public static String getIdResto() {
+        return idResto;
+    }
+
+    public static void setIdResto(String idResto) {
+        FireBaseCommentaire.idResto = idResto;
+    }
+
+    private static String idResto ="";
 
     public FireBaseCommentaire() {
         FirebaseDatabase db = FirebaseDatabase.getInstance(" https://findeat-5db68-default-rtdb.europe-west1.firebasedatabase.app");
@@ -32,8 +46,17 @@ public class FireBaseCommentaire {
 
     }
 
+
+
+
+    public void doTest(){
+
+    }
+
+
     public void getCommentaireById(String idRestaurant, ArrayList<Commentaire> data) {
         data.clear();
+        commentaires.clear();
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -43,10 +66,19 @@ public class FireBaseCommentaire {
 
                     if(tmp.getIdResto().equals(idRestaurant)){
                         Log.d("h","passeIf");
+                        commentaires.add(tmp);
                         data.add(tmp);
                         Log.d("c","ComSize vaut"+data.size());
                     }
                 }
+
+
+
+
+
+
+
+
 
             }
             @Override
@@ -54,6 +86,10 @@ public class FireBaseCommentaire {
             }
         }
         );
+
+
+
+
     }
 
 

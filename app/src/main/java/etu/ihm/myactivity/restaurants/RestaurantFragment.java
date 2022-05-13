@@ -3,6 +3,7 @@ package etu.ihm.myactivity.restaurants;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -17,8 +18,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import etu.ihm.myactivity.FireBaseCommentaire;
 import etu.ihm.myactivity.GoogleAPI;
 import etu.ihm.myactivity.R;
+import etu.ihm.myactivity.account.MyCommentsActivity;
 import etu.ihm.myactivity.factoryTests.Lieux;
 import etu.ihm.myactivity.favorites.IStorageActivity;
 import etu.ihm.myactivity.favorites.StorageFragment;
@@ -30,7 +33,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import org.osmdroid.util.GeoPoint;
-//import android.app.Fragment;
+
+import java.util.ArrayList;
 
 public class RestaurantFragment extends Fragment {
     private final String TAG = "polytech-" + getClass().getSimpleName();
@@ -53,6 +57,12 @@ public class RestaurantFragment extends Fragment {
 
     public interface OnSeeOnMapClickedListener {
         void onSeeOnMapClicked(Lieux lieux);
+    }
+
+    public OnSeeCommentsClickedListener seeCommentsCallback;
+
+    public interface OnSeeCommentsClickedListener{
+        void onSeeCommentsClicked();
     }
 
     public RestaurantFragment() {
@@ -134,7 +144,14 @@ public class RestaurantFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     //see comments
+                    FireBaseCommentaire.setIdResto(restaurant.getPlaceID());
+                    FireBaseCommentaire test = new FireBaseCommentaire();
+                    ArrayList<Commentaire> t = new ArrayList<>();
+                    test.getCommentaireById("c",t);
+                    Intent intent = new Intent(MainActivity.getInstance(),CommentsActivity.class);
+                    startActivity(intent);
                 }
+
             });
 
         }
@@ -179,20 +196,30 @@ public class RestaurantFragment extends Fragment {
         seeOnMapCallback.onSeeOnMapClicked(this.restaurant);
     }
 
+    public void seeComments(){
+        seeCommentsCallback.onSeeCommentsClicked();
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnSeeOnMapClickedListener) {
             seeOnMapCallback = (OnSeeOnMapClickedListener) context;
+        } else if (context instanceof OnSeeCommentsClickedListener){
+            seeCommentsCallback = (OnSeeCommentsClickedListener) context;
         } else
             throw new RuntimeException(context.toString() + "must implement OnSeeOnMapClickedListener");
+    }
+
+
+    public static void lancerCom(){
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         seeOnMapCallback = null;
+        seeCommentsCallback = null;
     }
-
-
 }

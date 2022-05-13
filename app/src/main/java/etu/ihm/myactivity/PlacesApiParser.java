@@ -27,7 +27,6 @@ public class PlacesApiParser {
         this.status = status;
     }
 
-    //Mettre meme nom de variable que dans json pour bon parsage
     public static class ResultsDTO {
         @JsonProperty("business_status")
         private String business_status;

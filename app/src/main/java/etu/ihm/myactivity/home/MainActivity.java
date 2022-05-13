@@ -56,6 +56,7 @@ import etu.ihm.myactivity.favorites.IStorageActivity;
 import etu.ihm.myactivity.favorites.StorageFragment;
 import etu.ihm.myactivity.map.MapFragment;
 import etu.ihm.myactivity.restaurants.Commentaire;
+import etu.ihm.myactivity.restaurants.CommentsActivity;
 import etu.ihm.myactivity.restaurants.DataBase;
 import etu.ihm.myactivity.map.Map;
 
@@ -110,17 +111,6 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         Log.d(TAG, "content view set");
 
 
-        /**
-
-        FireBaseCommentaire Fcom = new FireBaseCommentaire();
-        Commentaire com = new Commentaire("b","ff","c");
-        Fcom.add(com);
-        ArrayList<Commentaire> data = new ArrayList<>();
-        Fcom.getCommentaireByName("b",data);
-
-         **/
-
-
         restaurantFragment = new RestaurantFragment();
         restaurantListFragment = new RestaurantListFragment();
         storageFragment = new StorageFragment(this);
@@ -171,7 +161,6 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
                 return false;
             }
         });
-        //displayRestaurantsList();
     }
 
     public static MainActivity getInstance() {
@@ -240,6 +229,10 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         args.putDouble("userLongitude", userLongitude);
         mapFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, filterFragment).addToBackStack(null).commit();
+    }
+
+    private void displayComments(){
+        startActivity(new Intent(getApplicationContext(), CommentsActivity.class));
     }
 
     public void displayAfterLoad(){

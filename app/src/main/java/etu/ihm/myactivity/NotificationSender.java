@@ -29,7 +29,7 @@ public class NotificationSender extends AppCompatActivity {
     public void sendNotificationOnChannel(String CHANNEL_ID, int priority,PendingIntent pendingIntent) {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.mockrestaurant);
         NotificationCompat.Builder notification = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.logojpeg)
+                .setSmallIcon(R.drawable.ic_logoapp2)
                 .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap).setSummaryText("FindEat"))
                 .setContentTitle("Une petite faim ?")
                 .setContentText("De nombreux restaurants vous attendent")
