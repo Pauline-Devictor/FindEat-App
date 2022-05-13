@@ -3,7 +3,6 @@ package etu.ihm.myactivity.home;
 
 
 import android.Manifest;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,19 +12,14 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.OrientationEventListener;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -36,29 +30,17 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.FirebaseDatabase;
-
-import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.overlay.ItemizedIconOverlay;
-import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
-import org.osmdroid.views.overlay.OverlayItem;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import etu.ihm.myactivity.FireBaseCommentaire;
 import etu.ihm.myactivity.GoogleAPI;
 import etu.ihm.myactivity.LocationGPS;
 import etu.ihm.myactivity.factoryTests.Lieux;
-import etu.ihm.myactivity.factoryTests.RestoBar;
-import etu.ihm.myactivity.favorites.Favorites;
 import etu.ihm.myactivity.favorites.IStorageActivity;
 import etu.ihm.myactivity.favorites.StorageFragment;
 import etu.ihm.myactivity.map.MapFragment;
-import etu.ihm.myactivity.restaurants.Commentaire;
 import etu.ihm.myactivity.restaurants.CommentsActivity;
-import etu.ihm.myactivity.restaurants.DataBase;
-import etu.ihm.myactivity.map.Map;
 
 import etu.ihm.myactivity.R;
 import etu.ihm.myactivity.account.Account;

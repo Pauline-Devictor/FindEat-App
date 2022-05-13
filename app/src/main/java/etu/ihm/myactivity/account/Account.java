@@ -18,9 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.Objects;
 
 import etu.ihm.myactivity.NotificationSender;
-import etu.ihm.myactivity.favorites.Favorites;
 import etu.ihm.myactivity.home.MainActivity;
-import etu.ihm.myactivity.map.Map;
 import etu.ihm.myactivity.R;
 
 public class Account extends AppCompatActivity {

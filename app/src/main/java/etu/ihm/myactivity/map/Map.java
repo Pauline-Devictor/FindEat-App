@@ -1,55 +1,6 @@
 package etu.ihm.myactivity.map;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.os.Looper;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import org.osmdroid.api.IMapController;
-import org.osmdroid.config.Configuration;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
-import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.ItemizedIconOverlay;
-import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
-import org.osmdroid.views.overlay.Marker;
-import org.osmdroid.views.overlay.OverlayItem;
-
-import java.util.ArrayList;
-
-import etu.ihm.myactivity.factoryTests.Lieux;
-import etu.ihm.myactivity.factoryTests.Restaurants;
-import etu.ihm.myactivity.favorites.Favorites;
-import etu.ihm.myactivity.R;
-import etu.ihm.myactivity.account.Account;
-import etu.ihm.myactivity.home.MainActivity;
-import etu.ihm.myactivity.home.RestaurantsList;
-import etu.ihm.myactivity.restaurants.Restaurant;
 
 /**
  * No longer used (fragment instead)
